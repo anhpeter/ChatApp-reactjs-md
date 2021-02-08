@@ -1,17 +1,11 @@
 import React, { useState } from 'react'
-import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
-import { Divider, makeStyles } from '@material-ui/core'
 import { useEffect } from 'react'
-import Slt from '../defines/Slt'
-import ConversationList from './ConversationList'
-import ChatBox from './ChatBox'
+import Slt from '../../defines/Slt'
+import ConversationList from '../../components/ConversationList'
+import ChatBox from '../../components/ChatBox'
 
-const useStyles = makeStyles({
-})
-
-export default function Content() {
-    const classes = useStyles();
+export default function Chat() {
     const [appBarHeight, setAppBarHeight] = useState(0);
 
     const heightStyle = {
@@ -36,7 +30,6 @@ export default function Content() {
                 </Grid>
                 <Grid item xs={10} md={9}>
                     <ChatBox />
-
                 </Grid>
             </Grid>
         </Grid>

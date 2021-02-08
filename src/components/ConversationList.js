@@ -1,10 +1,8 @@
 import React from 'react'
 import Toolbar from '@material-ui/core/Toolbar'
-import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
 import SearchBar from './SearchBar'
-import { Box, Hidden, makeStyles } from '@material-ui/core'
-import ChatAction from './ChatAction'
+import { Hidden} from '@material-ui/core'
 import ToolbarTitle from './ToolbarTitle'
 import mainStyles from '../defines/styles/MainStyles'
 
@@ -16,7 +14,7 @@ export default function ConversationList() {
     const classes = mainStyles();
 
     let conversations = [];
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 5; i++) {
         conversations.push(i);
     }
     conversations = conversations.map((i) => {
@@ -46,7 +44,6 @@ export default function ConversationList() {
                 </Grid>
             </Hidden>
 
-            {/* MAIN CONTENT */}
             <Grid item xs={12} >
                 <List className={`${classes.chatSection} custom-scrollbar`}>
                     {conversations}
