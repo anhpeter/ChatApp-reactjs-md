@@ -2,8 +2,8 @@ import React from 'react'
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import Avatar from '@material-ui/core/Avatar';
-import { Box, Hidden, makeStyles, Typography } from '@material-ui/core';
+import MyAvatar from './MyAvatar';
+import { Hidden, makeStyles } from '@material-ui/core';
 
 const useStyle = makeStyles({
     truncateListItemStyle: {
@@ -14,16 +14,16 @@ const useStyle = makeStyles({
 })
 
 
-export default function ConversationItem() {
+export default function ConversationItem(props) {
     const classes = useStyle();
     return (
-        <ListItem button key="RemySharp" >
+        <ListItem button >
             <ListItemIcon>
-                <Avatar
-                    alt="Remy Sharp"
-                    src="https://material-ui.com/static/images/avatar/1.jpg" />
+                <MyAvatar online={props.item.online} name={props.item.name} single={props.item.single} picture={props.item.picture}></MyAvatar>
             </ListItemIcon>
-            <ListItemText className={classes.truncateListItemStyle} primary="Peter" secondary="Hello, how are your? Hello, how are your? Hello, how are your? "></ListItemText>
+            <Hidden smDown>
+                <ListItemText className={classes.truncateListItemStyle} primary={props.item.name} secondary={props.item.lastMessage}></ListItemText>
+            </Hidden>
         </ListItem >
     )
 }
