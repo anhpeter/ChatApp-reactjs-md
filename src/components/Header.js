@@ -2,13 +2,11 @@ import React from 'react'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
-import IconButton from '@material-ui/core/IconButton'
 import { Button, makeStyles } from '@material-ui/core'
 
 import PersonIcon from '@material-ui/icons/Person';
-import MenuIcon from '@material-ui/icons/Menu';
 import Slt from '../defines/Slt'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { isLogged } from '../features/auth/authSlice'
 import { signOut } from '../features/auth/authSlice';
@@ -25,6 +23,8 @@ export default function Header(props) {
     const dispatch = useDispatch();
     const logged = useSelector(isLogged);
     const classes = useStyles(props);
+    const location = useLocation();
+    const pathName = location.pathname;
     const history = useHistory();
 
     const onSignout = () => {
@@ -37,13 +37,15 @@ export default function Header(props) {
         <div>
             <AppBar position="static" color="primary" id={Slt.mainAppBar}>
                 <Toolbar>
+                    {/* 
                     <IconButton aria-label="menu icon" color="inherit">
                         <MenuIcon></MenuIcon>
                     </IconButton>
+                     */}
                     <Typography variant="h6" className={classes.flexGrowStyle}>
                         Messenger
                     </Typography>
-                    <Button startIcon={<PersonIcon></PersonIcon>} color="inherit" onClick={() => {
+                    <Button disabled={pathName === '/login'} startIcon={<PersonIcon></PersonIcon>} color="inherit" onClick={() => {
                         onSignout();
                     }}>
                         <Typography >{(logged) ? 'Sign out' : 'Sign in'}</Typography>

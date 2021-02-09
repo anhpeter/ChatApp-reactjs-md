@@ -2,9 +2,9 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
     message: '',
-    type: 'info',
+    type: '',
     open: false,
-    timeout: 6000,
+    timeout: 4000,
 }
 
 const NotifySlice = createSlice({
@@ -15,7 +15,7 @@ const NotifySlice = createSlice({
             const { message, type, open, timeout } = action.payload;
             if (open) {
                 state.message = message || '';
-                state.type = type || 'info';
+                state.type = type || '';
                 state.timeout = timeout || 6000;
             }
             state.open = open || false;

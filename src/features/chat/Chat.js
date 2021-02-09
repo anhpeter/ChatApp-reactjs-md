@@ -8,15 +8,16 @@ import ChatBox from '../../components/ChatBox'
 export default function Chat() {
     const [appBarHeight, setAppBarHeight] = useState(0);
 
+    // HANDLE HEIGHT
     const heightStyle = {
         height: `calc(100vh - ${appBarHeight}px)`,
     }
-
     const handleAppBarResize = () => {
         let height = document.getElementById(Slt.mainAppBar).clientHeight;
         setAppBarHeight(height);
     }
 
+    // USE EFFECTS
     useEffect(() => {
         handleAppBarResize();
         window.addEventListener('resize', handleAppBarResize)
