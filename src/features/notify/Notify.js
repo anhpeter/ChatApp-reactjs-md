@@ -35,23 +35,30 @@ export default function Notify() {
 
     return (
         <div className={classes.root}>
-            <Snackbar open={isOpen} autoHideDuration={duration} onClose={handleClose}
+            {(msg)
+                ? (
 
-                anchorOrigin={{
-                    horizontal: 'center',
-                    vertical: 'top',
-                }}
-                message={msg}
-            >
-                {
-                    (msgType !== '') ? (
+                    <Snackbar
+                        open={isOpen}
+                        autoHideDuration={duration}
+                        onClose={handleClose}
+                        anchorOrigin={{
+                            horizontal: 'center',
+                            vertical: 'top'
+                        }}
+                        message={msg}>
+                        {(msgType !== '')
+                            ? (
 
-                        <Alert onClose={handleClose} severity={msgType}>
-                            {msg}
-                        </Alert>
-                    ) : ''
-                }
-            </Snackbar>
+                                <Alert onClose={handleClose} severity={msgType}>
+                                    {msg}
+                                </Alert>
+                            )
+                            : ''
+                        }
+                    </Snackbar>
+                )
+                : ''}
         </div>
     );
 }

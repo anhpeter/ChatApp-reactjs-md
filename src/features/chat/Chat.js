@@ -30,7 +30,9 @@ export default function Chat() {
                     <ConversationList></ConversationList>
                 </Grid>
                 <Grid item xs={10} md={9}>
-                    <ChatBox />
+                    <ChatBox>
+                        Loading...
+                </ChatBox>
                 </Grid>
             </Grid>
         </Grid>
