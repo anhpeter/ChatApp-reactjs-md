@@ -7,10 +7,12 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import { useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { Redirect, useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { setNotify } from '../features/notify/NotifySlice';
-import { signIn } from '../features/auth/authSlice';
+import { isLogged, signIn } from '../features/auth/authSlice';
+import * as Message from '../defines/Message';
+import { useCookies } from 'react-cookie';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -35,6 +37,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignIn() {
     const dispatch = useDispatch();
+    const logged = useSelector(isLogged);
+    const [cookies, setCookie] = useCookies(['loggedUser']);
     const [form, setForm] = useState({ email: '', password: '' });
     const onInputChange = (e, field) => {
         setForm({
@@ -47,9 +51,11 @@ export default function SignIn() {
         let { email, password } = form;
         if (email.match(/[a-zA-Z0-9]{4,}@gmail.com/)) {
             if (password.trim().length >= 8) {
-                dispatch(signIn({user: {email, password}}))
+                let user = { email, password };
+                dispatch(signIn({ user }))
+                setCookie('loggedUser', JSON.stringify(user));
                 history.push('/chat');
-            } else notifyInvalid('password invalid');
+            } else notifyInvalid(Message.invalid);
 
         } else notifyInvalid('email invalid');
     }
@@ -63,51 +69,55 @@ export default function SignIn() {
     const classes = useStyles();
 
     return (
-        <Container component="main" maxWidth="xs">
-            <CssBaseline />
-            <div className={classes.paper}>
-                <Avatar className={classes.avatar}>
-                    <LockOutlinedIcon />
-                </Avatar>
-                <Typography component="h1" variant="h5">
-                    Sign in
+        (!logged) ? (
+            <Container component="main" maxWidth="xs">
+                <CssBaseline />
+                <div className={classes.paper}>
+                    <Avatar className={classes.avatar}>
+                        <LockOutlinedIcon />
+                    </Avatar>
+                    <Typography component="h1" variant="h5">
+                        Sign in
                 </Typography>
-                <form className={classes.form} noValidate onSubmit={(e) => { e.preventDefault() }}>
-                    <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        id="email"
-                        label="Email Address"
-                        name="email"
-                        autoComplete="email"
-                        onChange={(e) => { onInputChange(e, 'email') }}
-                        autoFocus />
+                    <form className={classes.form} noValidate onSubmit={(e) => { e.preventDefault() }}>
+                        <TextField
+                            variant="outlined"
+                            margin="normal"
+                            required
+                            fullWidth
+                            id="email"
+                            label="Email Address"
+                            name="email"
+                            autoComplete="email"
+                            onChange={(e) => { onInputChange(e, 'email') }}
+                            autoFocus />
 
-                    <TextField
-                        onChange={(e) => { onInputChange(e, 'password') }}
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        name="password"
-                        label="Password"
-                        type="password"
-                        id="password"
-                        autoComplete="current-password" />
-                    <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        color="primary"
-                        className={classes.submit}
-                        onClick={checkInfo}
-                    >
-                        Sign In
+                        <TextField
+                            onChange={(e) => { onInputChange(e, 'password') }}
+                            variant="outlined"
+                            margin="normal"
+                            required
+                            fullWidth
+                            name="password"
+                            label="Password"
+                            type="password"
+                            id="password"
+                            autoComplete="current-password" />
+                        <Button
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            color="primary"
+                            className={classes.submit}
+                            onClick={checkInfo}
+                        >
+                            Sign In
                     </Button>
-                </form>
-            </div>
-        </Container>
+                    </form>
+                </div>
+            </Container>
+        ) : (
+                <Redirect to="/chat"></Redirect>
+            )
     );
 }

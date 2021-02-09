@@ -12,6 +12,7 @@ import { useHistory } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { isLogged } from '../features/auth/authSlice'
 import { signOut } from '../features/auth/authSlice';
+import { useCookies } from 'react-cookie'
 
 const useStyles = makeStyles({
     flexGrowStyle: {
@@ -20,12 +21,14 @@ const useStyles = makeStyles({
 })
 
 export default function Header(props) {
+    const [cookies, setCookie, removeCookie] = useCookies('loggedUser');
     const dispatch = useDispatch();
     const logged = useSelector(isLogged);
     const classes = useStyles(props);
     const history = useHistory();
 
     const onSignout = () => {
+        removeCookie('loggedUser');
         dispatch(signOut());
         history.push('/');
     }
