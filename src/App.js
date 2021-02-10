@@ -12,6 +12,8 @@ import { signIn } from './features/auth/authSlice'
 import { LOGGED_USER } from './defines/CookieName';
 import { Paper } from '@material-ui/core';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import Socket from './defines/Socket';
+
 
 
 export default function App() {

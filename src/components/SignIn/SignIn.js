@@ -10,10 +10,12 @@ import Container from '@material-ui/core/Container';
 import { Redirect, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setNotify } from '../../features/notify/NotifySlice';
-import { isLogged, signIn } from '../../features/auth/authSlice';
+import { isLogged, login, signIn } from '../../features/auth/authSlice';
 import * as Message from '../../defines/Message';
 import { useCookies } from 'react-cookie';
 import Helper from '../../defines/Helper'
+import { API_ADDRESS } from '../../defines/Config';
+import Axios from 'axios';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -40,7 +42,7 @@ export default function SignIn() {
     const dispatch = useDispatch();
     const logged = useSelector(isLogged);
     const [cookies, setCookie] = useCookies(['loggedUser']);
-    const [form, setForm] = useState({ email: '', password: '' });
+    const [form, setForm] = useState({ username: '', password: '' });
     const onInputChange = (e, field) => {
         setForm({
             ...form,
@@ -48,20 +50,30 @@ export default function SignIn() {
 
         })
     }
-    const checkInfo = () => {
-        let { email, password } = form;
-        if (email.match(/[a-zA-Z0-9]{4,}@gmail.com/)) {
-            if (password.trim().length >= 8) {
-                let user = { email, password };
-                dispatch(signIn({ user }))
-                setCookie('loggedUser', JSON.stringify(user));
-                history.push('/chat');
-            } else notifyInvalid(Message.invalid);
 
-        } else notifyInvalid('email invalid');
+    const checkUsername = (username) => {
+        return username.match(/[a-zA-Z0-9]{4,}/);
+    }
+
+    const checkPassword = (password) => {
+        return password.trim().length >= 2;
+    }
+
+    const checkInfo = () => {
+        let { username, password } = form;
+        if (checkUsername(username)) {
+            if (checkPassword(password)) {
+                dispatch(login({ username, password }));
+                //let user = { username, password };
+                //dispatch(signIn({ user }))
+                //setCookie('loggedUser', JSON.stringify(user));
+                //history.push('/chat');
+            } else notifyInvalid(Message.invalid('password'));
+
+        } else notifyInvalid('username invalid');
     }
     const notifyInvalid = (message, type = 'error') => {
-        dispatch(setNotify({ message:  Helper.ucFirst(message), type, open: true }));
+        dispatch(setNotify({ message: Helper.ucFirst(message), type, open: true }));
     }
     const history = useHistory();
     const classes = useStyles();
@@ -83,11 +95,11 @@ export default function SignIn() {
                             margin="normal"
                             required
                             fullWidth
-                            id="email"
-                            label="Email Address"
-                            name="email"
-                            autoComplete="email"
-                            onChange={(e) => { onInputChange(e, 'email') }}
+                            id="username"
+                            label="Username"
+                            name="username"
+                            autoComplete="username"
+                            onChange={(e) => { onInputChange(e, 'username') }}
                             autoFocus />
 
                         <TextField

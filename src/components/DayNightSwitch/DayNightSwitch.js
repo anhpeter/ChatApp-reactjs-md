@@ -11,9 +11,7 @@ export default function DayNightSwitch() {
     const dispatch = useDispatch();
     const [cookies, setCookie, removeCookie] = useCookies(['theme'])
 
-    console.log('outside heme type', theme.type)
     useEffect(() => {
-        console.log('use effect', theme.type, cookies.theme.type);
         if (cookies.theme) {
             if (cookies.theme.type) {
                 if (cookies.theme.type !== theme.type) {
