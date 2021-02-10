@@ -1,13 +1,13 @@
 import React from 'react'
 import Toolbar from '@material-ui/core/Toolbar'
 import Grid from '@material-ui/core/Grid'
-import SearchBar from './SearchBar'
+import SearchBar from '../SearchBar/SearchBar'
 import { Hidden } from '@material-ui/core'
-import ToolbarTitle from './ToolbarTitle'
-import mainStyles from '../defines/styles/MainStyles'
+import ToolbarTitle from '../Toolbar/ToolbarTitle'
+import mainStyles from '../../defines/styles/MainStyles'
 
 import List from '@material-ui/core/List';
-import ConversationItem from './ConversationItem'
+import ConversationItem from '../ConversationItem/ConversationItem'
 
 
 export default function ConversationList() {
@@ -46,6 +46,7 @@ export default function ConversationList() {
             name: "Rose",
             picture: "https://i.pinimg.com/originals/76/fa/eb/76faeb9c818efdf76cf066aea3685a80.jpg",
             lastMessage: "Hello, long time no see!",
+            online: true
         },
     ]
 

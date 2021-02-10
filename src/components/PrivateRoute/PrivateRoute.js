@@ -4,7 +4,7 @@ import {
     Route,
     Redirect,
 } from "react-router-dom";
-import { isLogged } from "../features/auth/authSlice";
+import { isLogged } from "../../features/auth/authSlice";
 
 export default function PrivateRoute({ children, ...rest }) {
     const logged = useSelector(isLogged);

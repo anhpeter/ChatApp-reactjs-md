@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
-import SendingInput from './SendingInput';
+import SendingInput from '../SendingInput/SendingInput';
 import { Divider } from '@material-ui/core';
-import Messages from './Messages';
+import Messages from '../Messages/Messages';
 
 
 export default function ChatBox({ children }) {
-    const [loaded, setLoaded] = useState(true);
+    const [loaded] = useState(true);
     //setTimeout(() => {
     //setLoaded(true);
     //}, 0);
@@ -18,7 +18,7 @@ export default function ChatBox({ children }) {
                     <Divider />
                     <SendingInput></SendingInput>
                 </React.Fragment>
-                :children
+                : children
             }
         </div>
     )

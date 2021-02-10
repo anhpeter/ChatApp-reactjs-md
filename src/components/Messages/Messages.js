@@ -1,7 +1,7 @@
 import React from 'react'
 import {List} from '@material-ui/core'
-import Message from './Message'
-import mainStyle from '../defines/styles/MainStyles'
+import Message from '../Message/Message'
+import mainStyle from '../../defines/styles/MainStyles'
 
 export default function Messages() {
     const classes = mainStyle();

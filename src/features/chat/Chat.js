@@ -2,8 +2,8 @@ import React, { useState } from 'react'
 import Grid from '@material-ui/core/Grid'
 import { useEffect } from 'react'
 import Slt from '../../defines/Slt'
-import ConversationList from '../../components/ConversationList'
-import ChatBox from '../../components/ChatBox'
+import ConversationList from '../../components/ConversationList/ConversationList'
+import ChatBox from '../../components//ChatBox/ChatBox'
 
 export default function Chat() {
     const [appBarHeight, setAppBarHeight] = useState(0);

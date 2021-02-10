@@ -9,10 +9,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { Redirect, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { setNotify } from '../features/notify/NotifySlice';
-import { isLogged, signIn } from '../features/auth/authSlice';
-import * as Message from '../defines/Message';
+import { setNotify } from '../../features/notify/NotifySlice';
+import { isLogged, signIn } from '../../features/auth/authSlice';
+import * as Message from '../../defines/Message';
 import { useCookies } from 'react-cookie';
+import Helper from '../../defines/Helper'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -60,12 +61,9 @@ export default function SignIn() {
         } else notifyInvalid('email invalid');
     }
     const notifyInvalid = (message, type = 'error') => {
-        dispatch(setNotify({ message, type, open: true }));
+        dispatch(setNotify({ message:  Helper.ucFirst(message), type, open: true }));
     }
-
-
     const history = useHistory();
-
     const classes = useStyles();
 
     return (

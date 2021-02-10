@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Grid, TextField, Fab } from '@material-ui/core'
 import { Send as SendIcon } from '@material-ui/icons'
 import { useDispatch } from 'react-redux';
-import { setNotify } from '../features/notify/NotifySlice';
+import { setNotify } from '../../features/notify/NotifySlice';
 
 export default function SendingInput() {
     const [inputMsg, setInputMsg] = useState('');

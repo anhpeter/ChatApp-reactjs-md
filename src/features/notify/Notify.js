@@ -54,7 +54,7 @@ export default function Notify() {
                                     {msg}
                                 </Alert>
                             )
-                            : ''
+                            : null
                         }
                     </Snackbar>
                 )

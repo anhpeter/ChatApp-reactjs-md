@@ -2,16 +2,16 @@ import React from 'react'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
-import { Box, Button, IconButton, makeStyles } from '@material-ui/core'
+import { Box, Button, makeStyles } from '@material-ui/core'
 
 import PersonIcon from '@material-ui/icons/Person';
-import Slt from '../defines/Slt'
+import Slt from '../../defines/Slt'
 import { useHistory, useLocation } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import { isLogged } from '../features/auth/authSlice'
-import { signOut } from '../features/auth/authSlice';
+import { isLogged } from '../../features/auth/authSlice'
+import { signOut } from '../../features/auth/authSlice';
 import { useCookies } from 'react-cookie'
-import DayNightSwitch from './DayNightSwitch'
+import DayNightSwitch from '../DayNightSwitch/DayNightSwitch'
 
 const useStyles = makeStyles({
     flexGrowStyle: {
