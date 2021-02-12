@@ -5,6 +5,7 @@ import Slt from '../../defines/Slt'
 import ConversationList from '../../components/ConversationList/ConversationList'
 import ChatBox from '../../components/ChatBox/ChatBox'
 import OnlineUsers from '../../components/OnlineUser/OnlineUsers'
+import Socket from '../../defines/Socket'
 
 export default function Chat() {
     const [appBarHeight,

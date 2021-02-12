@@ -1,66 +1,71 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import Axios from 'axios';
 import { API_ADDRESS } from '../../defines/Config';
+import MySocket from '../../defines/MySocket';
 import Socket from '../../defines/Socket';
 
-export const login = createAsyncThunk('auth/login', async ({ username, password, }, { dispatch }) => {
-    console.log('login thunk');
+export const loginThunk = createAsyncThunk('auth/login', async ({ username, password, }) => {
     const response = await Axios.post(`${API_ADDRESS}/user/login`, { username, password })
-    try {
-        const { data } = response;
-        if (data.status === 'success') {
-            const user = data.data.user;
-            console.log('user', user);
-            dispatch(signIn({ user }));
-        }
-    } catch (error) {
-        console.log(error);
-    }
-    return response.posts
+    return response.data;
 })
 
 const initialState = {
     isLogged: false,
     user: null,
+    status: 'idle',
+    error: null,
 }
 
 const authSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
-        signIn: {
-            reducer: (state, action) => {
-                const user = action.payload;
-                state.user = user;
-                state.isLogged = true;
-            },
-            prepare: (data) => {
-                const { user } = data;
-                Socket.emit('connected', { user });
-                return {
-                    payload: user,
-                }
-            }
-        },
         signOut: (state) => {
-            Socket.emit('leave', { user: state.user });
+            MySocket.emitLeave(state.user);
             state.user = null;
             state.isLogged = false;
         }
+    },
+    extraReducers: {
+        [loginThunk.pending]: (state, action) => {
+            state.status = 'loading'
+        },
+        [loginThunk.fulfilled]: (state, action) => {
+            state.status = 'succeeded'
+            const { data, status } = action.payload;
+            if (status === 'success') {
+                MySocket.emitConnected(data.user);
+                state.user = data.user;
+                state.isLogged = true;
+            } else {
+                state.error = 'not found';
+            }
+        },
+        [loginThunk.rejected]: (state, action) => {
+            state.status = 'failed'
+            state.error = action.error.message
+        }
+
     }
 });
 
 const selectors = {
     isLogged: (state) => {
         return state.auth.isLogged;
+    },
+    loggedUser: (state) => {
+        return state.auth.user;
+    },
+    status: (state) => {
+        return state.auth.status;
     }
 }
 
-export const { isLogged } = selectors;
+export const { status, isLogged, loggedUser } = selectors;
 
 
 export const {
-    signIn, signOut
+    signOut
 } = authSlice.actions
 
 export default authSlice.reducer

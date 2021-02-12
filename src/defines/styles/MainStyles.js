@@ -19,6 +19,9 @@ const useStyles = makeStyles(theme => createStyles({
     borderRight500: {
         borderRight: '1px solid #e0e0e0'
     },
+    borderLeft500: {
+        borderLeft: '1px solid #e0e0e0'
+    },
     messageArea: {
         height: '70vh',
         overflowY: 'auto'

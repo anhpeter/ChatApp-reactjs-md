@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -10,12 +10,13 @@ import Container from '@material-ui/core/Container';
 import { Redirect, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setNotify } from '../../features/notify/NotifySlice';
-import { isLogged, login, signIn } from '../../features/auth/authSlice';
+import { isLogged, loginThunk, status } from '../../features/auth/authSlice';
 import * as Message from '../../defines/Message';
 import { useCookies } from 'react-cookie';
 import Helper from '../../defines/Helper'
 import { API_ADDRESS } from '../../defines/Config';
 import Axios from 'axios';
+import { LOGGED_USER } from '../../defines/CookieName';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -40,8 +41,16 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignIn() {
     const dispatch = useDispatch();
+
+    // SELECTOR
     const logged = useSelector(isLogged);
-    const [cookies, setCookie] = useCookies(['loggedUser']);
+    const [cookies, setCookie] = useCookies([LOGGED_USER]);
+
+    useEffect(() => {
+        console.log('cookies', cookies[LOGGED_USER]);
+    }, [cookies])
+
+    const authStatus = useSelector(status);
     const [form, setForm] = useState({ username: '', password: '' });
     const onInputChange = (e, field) => {
         setForm({
@@ -63,11 +72,9 @@ export default function SignIn() {
         let { username, password } = form;
         if (checkUsername(username)) {
             if (checkPassword(password)) {
-                dispatch(login({ username, password }));
-                //let user = { username, password };
-                //dispatch(signIn({ user }))
-                //setCookie('loggedUser', JSON.stringify(user));
-                //history.push('/chat');
+                let user = { username, password };
+                dispatch(loginThunk(user))
+                setCookie(LOGGED_USER, user)
             } else notifyInvalid(Message.invalid('password'));
 
         } else notifyInvalid('username invalid');
@@ -75,11 +82,10 @@ export default function SignIn() {
     const notifyInvalid = (message, type = 'error') => {
         dispatch(setNotify({ message: Helper.ucFirst(message), type, open: true }));
     }
-    const history = useHistory();
     const classes = useStyles();
-
+    if (authStatus === 'loading') return null;
     return (
-        (!logged) ? (
+        !logged ? (
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
                 <div className={classes.paper}>
