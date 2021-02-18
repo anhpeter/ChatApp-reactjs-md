@@ -8,6 +8,7 @@ import mainStyles from '../../defines/styles/MainStyles'
 
 import List from '@material-ui/core/List';
 import ConversationItem from '../ConversationItem/ConversationItem'
+import AppTitle from '../AppTitle/AppTitle'
 
 
 export default function ConversationList() {
@@ -58,18 +59,6 @@ export default function ConversationList() {
 
     return (
         <Grid container direction="column" className={`${classes.borderRight500} `}>
-            {/* TITLE & CHAT ACTION */}
-            <Grid item xs={12} >
-                <Toolbar>
-                    <ToolbarTitle title="Chats"></ToolbarTitle>
-                    {/*  
-                    <Hidden smDown>
-                        <ChatAction></ChatAction>
-                    </Hidden>
-                    */}
-                </Toolbar>
-            </Grid>
-
             {/* SEARCH BAR */}
             <Hidden mdDown>
                 <Grid item xs={12}>
@@ -79,7 +68,7 @@ export default function ConversationList() {
 
             <Grid item xs={12} >
                 <List className={`${classes.chatSection} custom-scrollbar`}>
-                    {conversationsHtml}
+                    {/*  conversationsHtml*/}
                 </List>
             </Grid>
             <Grid item xs={9}>

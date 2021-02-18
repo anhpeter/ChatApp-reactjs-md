@@ -10,17 +10,17 @@ import Container from '@material-ui/core/Container';
 import { Link, Redirect, useHistory, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setNotify } from '../../features/notify/NotifySlice';
-import { isLogged, loginThunk, status, authError } from '../../features/auth/authSlice';
-import { useCookies } from 'react-cookie';
+import { isLogged, login, loginThunk, status } from '../../features/auth/authSlice';
 import Helper from '../../defines/Helper'
-import { LOGGED_USER } from '../../defines/CookieName';
-import Message from '../../defines/Message';
 import { Formik } from 'formik';
+import UserApi from '../../defines/https/UserApi';
 import * as yup from 'yup';
+import UserValidates from '../../defines/validates/UserValidates';
+import Message from '../../defines/Message';
 import { Box } from '@material-ui/core';
-import FormErrors from '../../defines/configs/FormErrors';
 import RouterLink from '../RouterLink/RouterLink';
 
+let timeoutObj;
 const useStyles = makeStyles((theme) => ({
     paper: {
         marginTop: theme.spacing(8),
@@ -36,25 +36,20 @@ const useStyles = makeStyles((theme) => ({
         width: '100%', // Fix IE 11 issue.
         marginTop: theme.spacing(1)
     },
-    submit: {
-        margin: theme.spacing(3, 0, 2)
-    }
 }));
 
-export default function SignIn() {
+export default function SignUp() {
     const dispatch = useDispatch();
-    const [isSubmitClicked, setSubmitClicked] = useState(false);
+    const [username, setUsername] = useState({ value: '', unique: false });
 
     // SELECTOR
     const logged = useSelector(isLogged);
-    const [cookies, setCookie] = useCookies([LOGGED_USER]);
-
     const authStatus = useSelector(status);
-    const authErr = useSelector(authError);
-
     const classes = useStyles();
-    if (authStatus === 'succeeded' && authErr && isSubmitClicked)
-        dispatch(setNotify({ message: 'Login unsuccessfully', type: 'error', open: true }))
+
+    if (authStatus === 'loading')
+        return null;
+
     return (!logged
         ? (
             <Container component="main" maxWidth="xs">
@@ -63,11 +58,7 @@ export default function SignIn() {
                     <Avatar className={classes.avatar}>
                         <LockOutlinedIcon />
                     </Avatar>
-                    <Typography component="h1" variant="h5">
-                        Sign in
-                    </Typography>
-
-                    {/* FORMIK */}
+                    <Typography component="h1" variant="h5">Sign Up</Typography>
                     <Formik
                         initialValues={{
                             username: '',
@@ -75,19 +66,20 @@ export default function SignIn() {
                             passwordConfirmation: ''
                         }}
                         validationSchema={yup.object({
-                            username: yup.string().required(Helper.format(FormErrors.required, 'Username')),
-                            password: yup.string().required(Helper.format(FormErrors.required, 'Password')),
+                            username: UserValidates.username(username, setUsername, timeoutObj),
+                            password: UserValidates.password(),
+                            passwordConfirmation: UserValidates.passwordConfirmation(),
                         })}
                         onSubmit={async (values, { setSubmitting }) => {
                             const { username, password } = values;
-                            let user = {
-                                username,
-                                password
-                            };
-                            setSubmitClicked(true);
-                            dispatch(loginThunk(user));
-                            setCookie(LOGGED_USER, user);
-                            //alert(JSON.stringify(values));
+                            let data = await UserApi.createAccount(username, password);
+                            if (data.status === 'succeeded') {
+                                const user = data.payload;
+                                dispatch(setNotify({ message: Helper.format(Message.welcomeNewAccount, user.username) }));
+                                dispatch(login(user));
+                            } else {
+                                setSubmitting(false);
+                            }
                         }}>
                         {({
                             values,
@@ -98,7 +90,7 @@ export default function SignIn() {
                             handleSubmit,
                             isSubmitting,
                             isValid,
-                            dirty,
+                            dirty
                             /* and other goodies */
                         }) => {
                             const showErrors = {};
@@ -127,29 +119,28 @@ export default function SignIn() {
                                 <form onSubmit={handleSubmit} noValidate autoComplete="off">
                                     <TextField type="text" {...props('username')} />
                                     <TextField type="password" {...props('password')} />
-                                    <RouterLink to="/sign-up">
+                                    <TextField type="password" {...props('passwordConfirmation', 'Password confirmation')} />
+                                    <RouterLink to="/signin">
                                         <Typography color="primary" >
-                                            Create an account
+                                            Have an account?
                                         </Typography>
                                     </RouterLink>
-                                    <Box mt={2}>
+                                    <Box mt={2}
+                                    >
                                         <Button
                                             disabled={isSubmitting || !isValid || !dirty}
                                             type="submit"
                                             fullWidth
                                             variant="contained"
                                             color="primary"
-                                        > Sign In
-                                    </Button>
+                                        > Sign Up </Button>
                                     </Box>
                                 </form>
                             )
                         }}
                     </Formik>
-                    {/* END FORMIK */}
-
                 </div>
-            </Container>
+            </Container >
         )
         : (null));
 }

@@ -23,7 +23,6 @@ export default function OnlineUsers({ item }) {
     const user = useSelector(loggedUser);
     useEffect(() => {
         MySocket.onOnlineUsers((data) => {
-            console.log('on online users', data);
             setOnlineUsers(data)
         })
         return () => {
@@ -36,7 +35,7 @@ export default function OnlineUsers({ item }) {
         return (item.username !== user.username)
     }).map((item) => {
         return (
-            <ListItem key={item.id}>
+            <ListItem key={item._id} button>
                 <ListItemAvatar >
                     <MyAvatar online={true} name={item.name} single={item.single} picture={item.picture}></MyAvatar>
                 </ListItemAvatar>

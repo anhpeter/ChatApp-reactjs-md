@@ -1,12 +1,13 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import Axios from 'axios';
 import { API_ADDRESS } from '../../defines/Config';
+import UserApi from '../../defines/https/UserApi';
 import MySocket from '../../defines/MySocket';
 import Socket from '../../defines/Socket';
 
 export const loginThunk = createAsyncThunk('auth/login', async ({ username, password, }) => {
-    const response = await Axios.post(`${API_ADDRESS}/user/login`, { username, password })
-    return response.data;
+    const response = await UserApi.findByUsernameAndPassword(username, password);
+    return response;
 })
 
 const initialState = {
@@ -16,10 +17,19 @@ const initialState = {
     error: null,
 }
 
+const loginWithUser = (state, action) => {
+    MySocket.emitConnected(action.payload);
+    state.user = action.payload;
+    state.isLogged = true;
+}
+
 const authSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
+        login: (state, action) => {
+            loginWithUser(state, action)
+        },
         signOut: (state) => {
             MySocket.emitLeave(state.user);
             state.user = null;
@@ -32,14 +42,12 @@ const authSlice = createSlice({
         },
         [loginThunk.fulfilled]: (state, action) => {
             state.status = 'succeeded'
-            const { data, status } = action.payload;
-            if (status === 'success') {
-                MySocket.emitConnected(data.user);
-                state.user = data.user;
-                state.isLogged = true;
-            } else {
-                state.error = 'not found';
-            }
+            const { payload, status } = action.payload;
+
+            if (status === 'succeeded') {
+                loginWithUser(state, { payload });
+                state.error = null;
+            } else state.error = 'not found';
         },
         [loginThunk.rejected]: (state, action) => {
             state.status = 'failed'
@@ -58,14 +66,17 @@ const selectors = {
     },
     status: (state) => {
         return state.auth.status;
-    }
+    },
+    authError: (state) => {
+        return state.auth.error;
+    },
 }
 
-export const { status, isLogged, loggedUser } = selectors;
+export const { authError, status, isLogged, loggedUser } = selectors;
 
 
 export const {
-    signOut
+    signOut, login
 } = authSlice.actions
 
 export default authSlice.reducer

@@ -4,6 +4,7 @@ import Header from './components/Header/Header'
 import Chat from './features/chat/Chat'
 import { Route, BrowserRouter as Router, Switch, Redirect } from 'react-router-dom'
 import SignIn from './components/SignIn/SignIn'
+import SignUp from './components/SignUp/SignUp'
 import Notify from './features/notify/Notify'
 import PrivateRoute from './components/PrivateRoute/PrivateRoute'
 import { useCookies } from 'react-cookie'
@@ -12,6 +13,8 @@ import { loginThunk } from './features/auth/authSlice'
 import { LOGGED_USER } from './defines/CookieName';
 import { Paper } from '@material-ui/core';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import Friends from './components/Friends/Friends';
+import AuthRoute from './components/AuthRoute/AuthRoute';
 
 export default function App() {
     const [cookies] = useCookies([LOGGED_USER]);
@@ -48,7 +51,11 @@ export default function App() {
                                 <PrivateRoute path="/chat" exact>
                                     <Chat></Chat>
                                 </PrivateRoute>
-                                <Route path="/login" exact component={SignIn} />
+                                <PrivateRoute path="/friends" exact>
+                                    <Friends></Friends>
+                                </PrivateRoute>
+                                <AuthRoute path="/login" exact ><SignIn></SignIn></AuthRoute>
+                                <AuthRoute path="/sign-up" exact ><SignUp></SignUp></AuthRoute>
                                 <Redirect to="/chat"></Redirect>
                             </Switch>
                             <Notify></Notify>
