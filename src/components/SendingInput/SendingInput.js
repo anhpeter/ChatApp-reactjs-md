@@ -34,6 +34,10 @@ export default function SendingInput() {
     const emitTyping = () => {
         if (!isTyping && inputMsg.trim() !== '') MySocket.emitTyping(user);
         setTyping(true);
+        clearTimeout(myTimeoutObj);
+        myTimeoutObj = setTimeout(() => {
+            emitStopTyping();
+        }, 2000);
     }
 
     const emitStopTyping = () => {
@@ -46,11 +50,7 @@ export default function SendingInput() {
     // SOLVE TYPING
     const onKeyUp = (e) => {
         if (e.which !== 13) {
-            emitTyping();
-            clearTimeout(myTimeoutObj);
-            myTimeoutObj = setTimeout(() => {
-                emitStopTyping();
-            }, 2000);
+            if (inputMsg.length > 3) emitTyping();
         } else {
             emitStopTyping();
         }

@@ -32,7 +32,7 @@ const MySocket = {
         })
     },
     onNewJoiner: function (callback) {
-        Socket.on('onNewJoiner', (data) => {
+        Socket.on('new-joiner', (data) => {
             if (Helper.isFn(callback)) callback(data);
         })
     },

@@ -67,3 +67,28 @@
 .message-avatar {
     max-width: 30px;
 }
+
+.message {
+    max-width: 564px;
+    padding: 7px 12px 8px 12px;
+    overflow: hidden;
+    word-break: break-word;
+}
+
+.message.right-message {
+    color: white;
+    background-color: rgb(68, 190, 199);
+    border-bottom-left-radius: 18px;
+    border-top-right-radius: 18px;
+    border-top-left-radius: 18px;
+    border-bottom-right-radius: 4px;
+}
+
+.message.left-message {
+    color: black;
+    background-color: #E4E6EB;
+    border-bottom-left-radius: 18px;
+    border-top-right-radius: 18px;
+    border-top-left-radius: 18px;
+    border-bottom-right-radius: 18px;
+}

@@ -22,11 +22,11 @@ const StyledBadge = withStyles((theme) => ({
 }))(Badge);
 
 //const SmallAvatar = withStyles((theme) => ({
-    //root: {
-        //width: 22,
-        //height: 22,
-        //border: `2px solid ${theme.palette.background.paper}`
-    //}
+//root: {
+//width: 22,
+//height: 22,
+//border: `2px solid ${theme.palette.background.paper}`
+//}
 //}))(Avatar);
 
 const useStyles = makeStyles((theme) => ({
@@ -38,11 +38,13 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function MyAvatar(props) {
+export default function MyAvatar({ name, picture, online, sizeInPixel }) {
     const classes = useStyles();
+    const myStyle = true ? { width: `${sizeInPixel}px`, height: `${sizeInPixel}px` } : {};
+
     return (
         <div className={classes.root}>
-            {( props.online) ? (
+            {(online) ? (
                 <StyledBadge
                     overlap="circle"
                     anchorOrigin={{
@@ -50,20 +52,9 @@ export default function MyAvatar(props) {
                         horizontal: 'right'
                     }}
                     variant="dot">
-                    <Avatar alt={props.name} src={props.picture} />
+                    <Avatar style={myStyle} alt={name} src={picture} />
                 </StyledBadge>
-            ) : (<Avatar alt={props.name} src={props.picture} />)}
-            {/* 
-            <Badge
-                overlap="circle"
-                anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'right'
-            }}
-                badgeContent={< SmallAvatar alt = "Remy Sharp" src = "/static/images/avatar/1.jpg" />}>
-                <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg"/>
-            </Badge>
-             */}
+            ) : (<Avatar alt={name} src={picture} />)}
         </div>
     );
 }

@@ -9,6 +9,7 @@ import { loggedUser } from '../../features/auth/authSlice';
 import * as dateFormat from 'dateformat';
 import MyTime from '../../defines/MyTime';
 import ScrollToBottom, { useScrollToBottom } from 'react-scroll-to-bottom';
+import ChatNotification from '../ChatNotification/ChatNotification';
 
 export default function Messages() {
     const classes = mainStyle();
@@ -24,20 +25,48 @@ export default function Messages() {
     useEffect(() => {
         MySocket.onReceiveMessage((data) => {
             const messageObj = {
+                type: 'message',
                 ...data,
             }
             setMessages(messages.concat(messageObj))
-            scroll()
+            scroll();
 
+        })
+        MySocket.onNewJoiner((data) => {
+            console.log('new joiner', data);
+            let t = (data.user.username === user.username) ? 'current-user' : 'other-user'
+            const obj = {
+                type: `welcome-${t}-notification`,
+                ...data,
+            }
+            setMessages(messages.concat(obj))
+            scroll();
         })
         return () => {
             Socket.off('receive-message');
+            Socket.off('new-joiner');
         }
     })
 
     const messagesHtml = messages.map((item, index) => {
-        let timeString = dateFormat(MyTime.getCurrentTimeByUTCTime(item.time), 'HH:MM');
-        return <Message ownMessage={item.user.username === user.username} key={index} user={item.user}  message={item.message} time={timeString}></Message>
+        if (item.type === 'message') {
+            let timeString = dateFormat(MyTime.getCurrentTimeByUTCTime(item.time), 'HH:MM');
+            return <Message ownMessage={item.user.username === user.username} key={index} user={item.user} message={item.message} time={timeString}></Message>
+        } else {
+            let content;
+            switch (item.type) {
+                case 'welcome-current-user-notification':
+                    content = 'Welcome to the chat room!';
+                    break;
+                case 'welcome-other-user-notification':
+                    let usernameHtml = <Typography component="span" color="textPrimary">{item.user.username}</Typography>;
+                    content = <span>{usernameHtml} has joined the chat!</span>;
+                    break;
+                default:
+                    content = '';
+            }
+            return <ChatNotification key={index}>{content}</ChatNotification>
+        }
     })
 
     const emptyHtml = (

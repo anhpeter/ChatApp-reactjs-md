@@ -56,8 +56,8 @@ export default function SignIn() {
     if (isSubmitClicked) {
         if (authStatus === 'succeeded' && authErr)
             dispatch(setNotify({ message: 'Login unsuccessfully', type: 'error', open: true }))
-    }else{
-        if (authStatus === 'loading' )return null;
+    } else {
+        if (authStatus === 'loading') return null;
     }
     return (!logged
         ? (
@@ -129,7 +129,7 @@ export default function SignIn() {
                             }
                             return (
                                 <form onSubmit={handleSubmit} noValidate autoComplete="off">
-                                    <TextField type="text" {...props('username')} />
+                                    <TextField autoFocus={true} type="text" {...props('username')} />
                                     <TextField type="password" {...props('password')} />
                                     <RouterLink to="/sign-up">
                                         <Typography color="primary" >

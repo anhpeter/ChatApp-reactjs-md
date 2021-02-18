@@ -58,7 +58,7 @@ export default function ConversationList() {
     })
 
     return (
-        <Grid container direction="column" className={`${classes.borderRight500} `}>
+        <Grid container direction="column" >
             {/* SEARCH BAR */}
             <Hidden mdDown>
                 <Grid item xs={12}>

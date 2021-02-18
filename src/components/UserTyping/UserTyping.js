@@ -1,4 +1,4 @@
-import { Typography } from '@material-ui/core';
+import { Paper, Typography } from '@material-ui/core';
 import React, { useEffect, useState } from 'react'
 import MySocket from '../../defines/MySocket'
 import Socket from '../../defines/Socket'
@@ -34,8 +34,8 @@ export default function UserTyping() {
         )
     })
     return (
-        <div>
+        <Paper elevation={0} style={{minWidth: '200px'}}>
             {(typingHtml.length > 0 ? typingHtml : null)}
-        </div>
+        </Paper>
     )
 }

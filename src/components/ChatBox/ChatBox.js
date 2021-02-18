@@ -12,22 +12,23 @@ export default function ChatBox({ children }) {
     //}, 0);
 
     return (
-        <div>
-            {loaded ?
-                <React.Fragment>
-                    <div style={{ position: 'relative' }}>
-                        <div>
-                            <Messages></Messages>
+        <React.Fragment>
+            {
+                loaded ?
+                    <React.Fragment >
+                        <div style={{ position: 'relative', }}>
+                            <div>
+                                <Messages></Messages>
+                            </div>
+                            <div style={{ position: 'absolute', bottom: '100px', left: '5px', width: '100%' }}>
+                                <UserTyping></UserTyping>
+                            </div>
+                            <Divider />
+                            <SendingInput></SendingInput>
                         </div>
-                        <div style={{position: 'absolute', bottom: '5px', left: '5px'}}>
-                            <UserTyping></UserTyping>
-                        </div>
-                        <Divider />
-                    </div>
-                    <SendingInput></SendingInput>
-                </React.Fragment>
-                : children
+                    </React.Fragment >
+                    : children
             }
-        </div>
+        </React.Fragment>
     )
 }
