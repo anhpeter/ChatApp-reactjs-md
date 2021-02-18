@@ -48,9 +48,13 @@ export default function OnlineUsers({ item }) {
         )
     })
 
+    const emptyHtml = (
+        <Typography className="text-muted" align="center" >No online users</Typography>
+    )
+
     return (
         <List className={classes.root}>
-            {onlineUsersHtml.length > 0 ? onlineUsersHtml : <Typography align="center">No online users</Typography>}
+            {onlineUsersHtml.length > 0 ? onlineUsersHtml : emptyHtml}
         </List >
     );
 }

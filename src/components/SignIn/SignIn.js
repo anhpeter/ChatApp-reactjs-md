@@ -53,8 +53,12 @@ export default function SignIn() {
     const authErr = useSelector(authError);
 
     const classes = useStyles();
-    if (authStatus === 'succeeded' && authErr && isSubmitClicked)
-        dispatch(setNotify({ message: 'Login unsuccessfully', type: 'error', open: true }))
+    if (isSubmitClicked) {
+        if (authStatus === 'succeeded' && authErr)
+            dispatch(setNotify({ message: 'Login unsuccessfully', type: 'error', open: true }))
+    }else{
+        if (authStatus === 'loading' )return null;
+    }
     return (!logged
         ? (
             <Container component="main" maxWidth="xs">

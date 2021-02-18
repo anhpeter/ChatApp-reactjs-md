@@ -7,8 +7,10 @@ import MySocket from '../../defines/MySocket';
 import { loggedUser } from '../../features/auth/authSlice';
 import MyTime from '../../defines/MyTime';
 
+let myTimeoutObj;
 export default function SendingInput() {
     const [inputMsg, setInputMsg] = useState('');
+    const [isTyping, setTyping] = useState(false);
     const dispatch = useDispatch();
     const user = useSelector(loggedUser);
 
@@ -24,16 +26,50 @@ export default function SendingInput() {
             // INVALID
             dispatch(setNotify({ message: 'Please type some message to send!', open: true, timeout: 2000 }));
         } else {
-            MySocket.emitSendMessage(user.username, inputMsg);
+            MySocket.emitSendMessage(user, inputMsg);
+            setInputMsg('');
         }
     }
 
+    const emitTyping = () => {
+        if (!isTyping && inputMsg.trim() !== '') MySocket.emitTyping(user);
+        setTyping(true);
+    }
+
+    const emitStopTyping = () => {
+        if (isTyping) {
+            MySocket.emitStopTyping(user.username);
+            setTyping(false);
+        }
+    }
+
+    // SOLVE TYPING
+    const onKeyUp = (e) => {
+        if (e.which !== 13) {
+            emitTyping();
+            clearTimeout(myTimeoutObj);
+            myTimeoutObj = setTimeout(() => {
+                emitStopTyping();
+            }, 2000);
+        } else {
+            emitStopTyping();
+        }
+    }
+
+    const onBlur = () => {
+        emitStopTyping();
+    }
 
     return (
         <form onSubmit={(e) => { onSendingMessage(e) }}>
             <Grid container style={{ padding: '20px' }}>
                 <Grid item xs={10} md={11}>
-                    <TextField value={inputMsg} id="outlined-basic-email" label="Type Something" fullWidth onChange={onInputChange} />
+                    <TextField
+
+                        inputProps={{
+                            autoComplete: 'off'
+                        }}
+                        value={inputMsg} id="outlined-basic-email" fullWidth onChange={onInputChange} onKeyUp={onKeyUp} onBlur={onBlur} />
                 </Grid>
                 <Grid item xs={2} md={1} align="center">
                     <Fab color="primary" aria-label="add" onClick={onSendingMessage}><SendIcon /></Fab>
