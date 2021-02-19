@@ -24,7 +24,7 @@ export default function UserTyping() {
     const typingHtml = typingUsers.map((user) => {
         return (
             <div key={user._id}>
-                <div style={{ display: 'flex', alignItems: 'center', }}>
+                <div style={{ display: 'flex', alignItems: 'flex-start', }}>
                     <span>
                         <MyAvatar name={user.username} picture={user.picture}> </MyAvatar>
                     </span>
@@ -34,7 +34,7 @@ export default function UserTyping() {
         )
     })
     return (
-        <Paper elevation={0} style={{minWidth: '200px'}}>
+        <Paper elevation={0} style={{ minWidth: '200px' }}>
             {(typingHtml.length > 0 ? typingHtml : null)}
         </Paper>
     )

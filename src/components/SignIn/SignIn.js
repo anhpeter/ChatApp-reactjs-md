@@ -7,7 +7,6 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import { Link, Redirect, useHistory, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setNotify } from '../../features/notify/NotifySlice';
 import { isLogged, loginThunk, status, authError } from '../../features/auth/authSlice';
@@ -59,101 +58,102 @@ export default function SignIn() {
     } else {
         if (authStatus === 'loading') return null;
     }
-    return (!logged
-        ? (
-            <Container component="main" maxWidth="xs">
-                <CssBaseline />
-                <div className={classes.paper}>
-                    <Avatar className={classes.avatar}>
-                        <LockOutlinedIcon />
-                    </Avatar>
-                    <Typography component="h1" variant="h5">
-                        Sign in
+
+    const mainHtml = (
+        <Container component="main" maxWidth="xs">
+            <CssBaseline />
+            <div className={classes.paper}>
+                <Avatar className={classes.avatar}>
+                    <LockOutlinedIcon />
+                </Avatar>
+                <Typography component="h1" variant="h5">
+                    Sign in
                     </Typography>
 
-                    {/* FORMIK */}
-                    <Formik
-                        initialValues={{
-                            username: '',
-                            password: '',
-                            passwordConfirmation: ''
-                        }}
-                        validationSchema={yup.object({
-                            username: yup.string().required(Helper.format(FormErrors.required, 'Username')),
-                            password: yup.string().required(Helper.format(FormErrors.required, 'Password')),
-                        })}
-                        onSubmit={async (values, { setSubmitting }) => {
-                            const { username, password } = values;
-                            let user = {
-                                username,
-                                password
-                            };
-                            setSubmitClicked(true);
-                            dispatch(loginThunk(user));
-                            setCookie(LOGGED_USER, user);
-                            //alert(JSON.stringify(values));
-                        }}>
-                        {({
-                            values,
-                            errors,
-                            touched,
-                            handleChange,
-                            handleBlur,
-                            handleSubmit,
-                            isSubmitting,
-                            isValid,
-                            dirty,
-                            /* and other goodies */
-                        }) => {
-                            const showErrors = {};
-                            for (let key in errors) {
-                                showErrors[key] = (errors[key] != null) && touched[key];
+                {/* FORMIK */}
+                <Formik
+                    initialValues={{
+                        username: '',
+                        password: '',
+                        passwordConfirmation: ''
+                    }}
+                    validationSchema={yup.object({
+                        username: yup.string().required(Helper.format(FormErrors.required, 'Username')),
+                        password: yup.string().required(Helper.format(FormErrors.required, 'Password')),
+                    })}
+                    onSubmit={async (values, { setSubmitting }) => {
+                        const { username, password } = values;
+                        let user = {
+                            username,
+                            password
+                        };
+                        setSubmitClicked(true);
+                        dispatch(loginThunk(user));
+                        setCookie(LOGGED_USER, user);
+                        //alert(JSON.stringify(values));
+                    }}>
+                    {({
+                        values,
+                        errors,
+                        touched,
+                        handleChange,
+                        handleBlur,
+                        handleSubmit,
+                        isSubmitting,
+                        isValid,
+                        dirty,
+                        /* and other goodies */
+                    }) => {
+                        const showErrors = {};
+                        for (let key in errors) {
+                            showErrors[key] = (errors[key] != null) && touched[key];
+                        }
+                        const props = (field, label) => {
+                            label = label || Helper.ucFirst(field);
+                            return {
+                                fullWidth: true,
+                                margin: 'normal',
+                                placeholder: label,
+                                variant: 'outlined',
+                                name: field,
+                                onChange: handleChange,
+                                onBlur: handleBlur,
+                                value: values[label],
+                                label: label,
+                                error: (showErrors[field]),
+                                helperText: (showErrors[field])
+                                    ? errors[field]
+                                    : null
                             }
-                            const props = (field, label) => {
-                                label = label || Helper.ucFirst(field);
-                                return {
-                                    fullWidth: true,
-                                    margin: 'normal',
-                                    placeholder: label,
-                                    variant: 'outlined',
-                                    name: field,
-                                    onChange: handleChange,
-                                    onBlur: handleBlur,
-                                    value: values[label],
-                                    label: label,
-                                    error: (showErrors[field]),
-                                    helperText: (showErrors[field])
-                                        ? errors[field]
-                                        : null
-                                }
-                            }
-                            return (
-                                <form onSubmit={handleSubmit} noValidate autoComplete="off">
-                                    <TextField autoFocus={true} type="text" {...props('username')} />
-                                    <TextField type="password" {...props('password')} />
-                                    <RouterLink to="/sign-up">
-                                        <Typography color="primary" >
-                                            Create an account
+                        }
+                        return (
+                            <form onSubmit={handleSubmit} noValidate autoComplete="off">
+                                <TextField autoFocus={true} type="text" {...props('username')} />
+                                <TextField type="password" {...props('password')} />
+                                <RouterLink to="/sign-up">
+                                    <Typography color="primary" >
+                                        Create an account
                                         </Typography>
-                                    </RouterLink>
-                                    <Box mt={2}>
-                                        <Button
-                                            disabled={isSubmitting || !isValid || !dirty}
-                                            type="submit"
-                                            fullWidth
-                                            variant="contained"
-                                            color="primary"
-                                        > Sign In
+                                </RouterLink>
+                                <Box mt={2}>
+                                    <Button
+                                        disabled={isSubmitting || !isValid || !dirty}
+                                        type="submit"
+                                        fullWidth
+                                        variant="contained"
+                                        color="primary"
+                                    > Sign In
                                     </Button>
-                                    </Box>
-                                </form>
-                            )
-                        }}
-                    </Formik>
-                    {/* END FORMIK */}
+                                </Box>
+                            </form>
+                        )
+                    }}
+                </Formik>
+                {/* END FORMIK */}
 
-                </div>
-            </Container>
-        )
-        : (null));
+            </div>
+        </Container>
+    )
+
+    return (!logged ? mainHtml : (null));
 }

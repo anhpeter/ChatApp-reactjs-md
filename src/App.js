@@ -51,7 +51,7 @@ export default function App() {
                                 <PrivateRoute path="/chat" exact>
                                     <Chat></Chat>
                                 </PrivateRoute>
-                                <PrivateRoute path="/friends" exact>
+                                <PrivateRoute path="/friends">
                                     <Friends></Friends>
                                 </PrivateRoute>
                                 <AuthRoute path="/login" exact ><SignIn></SignIn></AuthRoute>

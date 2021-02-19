@@ -3,24 +3,23 @@ import React from 'react'
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import MyAvatar from '../MyAvatar/MyAvatar';
+import MyTime from '../../defines/MyTime';
 
-export default function Message(props) {
-    const avatar = (<MyAvatar sizeInPixel={20} name={props.user.username} picture={props.user.picture}></MyAvatar>);
-    const position = (props.ownMessage) ? 'right' : 'left';
-    const flexPos = (props.ownMessage) ? 'flex-end' : 'flex-start';
+export default function Message({ notShowAvatar, ownMessage, time, user, message }) {
+    const avatar = !notShowAvatar ? (<MyAvatar sizeInPixel={20} name={user.username} picture={user.picture}></MyAvatar>) : null;
+    const position = (ownMessage) ? 'right' : 'left';
+    const flexPos = (ownMessage) ? 'flex-end' : 'flex-start';
+    const placement = (ownMessage) ? 'bottom-start' : 'bottom-end';
     return (
         <ListItem key="1">
-            <Box width="100%" style={{ display: 'flex', justifyContent: flexPos, alignItems: 'center' }}>
+            <Box width="100%" style={{ display: 'flex', justifyContent: flexPos, alignItems: 'flex-end' }}>
                 {/* AVATAR */}
-                {!props.ownMessage ? avatar : null}
+                {!ownMessage ? avatar : null}
 
                 {/* MESSAGE AND TIME */}
-                <Box className={`message ${position}-message`}>
-                    <Tooltip title={props.time} placement="bottom">
-                        <ListItemText align={position} primary={props.message} ></ListItemText>
-                        {/* 
-                    <ListItemText align={position} secondary={props.time} ></ListItemText>
-                     */}
+                <Box className={`message ${position}-message ${!ownMessage && notShowAvatar ? 'ml-avatar' : null}`}>
+                    <Tooltip title={MyTime.getMessageTimeString(MyTime.getCurrentTimeByUTCTime(time))} placement={placement}>
+                        <ListItemText align={position} primary={message} ></ListItemText>
                     </Tooltip>
                 </Box>
             </Box>

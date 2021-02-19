@@ -1,3 +1,4 @@
+import * as dateformat from 'dateformat';
 const MyTime = {
 
     getUTCNow: function () {
@@ -13,6 +14,24 @@ const MyTime = {
         let offset = now.getTimezoneOffset();
         offset = offset * 60000;
         return utcTime + offset;
+    },
+
+    getMessageTimeString: function (time) {
+        let itemDate = new Date(time);
+        let now = new Date();
+        let result
+        if (
+            (
+                now.getFullYear() === itemDate.getFullYear() &&
+                now.getMonth() === itemDate.getMonth() &&
+                now.getDate() === itemDate.getDate()
+            )
+
+        )
+            result = dateformat(time, 'HH:MM');
+        else
+            result = dateformat(time, 'dd/mm/yyyy HH:MM');
+        return result;
     },
 }
 export default MyTime;

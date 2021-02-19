@@ -46,5 +46,10 @@ const MySocket = {
             if (Helper.isFn(callback)) callback(data);
         })
     },
+    onUserLeft: function (callback) {
+        Socket.on('user-left', (data) => {
+            if (Helper.isFn(callback)) callback(data);
+        })
+    },
 }
 export default MySocket

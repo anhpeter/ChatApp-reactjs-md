@@ -65,7 +65,8 @@ export default function SendingInput() {
             <Grid container style={{ padding: '20px' }}>
                 <Grid item xs={10} md={11}>
                     <TextField
-
+                    multiline={true}
+                        autoFocus={true}
                         inputProps={{
                             autoComplete: 'off'
                         }}

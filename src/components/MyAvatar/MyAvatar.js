@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
 export default function MyAvatar({ name, picture, online, sizeInPixel }) {
     const classes = useStyles();
     const myStyle = true ? { width: `${sizeInPixel}px`, height: `${sizeInPixel}px` } : {};
-
+    const avatar = <Avatar style={myStyle} alt={name} src={picture} />;
     return (
         <div className={classes.root}>
             {(online) ? (
@@ -52,9 +52,10 @@ export default function MyAvatar({ name, picture, online, sizeInPixel }) {
                         horizontal: 'right'
                     }}
                     variant="dot">
-                    <Avatar style={myStyle} alt={name} src={picture} />
+                    {avatar}
                 </StyledBadge>
-            ) : (<Avatar alt={name} src={picture} />)}
+            ) : avatar
+            }
         </div>
     );
 }

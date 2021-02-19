@@ -33,7 +33,6 @@ export default function Messages() {
 
         })
         MySocket.onNewJoiner((data) => {
-            console.log('new joiner', data);
             let t = (data.user.username === user.username) ? 'current-user' : 'other-user'
             const obj = {
                 type: `welcome-${t}-notification`,
@@ -42,25 +41,42 @@ export default function Messages() {
             setMessages(messages.concat(obj))
             scroll();
         })
+
+        MySocket.onUserLeft((data) => {
+            const obj = {
+                type: 'user-left-notification',
+                ...data,
+            }
+            setMessages(messages.concat(obj))
+            scroll();
+        })
         return () => {
             Socket.off('receive-message');
             Socket.off('new-joiner');
+            Socket.off('user-left');
         }
     })
 
     const messagesHtml = messages.map((item, index) => {
         if (item.type === 'message') {
-            let timeString = dateFormat(MyTime.getCurrentTimeByUTCTime(item.time), 'HH:MM');
-            return <Message ownMessage={item.user.username === user.username} key={index} user={item.user} message={item.message} time={timeString}></Message>
+            let notShowAvatar = false;
+            if (index < messages.length - 1) {
+                const nextItem = messages[index + 1];
+                notShowAvatar = (nextItem.type === 'message') ? nextItem.user.username === item.user.username : false;
+            }
+            return <Message notShowAvatar={notShowAvatar} ownMessage={item.user.username === user.username} key={index} user={item.user} message={item.message} time={item.time}></Message>
         } else {
             let content;
+            let usernameHtml = <Typography component="span" color="primary">{item.user.username}</Typography>;
             switch (item.type) {
                 case 'welcome-current-user-notification':
-                    content = 'Welcome to the chat room!';
+                    content = 'Welcome to the chat room.';
                     break;
                 case 'welcome-other-user-notification':
-                    let usernameHtml = <Typography component="span" color="textPrimary">{item.user.username}</Typography>;
-                    content = <span>{usernameHtml} has joined the chat!</span>;
+                    content = <span>{usernameHtml} has joined the chat.</span>;
+                    break;
+                case 'user-left-notification':
+                    content = <span>{usernameHtml} has left the chat.</span>;
                     break;
                 default:
                     content = '';
@@ -72,7 +88,7 @@ export default function Messages() {
     const emptyHtml = (
         <React.Fragment>
             <Box mt={4}>
-                <Typography className="text-muted" align="center" >Let's start a conversation!</Typography>
+                <Typography className="text-muted" align="center" >Let's start a conversation.</Typography>
             </Box>
         </React.Fragment>
     )
