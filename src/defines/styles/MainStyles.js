@@ -4,7 +4,7 @@ const colors = {
     lightGray: '#F0F2F5',
 }
 
-const useStyles = makeStyles(theme => createStyles({
+const mainStyles = makeStyles(theme => createStyles({
     table: {
         minWidth: 650
     },
@@ -31,7 +31,26 @@ const useStyles = makeStyles(theme => createStyles({
         paddingRight: '10px',
         backgroundColor: colors.lightGray,
         borderRadius: '50px',
+    },
+    buttonStyle: {
+        textTransform: 'none',
+    },
+    flexCenterVerticalStyle: {
+        display: 'flex',
+        alignItems: 'center',
+    },
+    flexCenterStyle: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    defaultContainerPaddingStyle: {
+        root: {
+            '& > *': {
+                padding: theme.spacing(2),
+            }
+        }
     }
 }));
 
-export default useStyles;
+export default mainStyles;

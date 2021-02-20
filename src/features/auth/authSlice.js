@@ -10,6 +10,11 @@ export const loginThunk = createAsyncThunk('auth/login', async ({ username, pass
     return response;
 })
 
+export const sentFriendRequestThunk = createAsyncThunk('auth/sentFriendRequest', async ({ id, friendId, }) => {
+    const response = await UserApi.sentFriendRequest(id, friendId);
+    return response;
+})
+
 const initialState = {
     isLogged: false,
     user: null,
@@ -37,6 +42,7 @@ const authSlice = createSlice({
         }
     },
     extraReducers: {
+        // LOGIN
         [loginThunk.pending]: (state, action) => {
             state.status = 'loading'
         },
@@ -52,7 +58,11 @@ const authSlice = createSlice({
         [loginThunk.rejected]: (state, action) => {
             state.status = 'failed'
             state.error = action.error.message
-        }
+        },
+
+        // FRIENDS
+        [sentFriendRequestThunk.fulfilled]: (state, action) => {
+        },
 
     }
 });

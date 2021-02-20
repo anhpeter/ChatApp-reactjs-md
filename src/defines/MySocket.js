@@ -13,7 +13,6 @@ const MySocket = {
         Socket.emit('send-message', { user, message, time: MyTime.getUTCNow() });
     },
     emitTyping: function (user) {
-        console.log(`${user} typing`);
         Socket.emit('typing', { user });
     },
     emitStopTyping: function (username) {

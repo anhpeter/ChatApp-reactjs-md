@@ -15,9 +15,8 @@ export default function AuthRoute({ children, ...rest }) {
     if (logged) {
         let { from } = location.state || { from: { pathname: "/" } };
         history.replace(from);
-
     }
     return (
-        <Route {...rest} render={() => children } />
+        <Route {...rest}>{children}</Route>
     );
 }

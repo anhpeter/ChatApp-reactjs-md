@@ -51,9 +51,7 @@ export default function App() {
                                 <PrivateRoute path="/chat" exact>
                                     <Chat></Chat>
                                 </PrivateRoute>
-                                <PrivateRoute path="/friends">
-                                    <Friends></Friends>
-                                </PrivateRoute>
+                                <PrivateRoute path={`/:friendsTab(friends|friends_all|friends_request|friends_sent_request|people_may_know)`} component={Friends}> </PrivateRoute>
                                 <AuthRoute path="/login" exact ><SignIn></SignIn></AuthRoute>
                                 <AuthRoute path="/sign-up" exact ><SignUp></SignUp></AuthRoute>
                                 <Redirect to="/chat"></Redirect>

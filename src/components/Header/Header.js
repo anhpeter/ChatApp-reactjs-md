@@ -17,6 +17,7 @@ import IconWithBadge from '../IconWithBadge';
 import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
 import MailIcon from '@material-ui/icons/Mail';
 import Notifications from '../Notifications/Notifications';
+import RunAction from '../RunAction/RunAction';
 
 const useStyles = makeStyles({
     flexGrowStyle: {
@@ -50,6 +51,7 @@ export default function Header(props) {
                     : null
                 }
             </Box>
+            <RunAction></RunAction>
             <DayNightSwitch></DayNightSwitch>
             {(logged)
                 ? (
@@ -81,7 +83,7 @@ export default function Header(props) {
                         justifyContent: 'space-between'
                     }}>
                     <Typography variant="h6">
-                        <Link to="/chat"  color="inherit" style={{color: 'white', textDecoration: 'none'}}>
+                        <Link to="/chat" color="inherit" style={{ color: 'white', textDecoration: 'none' }}>
                             Messenger
                         </Link>
                     </Typography>

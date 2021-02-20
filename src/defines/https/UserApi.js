@@ -21,6 +21,32 @@ const UserApi = {
     createAccount: async function (username, password) {
         const data = await Axios.post(`${API_ADDRESS}/user/createAccount`, { username, password })
         return data.data;
-    }
+    },
+    findAllFriendsByUsername: async function (username) {
+        const data = await Axios.get(`${API_ADDRESS}/user/getFriendsByUsername`, {
+            params: {
+                username
+            }
+        })
+        return data.data;
+    },
+    findStrangerByUsername: async function (username) {
+        const data = await Axios.get(`${API_ADDRESS}/user/getStrangerByUsername`, {
+            params: {
+                username
+            }
+        })
+        return data.data;
+    },
+
+    // FRIEND
+    sentFriendRequest: async function (id, friendId) {
+        const data = await Axios.post(`${API_ADDRESS}/user/sentFriendRequest`, { id, friendId });
+        return data.data;
+    },
+    findUsersByIds: async function (ids) {
+        const data = await Axios.post(`${API_ADDRESS}/user/getUsersByIds`, {ids});
+        return data.data;
+    },
 }
 export default UserApi;
