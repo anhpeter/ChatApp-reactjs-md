@@ -45,7 +45,7 @@ export default function Friends() {
                 <Grid item xs={8} lg={7}>
                     <AppTitle title="Friends"></AppTitle>
                     <AppBar position="static" color="default">
-                        <Tabs value={value} onChange={handleChange} aria-label="simple tabs example" indicatorColor="primary" className="my-tabs">
+                        <Tabs value={value} onChange={handleChange} aria-label="simple tabs example" indicatorColor="primary" className="my-tabs" scrollButtons="auto" variant="scrollable">
                             <Tab label="All Friends" {...a11yProps(0)} />
                             <Tab label="Friend Requests" {...a11yProps(1)} />
                             <Tab label="Sent Requests" {...a11yProps(2)} />

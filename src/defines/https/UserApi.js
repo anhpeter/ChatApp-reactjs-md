@@ -30,6 +30,16 @@ const UserApi = {
         })
         return data.data;
     },
+    findSentRequestFriendById: async function (id) {
+        console.log('sent request called');
+        
+        const data = await Axios.get(`${API_ADDRESS}/user/getSentRequestFriendById`, {
+            params: {
+                id
+            }
+        })
+        return data.data;
+    },
     findStrangerByUsername: async function (username) {
         const data = await Axios.get(`${API_ADDRESS}/user/getStrangerByUsername`, {
             params: {
@@ -42,6 +52,10 @@ const UserApi = {
     // FRIEND
     sentFriendRequest: async function (id, friendId) {
         const data = await Axios.post(`${API_ADDRESS}/user/sentFriendRequest`, { id, friendId });
+        return data.data;
+    },
+    unfriend: async function (id, friendId) {
+        const data = await Axios.post(`${API_ADDRESS}/user/unfriend`, { id, friendId });
         return data.data;
     },
     cancelFriendRequest: async function (id, friendId) {

@@ -6,10 +6,11 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import MyAvatar from '../MyAvatar/MyAvatar';
 import Socket from '../../defines/Socket';
-import MySocket from '../../defines/MySocket';
+import MySocket from '../../defines/Socket/MySocket';
 import { useSelector } from 'react-redux';
 import { loggedUser } from '../../features/auth/authSlice';
 import { Hidden, Typography } from '@material-ui/core';
+import SocketEventName from '../../defines/Socket/SocketEventName';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -26,7 +27,7 @@ export default function OnlineUsers({ item }) {
             setOnlineUsers(data)
         })
         return () => {
-            Socket.off('onlineUsers');
+            Socket.off(SocketEventName.onlineUsers);
         }
     }, [])
 

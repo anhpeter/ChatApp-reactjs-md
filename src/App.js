@@ -9,38 +9,59 @@ import Notify from './features/notify/Notify'
 import PrivateRoute from './components/PrivateRoute/PrivateRoute'
 import { useCookies } from 'react-cookie'
 import { useDispatch, useSelector } from 'react-redux'
-import { loginThunk } from './features/auth/authSlice'
+import { loggedUser, login, loginThunk, updateUser } from './features/auth/authSlice'
 import { LOGGED_USER } from './defines/CookieName';
 import { Paper } from '@material-ui/core';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import Friends from './components/Friends/Friends';
 import AuthRoute from './components/AuthRoute/AuthRoute';
-import MySocket from './defines/MySocket';
+import MySocket from './defines/Socket/MySocket';
+import SocketEventName from './defines/Socket/SocketEventName';
+import { setNotify } from './features/notify/NotifySlice';
+import Helper from './defines/Helper';
+import Message from './defines/Message';
 
 export default function App() {
     const [cookies] = useCookies([LOGGED_USER]);
+    const user = useSelector(loggedUser) || {};
     const dispatch = useDispatch();
 
     useEffect(() => {
-        MySocket.onFriendAccepted(() => {
-            // notify
-
+        MySocket.onUpdateUser((data) => {
+            dispatch(updateUser(data))
         })
-        MySocket.onFriendRequested(() => {
+        MySocket.onFriendAccepted((data) => {
             // notify
-
+            MySocket.emitUpdateUserById(user._id);
+            dispatch(setNotify({ message: Helper.format(Message.friendAccepted, data.user.username,), type: 'info', open: true }));
         })
-        MySocket.onFriendUnFriend(() => {
-
+        MySocket.onFriendRequested((data) => {
+            // notify
+            MySocket.emitUpdateUserById(user._id);
+            dispatch(setNotify({ message: Helper.format(Message.friendRequested, data.user.username,), type: 'info', open: true }));
+        })
+        MySocket.onFriendUnFriend((data) => {
+            MySocket.emitUpdateUserById(user._id);
+            console.log('unfriended')
+        })
+        MySocket.onFriendRequestCanceled((data) => {
+            MySocket.emitUpdateUserById(user._id);
+            console.log('friend request canceled')
         })
         return () => {
+            MySocket.off(SocketEventName.updateUser)
+            MySocket.off(SocketEventName.friendAccepted)
+            MySocket.off(SocketEventName.friendRequested)
+            MySocket.off(SocketEventName.friendUnfriend)
+            MySocket.off(SocketEventName.friendRequestCanceled)
         }
-    }, [])
+    }, [dispatch, user._id])
+
     // SIGN IN WITH COOKIE
     useEffect(() => {
         if (cookies[LOGGED_USER])
             dispatch(loginThunk(cookies[LOGGED_USER]))
-    }, [])
+    }, [cookies, dispatch])
 
     const themeType = useSelector((state) => {
         return state.theme.type

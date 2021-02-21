@@ -12,23 +12,30 @@ import MyAvatar from '../MyAvatar/MyAvatar'
 import FriendList from '../FriendList/FriendList';
 import { useSelector } from 'react-redux';
 
-const AllFriend = ({ username }) => {
+const AllFriendList = () => {
     const [items,
         setItems] = useState([]);
     const [isLoading, setLoading] = useState(true);
+    const user = useSelector(loggedUser);
 
     useEffect(() => {
         const fetchItems = async () => {
             try {
-                const data = await UserApi.findAllFriendsByUsername(username);
+                const data = await UserApi.findUsersByIds(user.friend.friend);
                 if (data.status === 'succeeded')
                     setItems(data.payload);
                 setLoading(false);
             }
             catch (e) { }
+            if (user.friend.friend.length > 0) {
+                fetchItems();
+            } else {
+                setItems([]);
+                setLoading(false);
+            }
         }
         fetchItems();
-    }, [username])
+    }, [user.friend.friend])
 
     return (
         <FriendList items={items} type="friend" isLoading={isLoading}></FriendList>
@@ -52,7 +59,10 @@ const SentRequestList = () => {
         }
         if (user.friend.sent_request.length > 0) {
             fetchItems();
-        } else setLoading(false);
+        } else {
+            setLoading(false);
+            setItems([]);
+        }
     }, [user.friend.sent_request]);
     return (
         <FriendList items={items} type='sent_request' isLoading={isLoading}></FriendList>
@@ -75,7 +85,10 @@ const RequestList = () => {
         }
         if (user.friend.request.length > 0) {
             fetchItems();
-        } else setLoading(false);
+        } else {
+            setItems([]);
+            setLoading(false);
+        }
         setLoading(false);
     }, [user.friend.request]);
     return (
@@ -121,7 +134,7 @@ export default function FriendBox({ type }) {
                 itemsHtml = <PeopleMayKnowList username={user.username}></PeopleMayKnowList>
                 break;
             default:
-                itemsHtml = <AllFriend username={user.username}></AllFriend>
+                itemsHtml = <AllFriendList username={user.username}></AllFriendList>
                 break;
         }
     }
@@ -130,6 +143,6 @@ export default function FriendBox({ type }) {
     return (
         <Grid style={{
             paddingTop: '8px'
-        }} container spacing={2}>{itemsHtml}</Grid>
+        }} container spacing={2} >{itemsHtml}</Grid>
     )
 }

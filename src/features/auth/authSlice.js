@@ -2,17 +2,17 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import Axios from 'axios';
 import { API_ADDRESS } from '../../defines/Config';
 import UserApi from '../../defines/https/UserApi';
-import MySocket from '../../defines/MySocket';
+import MySocket from '../../defines/Socket/MySocket';
 import Socket from '../../defines/Socket';
 
-export const updateUser = () => async (dispatch, getState) => {
-    const stateBefore = getState();
-    const response = await UserApi.findByUsername(stateBefore.auth.user.username);
-    if (response.status === 'succeeded') {
-        const user = { ...response.payload };
-        dispatch(authSlice.actions.login(user));
-    }
-}
+//export const updateUser = () => async (dispatch, getState) => {
+//const stateBefore = getState();
+//const response = await UserApi.findByUsername(stateBefore.auth.user.username);
+//if (response.status === 'succeeded') {
+//const user = { ...response.payload };
+//dispatch(authSlice.actions.login(user));
+//}
+//}
 
 
 export const loginThunk = createAsyncThunk('auth/login', async ({ username, password, }) => {
@@ -44,6 +44,9 @@ const authSlice = createSlice({
     reducers: {
         login: (state, action) => {
             loginWithUser(state, action)
+        },
+        updateUser: (state, action) => {
+            state.user = action.payload;
         },
         signOut: (state) => {
             MySocket.emitLeave(state.user);
@@ -96,7 +99,7 @@ export const { authError, status, isLogged, loggedUser } = selectors;
 
 
 export const {
-    signOut, login
+    signOut, login, updateUser
 } = authSlice.actions
 
 export default authSlice.reducer

@@ -3,7 +3,7 @@ import { Grid, TextField, Fab } from '@material-ui/core'
 import { Send as SendIcon } from '@material-ui/icons'
 import { useDispatch, useSelector } from 'react-redux';
 import { setNotify } from '../../features/notify/NotifySlice';
-import MySocket from '../../defines/MySocket';
+import MySocket from '../../defines/Socket/MySocket';
 import { loggedUser } from '../../features/auth/authSlice';
 import MyTime from '../../defines/MyTime';
 

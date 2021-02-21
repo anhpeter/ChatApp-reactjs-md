@@ -1,8 +1,9 @@
 import { Paper, Typography } from '@material-ui/core';
 import React, { useEffect, useState } from 'react'
-import MySocket from '../../defines/MySocket'
+import MySocket from '../../defines/Socket/MySocket'
 import Socket from '../../defines/Socket'
 import MyAvatar from '../MyAvatar/MyAvatar';
+import SocketEventName from '../../defines/Socket/SocketEventName';
 
 export default function UserTyping() {
     const [typingUsers, setTypingUsers] = useState([]);
@@ -16,8 +17,8 @@ export default function UserTyping() {
             }));
         })
         return () => {
-            Socket.off('typing');
-            Socket.off('stop-typing');
+            Socket.off(SocketEventName.typing);
+            Socket.off(SocketEventName.stopTyping);
         }
     })
 

@@ -1,0 +1,21 @@
+const SocketEventName = {
+    updateUser: 'update-user',
+    join: 'john',
+    leave: 'leave',
+    sendMessage: 'send-message',
+    typing: 'typing',
+    stopTyping: 'stop-typing',
+    receiveMessage: 'receive-message',
+    onlineUsers: 'online-users',
+    newJoiner: 'new-joiner',
+    userLeft: 'user-left',
+    acceptFriend: 'accept-friend',
+    addFriend: 'add-friend',
+    unfriend: 'unfriend',
+    cancelFriendRequest: 'cancel-friend-request',
+    friendRequestCanceled: 'friend-request-canceled',
+    friendAccepted: 'friend-accepted',
+    friendRequested: 'friend-requested',
+    friendUnfriend: 'friend-unfriend',
+}
+export default SocketEventName;

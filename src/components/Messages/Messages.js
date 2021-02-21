@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Box, List, Typography } from '@material-ui/core'
 import Message from '../Message/Message'
 import mainStyle from '../../defines/styles/MainStyles'
-import MySocket from '../../defines/MySocket';
+import MySocket from '../../defines/Socket/MySocket';
 import Socket from '../../defines/Socket';
 import { useSelector } from 'react-redux';
 import { loggedUser } from '../../features/auth/authSlice';
@@ -10,6 +10,7 @@ import * as dateFormat from 'dateformat';
 import MyTime from '../../defines/MyTime';
 import ScrollToBottom, { useScrollToBottom } from 'react-scroll-to-bottom';
 import ChatNotification from '../ChatNotification/ChatNotification';
+import SocketEventName from '../../defines/Socket/SocketEventName';
 
 export default function Messages() {
     const classes = mainStyle();
@@ -51,9 +52,9 @@ export default function Messages() {
             scroll();
         })
         return () => {
-            Socket.off('receive-message');
-            Socket.off('new-joiner');
-            Socket.off('user-left');
+            Socket.off(SocketEventName.receiveMessage);
+            Socket.off(SocketEventName.newJoiner);
+            Socket.off(SocketEventName.userLeft);
         }
     })
 
