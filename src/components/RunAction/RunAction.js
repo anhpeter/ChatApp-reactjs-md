@@ -7,7 +7,9 @@ import { loggedUser } from '../../features/auth/authSlice';
 export default function RunAction() {
     const user = useSelector(loggedUser);
     const runAction = async () => {
-        let data = await UserApi.sentFriendRequest(user._id, '602f7cbffc21023a20ff5119')
+        let data = await UserApi.sentFriendRequest(user._id, null);
+        console.log(data);
+        
     }
     return (
         <React.Fragment>

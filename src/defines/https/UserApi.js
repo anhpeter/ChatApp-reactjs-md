@@ -44,8 +44,16 @@ const UserApi = {
         const data = await Axios.post(`${API_ADDRESS}/user/sentFriendRequest`, { id, friendId });
         return data.data;
     },
+    cancelFriendRequest: async function (id, friendId) {
+        const data = await Axios.post(`${API_ADDRESS}/user/cancelFriendRequest`, { id, friendId });
+        return data.data;
+    },
+    confirmFriendRequest: async function (id, friendId) {
+        const data = await Axios.post(`${API_ADDRESS}/user/confirmFriendRequest`, { id, friendId });
+        return data.data;
+    },
     findUsersByIds: async function (ids) {
-        const data = await Axios.post(`${API_ADDRESS}/user/getUsersByIds`, {ids});
+        const data = await Axios.post(`${API_ADDRESS}/user/getUsersByIds`, { ids });
         return data.data;
     },
 }

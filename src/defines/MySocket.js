@@ -50,5 +50,25 @@ const MySocket = {
             if (Helper.isFn(callback)) callback(data);
         })
     },
+
+    // FRIEND ACTIONS
+    onFriendAccepted: function (callback) {
+        Socket.on('friend-accepted', (data) => {
+            if (Helper.isFn(callback)) callback(data);
+        })
+    },
+    onFriendRequested: function (callback) {
+        Socket.on('friend-accepted', (data) => {
+            if (Helper.isFn(callback)) callback(data);
+        })
+    },
+    onFriendUnFriend: function (callback) {
+        Socket.on('friend-un-friend', (data) => {
+            if (Helper.isFn(callback)) callback(data);
+        })
+    },
+    off: function(eventName){
+        Socket.off(eventName);
+    }
 }
 export default MySocket

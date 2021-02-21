@@ -4,7 +4,7 @@ import mainStyles from '../../defines/styles/MainStyles'
 
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 
-export default function SentRequestAction({ user }) {
+export default function SentRequestAction({ item }) {
     return (
         <React.Fragment>
             < IconButton aria-label="setting" > <MoreVertIcon /> </IconButton>

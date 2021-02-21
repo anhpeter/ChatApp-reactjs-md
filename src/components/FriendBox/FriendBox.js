@@ -92,8 +92,6 @@ const PeopleMayKnowList = ({ username }) => {
         const fetchItems = async () => {
             try {
                 const data = await UserApi.findStrangerByUsername(username);
-                console.log('stranger', data);
-
                 if (data.status === 'succeeded')
                     setItems(data.payload);
                 setLoading(false);

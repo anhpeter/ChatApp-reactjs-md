@@ -15,12 +15,27 @@ import { Paper } from '@material-ui/core';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import Friends from './components/Friends/Friends';
 import AuthRoute from './components/AuthRoute/AuthRoute';
+import MySocket from './defines/MySocket';
 
 export default function App() {
     const [cookies] = useCookies([LOGGED_USER]);
     const dispatch = useDispatch();
 
-    // USE SELECTOR
+    useEffect(() => {
+        MySocket.onFriendAccepted(() => {
+            // notify
+
+        })
+        MySocket.onFriendRequested(() => {
+            // notify
+
+        })
+        MySocket.onFriendUnFriend(() => {
+
+        })
+        return () => {
+        }
+    }, [])
     // SIGN IN WITH COOKIE
     useEffect(() => {
         if (cookies[LOGGED_USER])
@@ -52,8 +67,8 @@ export default function App() {
                                     <Chat></Chat>
                                 </PrivateRoute>
                                 <PrivateRoute path={`/:friendsTab(friends|friends_all|friends_request|friends_sent_request|people_may_know)`} component={Friends}> </PrivateRoute>
-                                <AuthRoute path="/login" exact ><SignIn></SignIn></AuthRoute>
-                                <AuthRoute path="/sign-up" exact ><SignUp></SignUp></AuthRoute>
+                                <AuthRoute path="/login" exact component={SignIn}></AuthRoute>
+                                <AuthRoute path="/sign-up" exact component={SignUp}></AuthRoute>
                                 <Redirect to="/chat"></Redirect>
                             </Switch>
                             <Notify></Notify>

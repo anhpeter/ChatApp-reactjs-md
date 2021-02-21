@@ -5,6 +5,16 @@ import UserApi from '../../defines/https/UserApi';
 import MySocket from '../../defines/MySocket';
 import Socket from '../../defines/Socket';
 
+export const updateUser = () => async (dispatch, getState) => {
+    const stateBefore = getState();
+    const response = await UserApi.findByUsername(stateBefore.auth.user.username);
+    if (response.status === 'succeeded') {
+        const user = { ...response.payload };
+        dispatch(authSlice.actions.login(user));
+    }
+}
+
+
 export const loginThunk = createAsyncThunk('auth/login', async ({ username, password, }) => {
     const response = await UserApi.findByUsernameAndPassword(username, password);
     return response;
