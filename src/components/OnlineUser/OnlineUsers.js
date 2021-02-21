@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
 export default function OnlineUsers({ item }) {
     const classes = useStyles();
     const [onlineUsers, setOnlineUsers] = useState([]);
-    const user = useSelector(loggedUser);
+    const user = useSelector(loggedUser) || {};
     useEffect(() => {
         MySocket.onOnlineUsers((data) => {
             setOnlineUsers(data)

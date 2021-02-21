@@ -27,14 +27,13 @@ const AllFriendList = () => {
                 setLoading(false);
             }
             catch (e) { }
-            if (user.friend.friend.length > 0) {
-                fetchItems();
-            } else {
-                setItems([]);
-                setLoading(false);
-            }
         }
-        fetchItems();
+        if (user.friend.friend.length > 0) {
+            fetchItems();
+        } else {
+            setItems([]);
+            setLoading(false);
+        }
     }, [user.friend.friend])
 
     return (

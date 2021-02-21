@@ -16,7 +16,7 @@ export default function SentRequestAction({ item }) {
         if (data.status === 'succeeded') {
             MySocket.emitUpdateUserById(user._id);
             MySocket.emitAcceptFriend(user, item._id);
-        } else alert(Message.fail);
+        }
     }
 
     const onDeleteClick = () => {

@@ -43,7 +43,7 @@ export default function Notify() {
                         autoHideDuration={duration}
                         onClose={handleClose}
                         anchorOrigin={{
-                            horizontal: 'center',
+                            horizontal: 'right',
                             vertical: 'top'
                         }}
                         message={msg}>

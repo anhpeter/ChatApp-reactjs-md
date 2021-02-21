@@ -15,7 +15,7 @@ export default function SentRequestAction({ item }) {
         if (data.status === 'succeeded') {
             MySocket.emitUpdateUserById(user._id);
             MySocket.emitCancelFriendRequest(user, item._id);
-        } else alert(Message.fail);
+        }
     }
     return (
         <React.Fragment>
