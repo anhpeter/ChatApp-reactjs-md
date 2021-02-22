@@ -21,8 +21,13 @@ const useStyles = makeStyles((theme) => ({
 export default function OnlineUsers({ item }) {
     const classes = useStyles();
     const [onlineUsers, setOnlineUsers] = useState([]);
+    const [isShow, setShow] = useState(false);
     const user = useSelector(loggedUser) || {};
     useEffect(() => {
+        setTimeout(() => {
+            setShow(true);
+        }, 500);
+        MySocket.emitGetOnlineUsers();
         MySocket.onOnlineUsers((data) => {
             setOnlineUsers(data)
         })
@@ -55,7 +60,11 @@ export default function OnlineUsers({ item }) {
 
     return (
         <List className={classes.root}>
-            {onlineUsersHtml.length > 0 ? onlineUsersHtml : emptyHtml}
+            {
+                isShow
+                    ? (onlineUsersHtml.length > 0 ? onlineUsersHtml : emptyHtml)
+                    : null
+            }
         </List >
     );
 }

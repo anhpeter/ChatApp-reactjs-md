@@ -11,11 +11,7 @@ const UserApi = {
         return data.data;
     },
     findByUsernameAndPassword: async function (username, password) {
-        const data = await Axios.get(`${API_ADDRESS}/user/getUserByUsernameAndPassword`, {
-            params: {
-                username, password
-            }
-        })
+        const data = await Axios.post(`${API_ADDRESS}/user/getUserByUsernameAndPassword`, { username, password })
         return data.data;
     },
     createAccount: async function (username, password) {
@@ -32,7 +28,7 @@ const UserApi = {
     },
     findSentRequestFriendById: async function (id) {
         console.log('sent request called');
-        
+
         const data = await Axios.get(`${API_ADDRESS}/user/getSentRequestFriendById`, {
             params: {
                 id
@@ -60,6 +56,10 @@ const UserApi = {
     },
     cancelFriendRequest: async function (id, friendId) {
         const data = await Axios.post(`${API_ADDRESS}/user/cancelFriendRequest`, { id, friendId });
+        return data.data;
+    },
+    deleteFriendRequest: async function (id, friendId) {
+        const data = await Axios.post(`${API_ADDRESS}/user/deleteFriendRequest`, { id, friendId });
         return data.data;
     },
     confirmFriendRequest: async function (id, friendId) {

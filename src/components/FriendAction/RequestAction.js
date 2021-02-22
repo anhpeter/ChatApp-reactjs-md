@@ -12,15 +12,18 @@ export default function SentRequestAction({ item }) {
     const user = useSelector(loggedUser);
     const onConfirmClick = async () => {
         const data = await UserApi.confirmFriendRequest(user._id, item._id);
-        console.log('data', data);
         if (data.status === 'succeeded') {
             MySocket.emitUpdateUserById(user._id);
             MySocket.emitAcceptFriend(user, item._id);
         }
     }
 
-    const onDeleteClick = () => {
-        alert(item.username);
+    const onDeleteClick = async () => {
+        const data = await UserApi.deleteFriendRequest(user._id, item._id);
+        if (data.status === 'succeeded') {
+            MySocket.emitUpdateUserById(user._id);
+            MySocket.emitDeleteFriendRequest(user, item._id);
+        }
     }
     return (
         <React.Fragment>

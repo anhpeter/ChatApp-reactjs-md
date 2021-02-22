@@ -42,11 +42,12 @@ export default function App() {
         })
         MySocket.onFriendUnFriend((data) => {
             MySocket.emitUpdateUserById(user._id);
-            console.log('unfriended')
         })
         MySocket.onFriendRequestCanceled((data) => {
             MySocket.emitUpdateUserById(user._id);
-            console.log('friend request canceled')
+        })
+        MySocket.onFriendRejected((data) => {
+            MySocket.emitUpdateUserById(user._id);
         })
         return () => {
             MySocket.off(SocketEventName.updateUser)
@@ -54,6 +55,7 @@ export default function App() {
             MySocket.off(SocketEventName.friendRequested)
             MySocket.off(SocketEventName.friendUnfriend)
             MySocket.off(SocketEventName.friendRequestCanceled)
+            MySocket.off(SocketEventName.friendRejected)
         }
     }, [dispatch, user._id])
 
@@ -61,7 +63,7 @@ export default function App() {
     useEffect(() => {
         if (cookies[LOGGED_USER])
             dispatch(loginThunk(cookies[LOGGED_USER]))
-    }, [cookies, dispatch])
+    }, [])
 
     const themeType = useSelector((state) => {
         return state.theme.type

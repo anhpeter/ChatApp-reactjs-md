@@ -7,6 +7,9 @@ const MySocket = {
     emitConnected: function (user) {
         Socket.emit(SocketEventName.join, { user });
     },
+    emitGetOnlineUsers: function () {
+        Socket.emit(SocketEventName.getOnlineUsers);
+    },
     emitUpdateUserById: function (id) {
         Socket.emit(SocketEventName.updateUser, { id });
     },
@@ -35,6 +38,9 @@ const MySocket = {
     },
     emitCancelFriendRequest: function (user, friendId) {
         Socket.emit(SocketEventName.cancelFriendRequest, { user, friendId });
+    },
+    emitDeleteFriendRequest: function (user, friendId) {
+        Socket.emit(SocketEventName.deleteFriendRequest, { user, friendId });
     },
 
     // ON
@@ -93,6 +99,11 @@ const MySocket = {
     },
     onFriendRequestCanceled: function (callback) {
         Socket.on(SocketEventName.friendRequestCanceled, (data) => {
+            if (Helper.isFn(callback)) callback(data);
+        })
+    },
+    onFriendRejected: function (callback) {
+        Socket.on(SocketEventName.friendRejected, (data) => {
             if (Helper.isFn(callback)) callback(data);
         })
     },
