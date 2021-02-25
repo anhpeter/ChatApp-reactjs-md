@@ -17,7 +17,10 @@ const MySocket = {
         Socket.emit(SocketEventName.leave, { user });
     },
     emitSendMessage: function (user, message) {
-        Socket.emit(SocketEventName.sendMessage, { user, message, time: MyTime.getUTCNow() });
+        Socket.emit(SocketEventName.sendMessage, { user, message });
+    },
+    emitSendMessageByConversationId: function (user, message, conversationId) {
+        Socket.emit(SocketEventName.sendMessageByConversationId, { user, message, conversationId });
     },
     emitTyping: function (user) {
         Socket.emit(SocketEventName.typing, { user });
@@ -41,6 +44,9 @@ const MySocket = {
     },
     emitDeleteFriendRequest: function (user, friendId) {
         Socket.emit(SocketEventName.deleteFriendRequest, { user, friendId });
+    },
+    emitUserLeaveRoom: function (user, conversationId) {
+        Socket.emit(SocketEventName.userLeaveRoom, { user, conversationId });
     },
 
     // ON

@@ -48,7 +48,7 @@ export default function FriendList({ items, type, isLoading }) {
             <CardActions style={{ justifyContent: 'flex-end' }}> {action} </CardActions>
         )
         return (
-            <Grid key={index} item xs={12} md={6} >
+            <Grid key={index} item xs={12} md={6} lg={4} >
                 <Card >
                     <CardHeader
                         avatar={< MyAvatar name={

@@ -1,14 +1,12 @@
 import React from 'react'
-import Toolbar from '@material-ui/core/Toolbar'
 import Grid from '@material-ui/core/Grid'
 import SearchBar from '../SearchBar/SearchBar'
-import { Hidden } from '@material-ui/core'
-import ToolbarTitle from '../Toolbar/ToolbarTitle'
+import { Box, Hidden } from '@material-ui/core'
 import mainStyles from '../../defines/styles/MainStyles'
 
 import List from '@material-ui/core/List';
 import ConversationItem from '../ConversationItem/ConversationItem'
-import AppTitle from '../AppTitle/AppTitle'
+import HomeConversationItem from '../HomeConversationItem/HomeConversationItem'
 
 
 export default function ConversationList() {
@@ -67,6 +65,11 @@ export default function ConversationList() {
             </Hidden>
 
             <Grid item xs={12} >
+                {/* 
+                <Box mt={2} >
+                    <HomeConversationItem></HomeConversationItem>
+                </Box>
+                 */}
                 <List className={`${classes.chatSection} custom-scrollbar`}>
                     {/*  conversationsHtml*/}
                 </List>

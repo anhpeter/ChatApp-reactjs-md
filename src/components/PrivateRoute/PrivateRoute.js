@@ -11,8 +11,8 @@ export default function PrivateRoute({ children, ...rest }) {
     return (
         <Route
             {...rest}
-            render={({ location }) =>
-                logged ? (
+            render={({ location }) => {
+                return logged ? (
                     children
                 ) : (
                         <Redirect
@@ -22,6 +22,7 @@ export default function PrivateRoute({ children, ...rest }) {
                             }}
                         />
                     )
+            }
             }
         />
     );

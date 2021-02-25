@@ -1,9 +1,11 @@
 import Axios from "axios";
 import { API_ADDRESS } from "../Config";
 
+const prefix = `${API_ADDRESS}/user`;
+
 const UserApi = {
     findByUsername: async function (username) {
-        const data = await Axios.get(`${API_ADDRESS}/user/getUserByUsername`, {
+        const data = await Axios.get(`${prefix}/getUserByUsername`, {
             params: {
                 username
             }
@@ -11,15 +13,15 @@ const UserApi = {
         return data.data;
     },
     findByUsernameAndPassword: async function (username, password) {
-        const data = await Axios.post(`${API_ADDRESS}/user/getUserByUsernameAndPassword`, { username, password })
+        const data = await Axios.post(`${prefix}/getUserByUsernameAndPassword`, { username, password })
         return data.data;
     },
     createAccount: async function (username, password) {
-        const data = await Axios.post(`${API_ADDRESS}/user/createAccount`, { username, password })
+        const data = await Axios.post(`${prefix}/createAccount`, { username, password })
         return data.data;
     },
     findAllFriendsByUsername: async function (username) {
-        const data = await Axios.get(`${API_ADDRESS}/user/getFriendsByUsername`, {
+        const data = await Axios.get(`${prefix}/getFriendsByUsername`, {
             params: {
                 username
             }
@@ -27,9 +29,7 @@ const UserApi = {
         return data.data;
     },
     findSentRequestFriendById: async function (id) {
-        console.log('sent request called');
-
-        const data = await Axios.get(`${API_ADDRESS}/user/getSentRequestFriendById`, {
+        const data = await Axios.get(`${prefix}/getSentRequestFriendById`, {
             params: {
                 id
             }
@@ -37,7 +37,7 @@ const UserApi = {
         return data.data;
     },
     findStrangerByUsername: async function (username) {
-        const data = await Axios.get(`${API_ADDRESS}/user/getStrangerByUsername`, {
+        const data = await Axios.get(`${prefix}/getStrangerByUsername`, {
             params: {
                 username
             }
@@ -47,27 +47,27 @@ const UserApi = {
 
     // FRIEND
     sentFriendRequest: async function (id, friendId) {
-        const data = await Axios.post(`${API_ADDRESS}/user/sentFriendRequest`, { id, friendId });
+        const data = await Axios.post(`${prefix}/sentFriendRequest`, { id, friendId });
         return data.data;
     },
     unfriend: async function (id, friendId) {
-        const data = await Axios.post(`${API_ADDRESS}/user/unfriend`, { id, friendId });
+        const data = await Axios.post(`${prefix}/unfriend`, { id, friendId });
         return data.data;
     },
     cancelFriendRequest: async function (id, friendId) {
-        const data = await Axios.post(`${API_ADDRESS}/user/cancelFriendRequest`, { id, friendId });
+        const data = await Axios.post(`${prefix}/cancelFriendRequest`, { id, friendId });
         return data.data;
     },
     deleteFriendRequest: async function (id, friendId) {
-        const data = await Axios.post(`${API_ADDRESS}/user/deleteFriendRequest`, { id, friendId });
+        const data = await Axios.post(`${prefix}/deleteFriendRequest`, { id, friendId });
         return data.data;
     },
     confirmFriendRequest: async function (id, friendId) {
-        const data = await Axios.post(`${API_ADDRESS}/user/confirmFriendRequest`, { id, friendId });
+        const data = await Axios.post(`${prefix}/confirmFriendRequest`, { id, friendId });
         return data.data;
     },
     findUsersByIds: async function (ids) {
-        const data = await Axios.post(`${API_ADDRESS}/user/getUsersByIds`, { ids });
+        const data = await Axios.post(`${prefix}/getUsersByIds`, { ids });
         return data.data;
     },
 }

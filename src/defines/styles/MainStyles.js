@@ -10,7 +10,7 @@ const mainStyles = makeStyles(theme => createStyles({
     },
     chatSection: {
         width: '100%',
-        height: '75vh',
+        height: '400px',
         overflow: 'auto'
     },
     headBG: {
@@ -23,7 +23,7 @@ const mainStyles = makeStyles(theme => createStyles({
         borderLeft: '1px solid #e0e0e0'
     },
     messageArea: {
-        height: '70vh',
+        height: '500px',
         overflowY: 'auto'
     },
     RoundLightGrayInputStyle: {

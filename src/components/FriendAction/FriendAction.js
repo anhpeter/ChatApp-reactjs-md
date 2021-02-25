@@ -5,7 +5,6 @@ import MenuItem from '@material-ui/core/MenuItem';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { Button } from '@material-ui/core';
 import mainStyles from '../../defines/styles/MainStyles'
-import Message from '../../defines/Message'
 import UserApi from '../../defines/https/UserApi';
 import { useSelector } from 'react-redux';
 import { loggedUser } from '../../features/auth/authSlice';
@@ -17,31 +16,29 @@ export default function SentRequestAction({ item }) {
 
     const user = useSelector(loggedUser);
     const classes = mainStyles();
-    const [open, setOpen] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
+    const open = Boolean(anchorEl);
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
-        setOpen(!open);
     };
 
     const handleClose = () => {
         setAnchorEl(null);
-        setOpen(false);
     };
 
     // click
     const onUnfriend = async () => {
         const data = await UserApi.unfriend(user._id, item._id);
-        console.log('data', data);
         if (data.status === 'succeeded') {
             MySocket.emitUpdateUserById(user._id);
             MySocket.emitUnfriend(user, item._id);
         }
+        setAnchorEl(null);
     }
 
     const onChat = () => {
-
+        setAnchorEl(null);
     }
 
     return (

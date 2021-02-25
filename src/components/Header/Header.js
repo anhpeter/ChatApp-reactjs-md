@@ -13,22 +13,11 @@ import { isLogged, loggedUser, status } from '../../features/auth/authSlice'
 import { signOut } from '../../features/auth/authSlice';
 import { useCookies } from 'react-cookie'
 import DayNightSwitch from '../DayNightSwitch/DayNightSwitch'
-import IconWithBadge from '../IconWithBadge';
-import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
-import MailIcon from '@material-ui/icons/Mail';
 import Notifications from '../Notifications/Notifications';
 import RunAction from '../RunAction/RunAction';
 
-const useStyles = makeStyles({
-    flexGrowStyle: {
-        flexGrow: 1
-    }
-})
-
 export default function Header(props) {
-    const [cookies,
-        setCookie,
-        removeCookie] = useCookies('loggedUser');
+    const [cookies, setCookie, removeCookie] = useCookies('loggedUser');
     const user = useSelector(loggedUser);
     const dispatch = useDispatch();
     const logged = useSelector(isLogged);

@@ -1,10 +1,8 @@
-import { Box, Typography } from '@material-ui/core'
+import { Typography } from '@material-ui/core'
 import React from 'react'
 
-export default function AppTitle(props) {
+export default function AppTitle({ title }) {
     return (
-        <Box my={2}>
-            <Typography variant="h5">{props.title}</Typography>
-        </Box>
+        <Typography variant="h5">{title}</Typography>
     )
 }

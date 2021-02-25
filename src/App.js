@@ -2,14 +2,14 @@ import React, { useEffect } from 'react';
 import Grid from '@material-ui/core/Grid'
 import Header from './components/Header/Header'
 import Chat from './features/chat/Chat'
-import { Route, BrowserRouter as Router, Switch, Redirect } from 'react-router-dom'
+import { BrowserRouter as Router, Switch, Redirect } from 'react-router-dom'
 import SignIn from './components/SignIn/SignIn'
 import SignUp from './components/SignUp/SignUp'
 import Notify from './features/notify/Notify'
 import PrivateRoute from './components/PrivateRoute/PrivateRoute'
 import { useCookies } from 'react-cookie'
 import { useDispatch, useSelector } from 'react-redux'
-import { loggedUser, login, loginThunk, updateUser } from './features/auth/authSlice'
+import { loggedUser, loginThunk, updateUser } from './features/auth/authSlice'
 import { LOGGED_USER } from './defines/CookieName';
 import { Paper } from '@material-ui/core';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
@@ -78,7 +78,7 @@ export default function App() {
         <ThemeProvider theme={theme}>
             <Router>
                 <Paper style={{
-                    minHeight: '100vh'
+                    //minHeight: '100vh'
                 }}>
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
@@ -86,11 +86,11 @@ export default function App() {
                             <Header></Header>
                             <Switch>
                                 {/* CONTENT */}
-                                <PrivateRoute path="/chat" exact> <Chat></Chat> </PrivateRoute>
-                                <PrivateRoute path={`/:friendsTab(friends|friends_all|friends_request|friends_sent_request|people_may_know)`} component={Friends}> </PrivateRoute>
+                                <PrivateRoute path="/chat/:type(t|new)/:conversationId?" exact> <Chat></Chat> </PrivateRoute>
+                                <PrivateRoute path={`/:friendsTab(friends|friends_all|friends_request|friends_sent_request|people_may_know)`} ><Friends></Friends> </PrivateRoute>
                                 <AuthRoute path="/login" exact component={SignIn}></AuthRoute>
                                 <AuthRoute path="/sign-up" exact component={SignUp}></AuthRoute>
-                                <Redirect to="/chat"></Redirect>
+                                <Redirect to="/chat/new"></Redirect>
                             </Switch>
                             <Notify></Notify>
                         </Grid>

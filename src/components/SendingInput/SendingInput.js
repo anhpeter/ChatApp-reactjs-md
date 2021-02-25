@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setNotify } from '../../features/notify/NotifySlice';
 import MySocket from '../../defines/Socket/MySocket';
 import { loggedUser } from '../../features/auth/authSlice';
-import MyTime from '../../defines/MyTime';
+import { conversation } from '../../features/chat/ChatSlice';
 
 let myTimeoutObj;
 export default function SendingInput() {
@@ -13,6 +13,7 @@ export default function SendingInput() {
     const [isTyping, setTyping] = useState(false);
     const dispatch = useDispatch();
     const user = useSelector(loggedUser);
+    const convo = useSelector(conversation);
 
     // INPUT CHANGE
     const onInputChange = (e) => {
@@ -26,13 +27,15 @@ export default function SendingInput() {
             // INVALID
             dispatch(setNotify({ message: 'Please type some message to send!', open: true, timeout: 2000 }));
         } else {
-            MySocket.emitSendMessage(user, inputMsg);
+            //MySocket.emitSendMessage(user, inputMsg);
+            console.log('convo', convo);
+            MySocket.emitSendMessageByConversationId(user, inputMsg, convo._id);
             setInputMsg('');
         }
     }
 
     const emitTyping = () => {
-        if (!isTyping && inputMsg.trim() !== '') MySocket.emitTyping(user);
+        if (!isTyping && inputMsg.trim() !== '') MySocket.emitTyping(user, convo.members);
         setTyping(true);
         clearTimeout(myTimeoutObj);
         myTimeoutObj = setTimeout(() => {
@@ -42,7 +45,7 @@ export default function SendingInput() {
 
     const emitStopTyping = () => {
         if (isTyping) {
-            MySocket.emitStopTyping(user.username);
+            MySocket.emitStopTyping(user.username, convo.members);
             setTyping(false);
         }
     }

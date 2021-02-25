@@ -1,11 +1,10 @@
 import { Button } from '@material-ui/core'
 import React from 'react'
-import { useDispatch, useSelector } from 'react-redux';
+import {  useSelector } from 'react-redux';
 import UserApi from '../../defines/https/UserApi';
-import Message from '../../defines/Message';
 import MySocket from '../../defines/Socket/MySocket';
 import mainStyles from '../../defines/styles/MainStyles'
-import { loggedUser, updateUser } from '../../features/auth/authSlice';
+import { loggedUser} from '../../features/auth/authSlice';
 
 export default function SentRequestAction({ item }) {
     const classes = mainStyles();

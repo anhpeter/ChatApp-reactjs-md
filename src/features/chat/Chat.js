@@ -6,6 +6,7 @@ import ConversationList from '../../components/ConversationList/ConversationList
 import ChatBox from '../../components/ChatBox/ChatBox'
 import OnlineUsers from '../../components/OnlineUser/OnlineUsers'
 import useStyles from '../../defines/styles/MainStyles'
+import { Box } from '@material-ui/core'
 
 export default function Chat() {
     const classes = useStyles();
@@ -16,6 +17,7 @@ export default function Chat() {
     const heightStyle = {
         height: `calc(100vh - ${appBarHeight}px)`
     }
+
     const handleAppBarResize = () => {
         let height = document
             .getElementById(Slt.mainAppBar)
@@ -23,27 +25,31 @@ export default function Chat() {
         setAppBarHeight(height);
     }
 
-    // USE EFFECTS
+    // HANDLE APP BAR RESIZE
     useEffect(() => {
-        handleAppBarResize();
-        window.addEventListener('resize', handleAppBarResize)
+        //handleAppBarResize();
+        //window.addEventListener('resize', handleAppBarResize)
     }, []);
 
+    // DISPLAY LATEST CONVERSATION
+
     return (
-        <Grid container>
-            <Grid container item xs={12} style={heightStyle}>
-                <Grid item xs={2} md={3} className={`${classes.borderRight500} `}>
-                    <ConversationList></ConversationList>
-                </Grid>
-                <Grid item xs={8} md={7}>
-                    <ChatBox>
-                        Loading...
+        <Box p={2}>
+            <Grid container >
+                <Grid container item xs={12} style={heightStyle} spacing={2}>
+                    <Grid item xs={2} md={3} className={`${classes.borderRight500} `}>
+                        <ConversationList></ConversationList>
+                    </Grid>
+                    <Grid item xs={8} md={7}>
+                        <ChatBox>
+                            Loading...
                     </ChatBox>
-                </Grid>
-                <Grid item xs={2} className={`${classes.borderLeft500} `}>
-                    <OnlineUsers />
+                    </Grid>
+                    <Grid item xs={2} className={`${classes.borderLeft500} `}>
+                        <OnlineUsers />
+                    </Grid>
                 </Grid>
             </Grid>
-        </Grid>
+        </Box>
     )
 }

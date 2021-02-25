@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import {
     Route,
-    Redirect,
     useHistory,
     useLocation,
 } from "react-router-dom";
@@ -17,7 +16,7 @@ export default function AuthRoute({ ...rest }) {
             let { from } = location.state || { from: { pathname: "/" } };
             history.replace(from);
         }
-    }, [logged])
+    }, [logged, location.state, history])
     return (
         <Route {...rest}></Route>
     );

@@ -17,7 +17,7 @@ export default function Message({ notShowAvatar, ownMessage, time, user, message
                 {!ownMessage ? avatar : null}
 
                 {/* MESSAGE AND TIME */}
-                <Box className={`message ${position}-message ${!ownMessage && notShowAvatar ? 'ml-avatar' : null}`}>
+                <Box className={`message ${position}-message ${!ownMessage && notShowAvatar ? 'ml-avatar' : ''}`}>
                     <Tooltip title={MyTime.getMessageTimeString(MyTime.getCurrentTimeByUTCTime(time))} placement={placement}>
                         <ListItemText align={position} primary={message} ></ListItemText>
                     </Tooltip>

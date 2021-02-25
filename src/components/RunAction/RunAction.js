@@ -8,8 +8,6 @@ export default function RunAction() {
     const user = useSelector(loggedUser);
     const runAction = async () => {
         let data = await UserApi.sentFriendRequest(user._id, null);
-        console.log(data);
-        
     }
     return (
         <React.Fragment>
