@@ -20,7 +20,7 @@ const initialState = {
 }
 
 const loginWithUser = (state, action) => {
-    MySocket.emitConnected(action.payload);
+    MySocket.emitSignIn(action.payload);
     state.user = action.payload;
     state.isLogged = true;
 }

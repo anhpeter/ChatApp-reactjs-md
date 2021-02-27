@@ -29,13 +29,13 @@ export default function SendingInput() {
         } else {
             //MySocket.emitSendMessage(user, inputMsg);
             console.log('convo', convo);
-            MySocket.emitSendMessageByConversationId(user, inputMsg, convo._id);
+            MySocket.emitSendMessage(user, inputMsg, convo._id);
             setInputMsg('');
         }
     }
 
     const emitTyping = () => {
-        if (!isTyping && inputMsg.trim() !== '') MySocket.emitTyping(user, convo.members);
+        if (!isTyping && inputMsg.trim() !== '') MySocket.emitTyping(user, convo._id);
         setTyping(true);
         clearTimeout(myTimeoutObj);
         myTimeoutObj = setTimeout(() => {
@@ -45,7 +45,7 @@ export default function SendingInput() {
 
     const emitStopTyping = () => {
         if (isTyping) {
-            MySocket.emitStopTyping(user.username, convo.members);
+            MySocket.emitStopTyping(user.username, convo._id);
             setTyping(false);
         }
     }

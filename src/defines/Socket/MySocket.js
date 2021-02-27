@@ -4,8 +4,11 @@ import Socket from '../Socket';
 import SocketEventName from './SocketEventName';
 const MySocket = {
     // EMIT
-    emitConnected: function (user) {
-        Socket.emit(SocketEventName.join, { user });
+    emitSignIn: function (user) {
+        Socket.emit(SocketEventName.signIn, { user });
+    },
+    emitSignOut: function (user) {
+        Socket.emit(SocketEventName.signOut, { user });
     },
     emitGetOnlineUsers: function () {
         Socket.emit(SocketEventName.getOnlineUsers);
@@ -13,20 +16,17 @@ const MySocket = {
     emitUpdateUserById: function (id) {
         Socket.emit(SocketEventName.updateUser, { id });
     },
-    emitLeave: function (user) {
-        Socket.emit(SocketEventName.leave, { user });
+    emitSendMessage: function (user, message, conversationId) {
+        Socket.emit(SocketEventName.sendMessage, { user, message, conversationId });
     },
-    emitSendMessage: function (user, message) {
-        Socket.emit(SocketEventName.sendMessage, { user, message });
+    emitTyping: function (user, conversationId) {
+        Socket.emit(SocketEventName.typing, { user, conversationId });
     },
-    emitSendMessageByConversationId: function (user, message, conversationId) {
-        Socket.emit(SocketEventName.sendMessageByConversationId, { user, message, conversationId });
+    emitStopTyping: function (username, conversationId) {
+        Socket.emit(SocketEventName.stopTyping, { username, conversationId });
     },
-    emitTyping: function (user) {
-        Socket.emit(SocketEventName.typing, { user });
-    },
-    emitStopTyping: function (username) {
-        Socket.emit(SocketEventName.stopTyping, { username });
+    emitJoinUsersToConversation: function (ids, conversationId) {
+        Socket.emit(SocketEventName.joinUsersToConversation, { ids, conversationId });
     },
 
     // FRIEND ACTION
@@ -45,9 +45,6 @@ const MySocket = {
     emitDeleteFriendRequest: function (user, friendId) {
         Socket.emit(SocketEventName.deleteFriendRequest, { user, friendId });
     },
-    emitUserLeaveRoom: function (user, conversationId) {
-        Socket.emit(SocketEventName.userLeaveRoom, { user, conversationId });
-    },
 
     // ON
     onUpdateUser: function (callback) {
@@ -57,17 +54,13 @@ const MySocket = {
     },
     onReceiveMessage: function (callback) {
         Socket.on(SocketEventName.receiveMessage, (data) => {
+            console.log('socket on');
+
             if (Helper.isFn(callback)) callback(data);
         })
     },
-
     onOnlineUsers: function (callback) {
         Socket.on(SocketEventName.onlineUsers, (data) => {
-            if (Helper.isFn(callback)) callback(data);
-        })
-    },
-    onNewJoiner: function (callback) {
-        Socket.on(SocketEventName.newJoiner, (data) => {
             if (Helper.isFn(callback)) callback(data);
         })
     },
@@ -78,11 +71,6 @@ const MySocket = {
     },
     onStopTyping: function (callback) {
         Socket.on(SocketEventName.stopTyping, (data) => {
-            if (Helper.isFn(callback)) callback(data);
-        })
-    },
-    onUserLeft: function (callback) {
-        Socket.on(SocketEventName.userLeft, (data) => {
             if (Helper.isFn(callback)) callback(data);
         })
     },

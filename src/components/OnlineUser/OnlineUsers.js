@@ -42,8 +42,11 @@ export default function OnlineUsers({ item }) {
     }, [])
 
     const onItemClick = async (item) => {
-        const data = await ConversationApi.findConversationIdByUserIdsOrCreateIfNotExist([user._id, item._id]);
-        if (data.status === 'succeeded') history.push(`/chat/t/${data.payload._id}`);
+        const data = await ConversationApi.findConversationInfoByUserIdsOrCreateIfNotExist([user._id, item._id]);
+        if (data.status === 'succeeded') {
+            const { _id } = data.payload;
+            history.push(`/chat/t/${_id}`);
+        }
     }
 
     const onlineUsersHtml = onlineUsers.filter((item) => {

@@ -29,6 +29,13 @@ const Helper = {
         }
         return result;
     },
+    getArrayOfFieldValue: function (items, field, type) {
+        const arrayOfFieldValue = items.map((item) => {
+            if (type === 'string') return item[field].toString();
+            return item[field];
+        })
+        return arrayOfFieldValue;
+    }
 
 }
 

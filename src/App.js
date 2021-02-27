@@ -78,7 +78,7 @@ export default function App() {
         <ThemeProvider theme={theme}>
             <Router>
                 <Paper style={{
-                    //minHeight: '100vh'
+                    minHeight: '100vh'
                 }}>
                     <Grid container spacing={2}>
                         <Grid item xs={12}>

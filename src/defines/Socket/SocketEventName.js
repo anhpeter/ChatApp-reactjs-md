@@ -1,17 +1,15 @@
 const SocketEventName = {
     updateUser: 'update-user',
-    join: 'john',
+    signIn: 'sign-in',
+    signOut: 'sign-out',
     getOnlineUsers: 'get-online-users',
-    leave: 'leave',
-    sendMessage: 'send-message',
-    sendMessageByConversationId: 'send-message-by-conversation-id',
     typing: 'typing',
     stopTyping: 'stop-typing',
+    sendMessage: 'send-message',
     receiveMessage: 'receive-message',
+    receiveNewMessageNotification: 'receive-new-message-notification',
     onlineUsers: 'online-users',
-    newJoiner: 'new-joiner',
-    userLeaveRoom: 'user-leave-room',
-    userLeft: 'user-left',
+    joinUsersToConversation: 'join-users-to-conversation',
     acceptFriend: 'accept-friend',
     addFriend: 'add-friend',
     unfriend: 'unfriend',
@@ -23,4 +21,5 @@ const SocketEventName = {
     friendRequested: 'friend-requested',
     friendUnfriend: 'friend-unfriend',
 }
+
 export default SocketEventName;
