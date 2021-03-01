@@ -3,7 +3,7 @@ import { Box, List, Typography } from '@material-ui/core'
 import Message from '../Message/Message'
 import mainStyle from '../../defines/styles/MainStyles'
 import { useSelector } from 'react-redux';
-import { loggedUser } from '../../features/auth/authSlice';
+import { authUser } from '../../features/auth/authSlice';
 import ChatNotification from '../ChatNotification/ChatNotification';
 
 const emptyHtml = (
@@ -21,7 +21,7 @@ const scroll = () => {
 
 export default function Messages({ messages }) {
     const classes = mainStyle();
-    const user = useSelector(loggedUser);
+    const user = useSelector(authUser);
 
     // messages
     const messagesHtml = messages.map((item, index) => {

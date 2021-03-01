@@ -4,11 +4,11 @@ import {  useSelector } from 'react-redux';
 import UserApi from '../../defines/https/UserApi';
 import MySocket from '../../defines/Socket/MySocket';
 import mainStyles from '../../defines/styles/MainStyles'
-import { loggedUser} from '../../features/auth/authSlice';
+import { authUser} from '../../features/auth/authSlice';
 
 export default function SentRequestAction({ item }) {
     const classes = mainStyles();
-    const user = useSelector(loggedUser);
+    const user = useSelector(authUser);
     const onCancelClick = async () => {
         const data = await UserApi.cancelFriendRequest(user._id, item._id);
         if (data.status === 'succeeded') {

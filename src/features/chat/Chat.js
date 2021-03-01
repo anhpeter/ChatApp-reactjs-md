@@ -36,7 +36,7 @@ export default function Chat() {
     return (
         <Box p={2}>
             <Grid container >
-                <Grid container item xs={12} style={heightStyle} spacing={2}>
+                <Grid container item xs={12}  spacing={2}>
                     <Grid item xs={2} md={3} className={`${classes.borderRight500} `}>
                         <ConversationList></ConversationList>
                     </Grid>

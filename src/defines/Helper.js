@@ -35,8 +35,24 @@ const Helper = {
             return item[field];
         })
         return arrayOfFieldValue;
+    },
+    arrayDiff: function (arr1, arr2) {
+        let biggerArr;
+        let smallerArr;
+        let result = [];
+        if (arr1.length > arr2.length) {
+            biggerArr = arr1;
+            smallerArr = arr2;
+        }
+        else {
+            biggerArr = arr2;
+            smallerArr = arr1;
+        }
+        biggerArr.forEach((item) => {
+            if (smallerArr.indexOf(item) === -1) result.push(item);
+        })
+        return result;
     }
-
 }
 
 export default Helper;

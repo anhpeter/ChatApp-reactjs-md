@@ -14,18 +14,22 @@ const ConversationApi = {
         });
         return data.data;
     },
+    listConversationsForListDisplay: async function (id) {
+        const data = await Axios.get(`${prefix}/listConversationsForListDisplay`, {
+            params: {
+                id
+            }
+        });
+        return data.data;
+    },
     findConversationInfoByUserIdsOrCreateIfNotExist: async function (ids) {
         const data = await Axios.post(`${prefix}/getConversationInfoByUserIdsOrCreateIfNotExist`, { ids });
         const { status, payload } = data.data;
-        console.log(data)
-        console.log('status', status)
-        console.log('payload', payload)
         if (status === 'succeeded') {
             const { members, isNew, _id } = payload;
             if (isNew) {
-                const memberIds = Helper.getArrayOfFieldValue(members, '_id', 'string');
-                console.log('memberids', memberIds)
-                MySocket.emitJoinUsersToConversation(memberIds, _id);
+                //const memberIds = Helper.getArrayOfFieldValue(members, '_id', 'string');
+                MySocket.emitJoinUsersToConversation(members, _id);
             }
         }
         return data.data;

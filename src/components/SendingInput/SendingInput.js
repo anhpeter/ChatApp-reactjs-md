@@ -4,15 +4,16 @@ import { Send as SendIcon } from '@material-ui/icons'
 import { useDispatch, useSelector } from 'react-redux';
 import { setNotify } from '../../features/notify/NotifySlice';
 import MySocket from '../../defines/Socket/MySocket';
-import { loggedUser } from '../../features/auth/authSlice';
+import { authUser } from '../../features/auth/authSlice';
 import { conversation } from '../../features/chat/ChatSlice';
+import Message from '../../defines/Message';
 
 let myTimeoutObj;
 export default function SendingInput() {
     const [inputMsg, setInputMsg] = useState('');
     const [isTyping, setTyping] = useState(false);
     const dispatch = useDispatch();
-    const user = useSelector(loggedUser);
+    const user = useSelector(authUser);
     const convo = useSelector(conversation);
 
     // INPUT CHANGE
@@ -25,10 +26,9 @@ export default function SendingInput() {
         e.preventDefault();
         if (inputMsg.trim() === '') {
             // INVALID
-            dispatch(setNotify({ message: 'Please type some message to send!', open: true, timeout: 2000 }));
+            dispatch(setNotify({ message: Message.PleaseTypeMessage, open: true, timeout: 2000 }));
         } else {
             //MySocket.emitSendMessage(user, inputMsg);
-            console.log('convo', convo);
             MySocket.emitSendMessage(user, inputMsg, convo._id);
             setInputMsg('');
         }

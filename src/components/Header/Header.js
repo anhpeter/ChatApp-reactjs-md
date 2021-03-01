@@ -9,16 +9,17 @@ import PersonIcon from '@material-ui/icons/Person';
 import Slt from '../../defines/Slt'
 import { Link, useHistory, useLocation } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import { isLogged, loggedUser, status } from '../../features/auth/authSlice'
+import { isLogged, authUser, status } from '../../features/auth/authSlice'
 import { signOut } from '../../features/auth/authSlice';
 import { useCookies } from 'react-cookie'
 import DayNightSwitch from '../DayNightSwitch/DayNightSwitch'
 import Notifications from '../Notifications/Notifications';
 import RunAction from '../RunAction/RunAction';
+import { LOGGED_USER } from '../../defines/CookieName';
 
 export default function Header(props) {
-    const [cookies, setCookie, removeCookie] = useCookies('loggedUser');
-    const user = useSelector(loggedUser);
+    const [cookies, setCookie, removeCookie] = useCookies(LOGGED_USER);
+    const user = useSelector(authUser);
     const dispatch = useDispatch();
     const logged = useSelector(isLogged);
     const authStatus = useSelector(status);
@@ -27,7 +28,7 @@ export default function Header(props) {
     const history = useHistory();
 
     const onSignout = () => {
-        removeCookie('loggedUser');
+        removeCookie(LOGGED_USER);
         dispatch(signOut());
         history.push('/');
     }

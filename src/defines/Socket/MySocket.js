@@ -28,6 +28,12 @@ const MySocket = {
     emitJoinUsersToConversation: function (ids, conversationId) {
         Socket.emit(SocketEventName.joinUsersToConversation, { ids, conversationId });
     },
+    emitJoinRoom: function (roomName) {
+        Socket.emit(SocketEventName.joinRoom, { roomName });
+    },
+    emitLeaveRoom: function (roomName) {
+        Socket.emit(SocketEventName.leaveRoom, { roomName });
+    },
 
     // FRIEND ACTION
     emitAddFriend: function (user, friendId) {
@@ -54,8 +60,6 @@ const MySocket = {
     },
     onReceiveMessage: function (callback) {
         Socket.on(SocketEventName.receiveMessage, (data) => {
-            console.log('socket on');
-
             if (Helper.isFn(callback)) callback(data);
         })
     },
@@ -71,6 +75,13 @@ const MySocket = {
     },
     onStopTyping: function (callback) {
         Socket.on(SocketEventName.stopTyping, (data) => {
+            if (Helper.isFn(callback)) callback(data);
+        })
+    },
+
+    // NOTIFICATION
+    onNewMessageNotification: function (callback) {
+        Socket.on(SocketEventName.newMessageNotification, (data) => {
             if (Helper.isFn(callback)) callback(data);
         })
     },

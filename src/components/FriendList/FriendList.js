@@ -6,7 +6,7 @@ import {
     Typography
 } from '@material-ui/core'
 import React from 'react'
-import { loggedUser } from '../../features/auth/authSlice';
+import { authUser } from '../../features/auth/authSlice';
 import MyAvatar from '../MyAvatar/MyAvatar'
 import SentRequestAction from '../FriendAction/SentRequestAction';
 import RequestAction from '../FriendAction/RequestAction';
@@ -30,7 +30,7 @@ const getType = (user, friendId) => {
 }
 
 export default function FriendList({ items, type, isLoading }) {
-    const user = useSelector(loggedUser);
+    const user = useSelector(authUser);
     const itemsHtml = items.map((item, index) => {
         let localType = type;
         let action;

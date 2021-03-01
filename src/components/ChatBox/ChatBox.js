@@ -1,17 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import SendingInput from '../SendingInput/SendingInput';
-import { Divider } from '@material-ui/core';
-import Messages from '../Messages/Messages';
-import UserTyping from '../UserTyping/UserTyping';
 import { useHistory, useParams } from 'react-router-dom';
-import ChatControl from '../ChatControl/ChatControl';
+import NormalChat from '../NormalChat/NormalChat';
 
 
 export default function ChatBox({ children }) {
     const [loaded] = useState(true);
     const params = useParams();
     const history = useHistory();
-    const [display, setDisplay] = useState('chat');
+    const [display, setDisplay] = useState(null);
 
     useEffect(() => {
         const { type, conversationId } = params;
@@ -39,21 +35,12 @@ export default function ChatBox({ children }) {
 
     const mainHtml = (
         <React.Fragment >
-            <div style={{ position: 'relative', }}>
-                {
-                    display === 'chat'
-                        ?
-                        <div>
-                            <ChatControl></ChatControl>
-                        </div>
-                        : null
-                }
-                <div style={{ position: 'absolute', bottom: '100px', left: '5px', width: '100%' }}>
-                    <UserTyping></UserTyping>
-                </div>
-                <Divider />
-                <SendingInput></SendingInput>
-            </div>
+            {
+                display === 'chat'
+                    ?
+                    <NormalChat></NormalChat>
+                    : null
+            }
         </React.Fragment >
     )
 

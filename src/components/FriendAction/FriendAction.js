@@ -7,14 +7,14 @@ import { Button } from '@material-ui/core';
 import mainStyles from '../../defines/styles/MainStyles'
 import UserApi from '../../defines/https/UserApi';
 import { useSelector } from 'react-redux';
-import { loggedUser } from '../../features/auth/authSlice';
+import { authUser } from '../../features/auth/authSlice';
 import MySocket from '../../defines/Socket/MySocket';
 
 const ITEM_HEIGHT = 48;
 
 export default function SentRequestAction({ item }) {
 
-    const user = useSelector(loggedUser);
+    const user = useSelector(authUser);
     const classes = mainStyles();
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);

@@ -7,7 +7,7 @@ import {
 import React, { useEffect, useState } from 'react'
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import UserApi from '../../defines/https/UserApi';
-import { isLogged, loggedUser } from '../../features/auth/authSlice';
+import { isLogged, authUser } from '../../features/auth/authSlice';
 import MyAvatar from '../MyAvatar/MyAvatar'
 import FriendList from '../FriendList/FriendList';
 import { useSelector } from 'react-redux';
@@ -16,7 +16,7 @@ const AllFriendList = () => {
     const [items,
         setItems] = useState([]);
     const [isLoading, setLoading] = useState(true);
-    const user = useSelector(loggedUser);
+    const user = useSelector(authUser);
 
     useEffect(() => {
         const fetchItems = async () => {
@@ -45,7 +45,7 @@ const SentRequestList = () => {
     const [items,
         setItems] = useState([]);
     const [isLoading, setLoading] = useState(true);
-    const user = useSelector(loggedUser);
+    const user = useSelector(authUser);
     useEffect(() => {
         const fetchItems = async () => {
             try {
@@ -72,7 +72,7 @@ const RequestList = () => {
     const [items,
         setItems] = useState([]);
     const [isLoading, setLoading] = useState(true);
-    const user = useSelector(loggedUser);
+    const user = useSelector(authUser);
     useEffect(() => {
         const fetchItems = async () => {
             try {
@@ -120,7 +120,7 @@ const PeopleMayKnowList = ({ username }) => {
 export default function FriendBox({ type }) {
     let itemsHtml = null;
     const logged = useSelector(isLogged);
-    const user = useSelector(loggedUser);
+    const user = useSelector(authUser);
     if (logged) {
         switch (type) {
             case 'friends_request':

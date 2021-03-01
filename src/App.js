@@ -9,7 +9,8 @@ import Notify from './features/notify/Notify'
 import PrivateRoute from './components/PrivateRoute/PrivateRoute'
 import { useCookies } from 'react-cookie'
 import { useDispatch, useSelector } from 'react-redux'
-import { loggedUser, loginThunk, updateUser } from './features/auth/authSlice'
+import { authUser, loginThunk, updateUser } from './features/auth/authSlice'
+import { conversationId } from './features/chat/ChatSlice'
 import { LOGGED_USER } from './defines/CookieName';
 import { Paper } from '@material-ui/core';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
@@ -20,10 +21,20 @@ import SocketEventName from './defines/Socket/SocketEventName';
 import { setNotify } from './features/notify/NotifySlice';
 import Helper from './defines/Helper';
 import Message from './defines/Message';
+import { updateLastMessage } from './features/sidebarConversations/SidebarConversationsSlice';
+
+function useWindowSize() {
+    window.addEventListener('scroll', () => {
+        window.scrollTo(0, 0);
+    })
+}
+
 
 export default function App() {
+    useWindowSize();
     const [cookies] = useCookies([LOGGED_USER]);
-    const user = useSelector(loggedUser) || {};
+    const user = useSelector(authUser) || {};
+    const convoId = useSelector(conversationId);
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -49,6 +60,16 @@ export default function App() {
         MySocket.onFriendRejected((data) => {
             MySocket.emitUpdateUserById(user._id);
         })
+        MySocket.onNewMessageNotification((data) => {
+            //notify
+            if (data.conversationId !== convoId) {
+                dispatch(setNotify({ message: Helper.format(Message.newMessage, data.from.username, data.text), type: 'success', open: true, timeout: 2000 }));
+            }
+
+            // update sidebar conversations
+            dispatch(updateLastMessage({ id: data.conversationId, message: data }));
+
+        })
         return () => {
             MySocket.off(SocketEventName.updateUser)
             MySocket.off(SocketEventName.friendAccepted)
@@ -56,8 +77,9 @@ export default function App() {
             MySocket.off(SocketEventName.friendUnfriend)
             MySocket.off(SocketEventName.friendRequestCanceled)
             MySocket.off(SocketEventName.friendRejected)
+            MySocket.off(SocketEventName.newMessageNotification)
         }
-    }, [dispatch, user._id])
+    }, [user._id, convoId])
 
     // SIGN IN WITH COOKIE
     useEffect(() => {

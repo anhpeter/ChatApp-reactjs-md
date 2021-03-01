@@ -8,13 +8,15 @@ import MyAvatar from '../MyAvatar/MyAvatar';
 import Socket from '../../defines/Socket';
 import MySocket from '../../defines/Socket/MySocket';
 import { useDispatch, useSelector } from 'react-redux';
-import { loggedUser } from '../../features/auth/authSlice';
+import { authUser } from '../../features/auth/authSlice';
 import { Hidden, Typography } from '@material-ui/core';
 import SocketEventName from '../../defines/Socket/SocketEventName';
 import AppTitle from '../AppTitle/AppTitle';
-import { fetchConversationByUserIdsOrCreateIfNotExist } from '../../features/chat/ChatSlice';
+import { conversationId, fetchConversationByUserIdsOrCreateIfNotExist, conversationMemberIds } from '../../features/chat/ChatSlice';
 import ConversationApi from '../../defines/https/ConversationApi';
 import { useHistory } from 'react-router-dom';
+import Helper from '../../defines/Helper';
+import ConversationLink from '../ConversationLink/ConversationLink';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -26,8 +28,7 @@ export default function OnlineUsers({ item }) {
     const classes = useStyles();
     const [onlineUsers, setOnlineUsers] = useState([]);
     const [isShow, setShow] = useState(false);
-    const user = useSelector(loggedUser) || {};
-    const history = useHistory();
+    const user = useSelector(authUser) || {};
     useEffect(() => {
         setTimeout(() => {
             setShow(true);
@@ -41,19 +42,11 @@ export default function OnlineUsers({ item }) {
         }
     }, [])
 
-    const onItemClick = async (item) => {
-        const data = await ConversationApi.findConversationInfoByUserIdsOrCreateIfNotExist([user._id, item._id]);
-        if (data.status === 'succeeded') {
-            const { _id } = data.payload;
-            history.push(`/chat/t/${_id}`);
-        }
-    }
-
     const onlineUsersHtml = onlineUsers.filter((item) => {
         return (item.username !== user.username)
     }).map((item) => {
         return (
-            <ListItem key={item._id} button onClick={() => { onItemClick(item) }}>
+            <ConversationLink key={item._id} button component={ListItem} item={item}>
                 <ListItemAvatar >
                     <MyAvatar online={true} name={item.name} single={item.single} picture={item.picture}></MyAvatar>
                 </ListItemAvatar>
@@ -62,7 +55,7 @@ export default function OnlineUsers({ item }) {
                         primary={item.username}
                     />
                 </Hidden>
-            </ListItem>
+            </ConversationLink>
         )
     })
 

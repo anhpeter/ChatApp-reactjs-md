@@ -5,11 +5,11 @@ import UserApi from '../../defines/https/UserApi';
 import Message from '../../defines/Message';
 import MySocket from '../../defines/Socket/MySocket';
 import mainStyles from '../../defines/styles/MainStyles'
-import { loggedUser, updateUser } from '../../features/auth/authSlice';
+import { authUser, updateUser } from '../../features/auth/authSlice';
 
 export default function SentRequestAction({ item }) {
     const classes = mainStyles();
-    const user = useSelector(loggedUser);
+    const user = useSelector(authUser);
     const onAddFriend = async () => {
         const data = await UserApi.sentFriendRequest(user._id, item._id);
         if (data.status === 'succeeded') {

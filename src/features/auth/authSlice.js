@@ -36,6 +36,7 @@ const authSlice = createSlice({
             state.user = action.payload;
         },
         signOut: (state) => {
+            MySocket.emitSignOut(state.user);
             state.user = null;
             state.isLogged = false;
         }
@@ -46,17 +47,17 @@ const authSlice = createSlice({
             state.status = 'loading'
         },
         [loginThunk.fulfilled]: (state, action) => {
-            state.status = 'succeeded'
             const { payload, status } = action.payload;
 
             if (status === 'succeeded') {
                 loginWithUser(state, { payload });
                 state.error = null;
             } else state.error = 'not found';
+            state.status = 'succeeded'
         },
         [loginThunk.rejected]: (state, action) => {
-            state.status = 'failed'
             state.error = action.error.message
+            state.status = 'failed'
         },
 
         // FRIENDS
@@ -70,7 +71,7 @@ const selectors = {
     isLogged: (state) => {
         return state.auth.isLogged;
     },
-    loggedUser: (state) => {
+    authUser: (state) => {
         return state.auth.user;
     },
     status: (state) => {
@@ -81,7 +82,7 @@ const selectors = {
     },
 }
 
-export const { authError, status, isLogged, loggedUser } = selectors;
+export const { authError, status, isLogged, authUser } = selectors;
 
 
 export const {
