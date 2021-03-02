@@ -7,8 +7,10 @@ import mainStyles from '../../defines/styles/MainStyles'
 import List from '@material-ui/core/List';
 import ConversationItem from '../ConversationItem/ConversationItem'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchConversations, selectAllSidebarConversations } from '../../features/sidebarConversations/SidebarConversationsSlice'
+import { fetchAndPrependConversationById, fetchConversations, selectAllSidebarConversations, selectSidebarConversationIds, updateLastMessage } from '../../features/sidebarConversations/SidebarConversationsSlice'
 import { authUser } from '../../features/auth/authSlice'
+import MySocket from '../../defines/Socket/MySocket'
+import SocketEventName from '../../defines/Socket/SocketEventName'
 
 
 export default function ConversationList() {
@@ -18,9 +20,9 @@ export default function ConversationList() {
     const loggedUser = useSelector(authUser);
 
     useEffect(() => {
-        console.log('dispatch', loggedUser._id);
         dispatch(fetchConversations({ id: loggedUser._id }));
     }, [])
+
 
     const conversationsHtml = conversations.map((item, i) => {
         return (

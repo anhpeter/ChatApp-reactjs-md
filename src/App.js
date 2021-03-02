@@ -21,7 +21,7 @@ import SocketEventName from './defines/Socket/SocketEventName';
 import { setNotify } from './features/notify/NotifySlice';
 import Helper from './defines/Helper';
 import Message from './defines/Message';
-import { updateLastMessage } from './features/sidebarConversations/SidebarConversationsSlice';
+import { fetchAndPrependConversationById, selectSidebarConversationIds, updateLastMessage } from './features/sidebarConversations/SidebarConversationsSlice';
 
 function useWindowSize() {
     window.addEventListener('scroll', () => {
@@ -36,6 +36,7 @@ export default function App() {
     const user = useSelector(authUser) || {};
     const convoId = useSelector(conversationId);
     const dispatch = useDispatch();
+    const ids = useSelector(selectSidebarConversationIds);
 
     useEffect(() => {
         MySocket.onUpdateUser((data) => {
@@ -61,14 +62,16 @@ export default function App() {
             MySocket.emitUpdateUserById(user._id);
         })
         MySocket.onNewMessageNotification((data) => {
-            //notify
-            if (data.conversationId !== convoId) {
-                dispatch(setNotify({ message: Helper.format(Message.newMessage, data.from.username, data.text), type: 'success', open: true, timeout: 2000 }));
+            console.log('noti')
+            const { message, conversationId } = data;
+            if (conversationId !== convoId) {
+                dispatch(setNotify({ message: Helper.format(Message.newMessage, message.from.username, message.text), type: 'success', open: true, timeout: 2000 }));
             }
-
-            // update sidebar conversations
-            dispatch(updateLastMessage({ id: data.conversationId, message: data }));
-
+            if (ids.indexOf(conversationId) > -1) {
+                dispatch(updateLastMessage({ id: conversationId, message }));
+            } else {
+                dispatch(fetchAndPrependConversationById({ id: conversationId }));
+            }
         })
         return () => {
             MySocket.off(SocketEventName.updateUser)
@@ -79,7 +82,7 @@ export default function App() {
             MySocket.off(SocketEventName.friendRejected)
             MySocket.off(SocketEventName.newMessageNotification)
         }
-    }, [user._id, convoId])
+    }, [user._id, convoId, ids])
 
     // SIGN IN WITH COOKIE
     useEffect(() => {

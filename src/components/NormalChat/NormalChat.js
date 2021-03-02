@@ -18,11 +18,13 @@ export default function NormalChat() {
     const messages = useSelector(conversationMessages);
     const convo = useSelector(conversation);
     const dispatch = useDispatch();
+    const history = useHistory();
     const { conversationId } = useParams();;
 
     useEffect(() => {
         if (status === 'succeeded') {
             if (convo._id) MySocket.emitJoinRoom(`${convo._id}_current`);
+            else history.replace('/chat/new');
         }
         return () => {
             if (convo._id) MySocket.emitLeaveRoom(`${convo._id}_current`);
@@ -31,19 +33,24 @@ export default function NormalChat() {
 
     // FETCH CONVERSATION
     useEffect(() => {
-        dispatch(fetchConversationById(conversationId))
+        if (conversationId) dispatch(fetchConversationById(conversationId))
+    }, [conversationId]);
+
+    // reset
+    useEffect(() => {
         return () => {
             dispatch(reset())
         }
-    }, [conversationId]);
+    }, [])
 
     // SOCKET EVENTS RECEIVE MESSAGE
     useEffect(() => {
         MySocket.onReceiveMessage((data) => {
-            if (data.conversationId === convo._id) {
+            const { conversationId, message } = data;
+            if (conversationId === convo._id) {
                 const messageObj = {
                     type: 'message',
-                    ...data
+                    ...message
                 }
                 dispatch(appendMessage(messageObj));
             }

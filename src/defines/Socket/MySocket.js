@@ -81,39 +81,27 @@ const MySocket = {
 
     // NOTIFICATION
     onNewMessageNotification: function (callback) {
-        Socket.on(SocketEventName.newMessageNotification, (data) => {
-            if (Helper.isFn(callback)) callback(data);
-        })
+        Socket.on(SocketEventName.newMessageNotification, callback)
     },
 
     // FRIEND ACTIONS
     onFriendAccepted: function (callback) {
-        Socket.on(SocketEventName.friendAccepted, (data) => {
-            if (Helper.isFn(callback)) callback(data);
-        })
+        Socket.on(SocketEventName.friendAccepted, callback)
     },
     onFriendRequested: function (callback) {
-        Socket.on(SocketEventName.friendRequested, (data) => {
-            if (Helper.isFn(callback)) callback(data);
-        })
+        Socket.on(SocketEventName.friendRequested, callback)
     },
     onFriendUnFriend: function (callback) {
-        Socket.on(SocketEventName.friendUnfriend, (data) => {
-            if (Helper.isFn(callback)) callback(data);
-        })
+        Socket.on(SocketEventName.friendUnfriend, callback)
     },
     onFriendRequestCanceled: function (callback) {
-        Socket.on(SocketEventName.friendRequestCanceled, (data) => {
-            if (Helper.isFn(callback)) callback(data);
-        })
+        Socket.on(SocketEventName.friendRequestCanceled, callback)
     },
     onFriendRejected: function (callback) {
-        Socket.on(SocketEventName.friendRejected, (data) => {
-            if (Helper.isFn(callback)) callback(data);
-        })
+        Socket.on(SocketEventName.friendRejected, callback)
     },
     off: function (eventName) {
         Socket.off(eventName);
-    }
+    },
 }
 export default MySocket

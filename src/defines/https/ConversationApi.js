@@ -14,6 +14,14 @@ const ConversationApi = {
         });
         return data.data;
     },
+    findSidebarConversationById: async function (id) {
+        const data = await Axios.get(`${prefix}/getSidebarConversationById`, {
+            params: {
+                id
+            }
+        });
+        return data.data;
+    },
     listConversationsForListDisplay: async function (id) {
         const data = await Axios.get(`${prefix}/listConversationsForListDisplay`, {
             params: {
@@ -24,14 +32,6 @@ const ConversationApi = {
     },
     findConversationInfoByUserIdsOrCreateIfNotExist: async function (ids) {
         const data = await Axios.post(`${prefix}/getConversationInfoByUserIdsOrCreateIfNotExist`, { ids });
-        const { status, payload } = data.data;
-        if (status === 'succeeded') {
-            const { members, isNew, _id } = payload;
-            if (isNew) {
-                //const memberIds = Helper.getArrayOfFieldValue(members, '_id', 'string');
-                MySocket.emitJoinUsersToConversation(members, _id);
-            }
-        }
         return data.data;
     },
     getHomeConversation: async function () {

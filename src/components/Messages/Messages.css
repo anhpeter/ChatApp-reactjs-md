@@ -1,3 +1,21 @@
 .scroll-to-bottom-container {
     height: 70vh;
 }
+
+@media screen and (max-height: 576px) {
+    #my-messages-container {
+        height: 60vh;
+    }
+}
+
+@media screen and (max-height: 430px) {
+    #my-messages-container {
+        height: 50vh;
+    }
+}
+
+@media screen and (max-height: 340px) {
+    #my-messages-container {
+        height: 45vh;
+    }
+}

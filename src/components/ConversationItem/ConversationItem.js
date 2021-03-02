@@ -26,8 +26,11 @@ export default function ConversationItem({ item, online, icon }) {
     const friend = item.members.find((item) => {
         return item._id !== user._id;
     })
-    let prefix = (item.lastMessage) ? (item.lastMessage.from._id === user._id ? 'you: ' : null) : null;
-    const lastMessageText = prefix !== null ? `${prefix} ${item.lastMessage.text}` : item.lastMessage.text;
+    let lastMessageText = null;
+    if (item.lastMessage) {
+        let prefix = (item.lastMessage) ? (item.lastMessage.from._id === user._id ? 'you: ' : null) : null;
+        lastMessageText = prefix !== null ? `${prefix} ${item.lastMessage.text}` : item.lastMessage.text;
+    }
     return (
         <RouterLink to={`/chat/t/${item._id}`}>
             <ListItem button selected={convoId === item._id}>

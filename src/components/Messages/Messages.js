@@ -5,6 +5,7 @@ import mainStyle from '../../defines/styles/MainStyles'
 import { useSelector } from 'react-redux';
 import { authUser } from '../../features/auth/authSlice';
 import ChatNotification from '../ChatNotification/ChatNotification';
+import './Messages.css'
 
 const emptyHtml = (
     <React.Fragment>

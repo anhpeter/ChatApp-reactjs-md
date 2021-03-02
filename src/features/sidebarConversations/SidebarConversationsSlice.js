@@ -5,9 +5,15 @@ export const fetchConversations = createAsyncThunk('sidebarConversations/fetchCo
     const response = await ConversationApi.listConversationsForListDisplay(id)
     return response;
 })
+
+export const fetchAndPrependConversationById = createAsyncThunk('sidebarConversations/fetchAndPrependConversationById', async ({ id }) => {
+    const response = await ConversationApi.findSidebarConversationById(id)
+    return response;
+})
+
 const conversationsAdapter = createEntityAdapter({
     selectId: item => item._id,
-    //sortComparer: (a, b) => b.date.localeCompare(a.date)
+    sortComparer: (a, b) => -(a.lastMessage.time - b.lastMessage.time)
 })
 
 const initialState = conversationsAdapter.getInitialState({
@@ -22,14 +28,20 @@ const SidebarConversationsSlice = createSlice({
     reducers: {
         updateLastMessage: (state, action) => {
             const { id, message } = action.payload;
-            console.log('update last message called', action.payload)
             const item = state.entities[id];
             if (item) {
                 item.lastMessage = message;
+                conversationsAdapter.upsertOne(state, item)
+            } else {
+                fetchAndPrependConversationById({ id });
             }
         }
     },
     extraReducers: {
+        [fetchAndPrependConversationById.fulfilled]: (state, action) => {
+            const { payload, status } = action.payload;
+            if (status === 'succeeded') conversationsAdapter.upsertOne(state, payload);
+        },
         [fetchConversations.pending]: (state, action) => {
             state.status = 'loading'
         },
@@ -46,13 +58,20 @@ const SidebarConversationsSlice = createSlice({
 
 });
 
+const selectors = {
+    isConversationExist: (state, id) => {
+        return (state.sidebarConversations.ids.indexOf(id) > -1)
+    }
+}
 
+export const { isConversationExist } = selectors;
 export const {
     selectAll: selectAllSidebarConversations,
     selectById: selectSidebarConversationById,
     selectIds: selectSidebarConversationIds
     // Pass in a selector that returns the posts slice of state
 } = conversationsAdapter.getSelectors(state => state.sidebarConversations)
+
 
 export const {
     updateLastMessage
