@@ -1,6 +1,11 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import ConversationApi from '../../defines/https/ConversationApi';
 
+export const fetchConversationByMemberIds = createAsyncThunk('chat/conversation', async (ids) => {
+    const response = await ConversationApi.findConversationByMemberIds(ids);
+    return response;
+})
+
 export const fetchConversationById = createAsyncThunk('chat/conversation', async (id) => {
     const response = await ConversationApi.findConversationById(id);
     return response;

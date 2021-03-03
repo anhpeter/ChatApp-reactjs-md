@@ -31,7 +31,7 @@ function useWindowSize() {
 
 
 export default function App() {
-        console.log('app render')
+    console.log('app render')
     useWindowSize();
     const [cookies] = useCookies([LOGGED_USER]);
     const user = useSelector(authUser) || {};
@@ -63,9 +63,8 @@ export default function App() {
             MySocket.emitUpdateUserById(user._id);
         })
         MySocket.onNewMessageNotification((data) => {
-            console.log('abc')
             const { message, conversationId } = data;
-            if (conversationId !== convoId) {
+            if (conversationId !== convoId && message.from._id !== user._id) {
                 dispatch(setNotify({ message: Helper.format(Message.newMessage, message.from.username, message.text), type: 'success', open: true, timeout: 2000 }));
             }
         })

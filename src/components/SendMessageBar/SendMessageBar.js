@@ -1,10 +1,10 @@
 import React from 'react'
 import SendingInput from '../SendingInput/SendingInput'
 
-export default function SendMessageBar() {
+export default function SendMessageBar({type}) {
     return (
         <React.Fragment>
-            <SendingInput></SendingInput>
+            <SendingInput type={type}></SendingInput>
         </React.Fragment>
     )
 }

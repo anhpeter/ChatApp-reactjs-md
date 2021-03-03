@@ -7,14 +7,19 @@ import MySocket from '../../defines/Socket/MySocket';
 import { authUser } from '../../features/auth/authSlice';
 import { conversation } from '../../features/chat/ChatSlice';
 import Message from '../../defines/Message';
+import { useHistory } from 'react-router-dom';
+import { isNewChatEnable, newChatReceivers } from '../../features/NewChat/NewChatSlice';
 
 let myTimeoutObj;
 export default function SendingInput() {
     const [inputMsg, setInputMsg] = useState('');
     const [isTyping, setTyping] = useState(false);
     const dispatch = useDispatch();
+    const history = useHistory();
     const user = useSelector(authUser);
     const convo = useSelector(conversation);
+    const receivers = useSelector(newChatReceivers);
+    const newChatEnabled = useSelector(isNewChatEnable);
 
     // INPUT CHANGE
     const onInputChange = (e) => {
@@ -24,13 +29,22 @@ export default function SendingInput() {
     // ON SENDING MESSAGE
     const onSendingMessage = (e) => {
         e.preventDefault();
-        if (inputMsg.trim() === '') {
-            // INVALID
-            dispatch(setNotify({ message: Message.PleaseTypeMessage, open: true, timeout: 2000 }));
+        if (convo._id) {
+            if (inputMsg.trim() === '') {
+                // INVALID
+                dispatch(setNotify({ message: Message.PleaseTypeMessage, open: true, timeout: 2000 }));
+            } else {
+                //MySocket.emitSendMessage(user, inputMsg);
+                MySocket.emitSendMessage(user, inputMsg, convo._id);
+                setInputMsg('');
+            }
+            if (newChatEnabled) history.replace(`/chat/t/${convo._id}`)
         } else {
-            //MySocket.emitSendMessage(user, inputMsg);
-            MySocket.emitSendMessage(user, inputMsg, convo._id);
-            setInputMsg('');
+            if (newChatEnabled && receivers.length > 0) {
+                console.log('sending new message to receiver', receivers);
+            } else {
+                alert('nothing');
+            }
         }
     }
 

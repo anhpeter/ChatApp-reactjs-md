@@ -14,6 +14,12 @@ const ConversationApi = {
         });
         return data.data;
     },
+    findConversationByMemberIds: async function (ids) {
+        const data = await Axios.post(`${prefix}/getConversationByMemberIds`, {
+            ids
+        });
+        return data.data;
+    },
     findSidebarConversationById: async function (id) {
         const data = await Axios.get(`${prefix}/getSidebarConversationById`, {
             params: {

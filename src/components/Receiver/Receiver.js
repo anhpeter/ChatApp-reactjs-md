@@ -5,10 +5,11 @@ import Helper from '../../defines/Helper'
 import FolderIcon from '@material-ui/icons/Folder';
 import Alert from '@material-ui/lab/Alert';
 import CloseIcon from '@material-ui/icons/Close';
-import './ReceiverInput.css';
-import { useSelector } from 'react-redux';
+import './Receiver.css';
+import { useDispatch, useSelector } from 'react-redux';
 import { authUserId } from '../../features/auth/authSlice';
 import SuggestionUsers from '../SuggestionUsers/SuggestionUsers';
+import { removeLastNewChatReceiver, newChatReceivers, removeNewChatReceiverById, appendNewChatReceiver } from '../../features/NewChat/NewChatSlice';
 
 let timeout;
 
@@ -34,20 +35,21 @@ const SelectedUsers = ({ items, onCloseClick }) => {
     })
 }
 
-export default function ReceiverInput() {
+export default function Receiver({ onFriendIdSelected }) {
+    const dispatch = useDispatch();
     const [mounted, setMounted] = useState(true);
     const [suggestionUsers, setSuggestionUsers] = useState([]);
-    const [selectedUsers, setSelectedUsers] = useState([]);
     const [inputVal, setInputVal] = useState('');
     const [receiverName, setReceiverName] = useState('');
     const inputRef = useRef(null);
     const loggedUserId = useSelector(authUserId)
+    const receivers = useSelector(newChatReceivers);
 
     // fetch suggestion users
     useEffect(() => {
         setMounted(true);
         const fetchUsers = async () => {
-            const data = await UserApi.findReceivers(receiverName, Helper.getArrayOfFieldValue(selectedUsers, '_id').concat(loggedUserId));
+            const data = await UserApi.findReceivers(receiverName, Helper.getArrayOfFieldValue(receivers, '_id').concat(loggedUserId));
             const { status, payload } = data;
             if (status === 'succeeded') {
                 if (mounted) {
@@ -59,11 +61,16 @@ export default function ReceiverInput() {
         return () => {
             setMounted(false);
         }
-    }, [receiverName, selectedUsers, loggedUserId])
+    }, [receiverName, receivers, loggedUserId])
+
+    useEffect(() => {
+        if (receivers.length === 1) onFriendIdSelected(receivers[0]._id);
+        else onFriendIdSelected(null);
+    }, [receivers])
 
     // suggestion users
     const onSuggestionUserClick = (item) => {
-        setSelectedUsers(selectedUsers.concat(item));
+        dispatch(appendNewChatReceiver(item));
         setInputVal('');
         setReceiverName('');
         setSuggestionUsers([])
@@ -73,18 +80,13 @@ export default function ReceiverInput() {
 
     // selected users
     const onRemoveSelectedUser = (item) => {
-        setSelectedUsers(selectedUsers.filter((user) => {
-            return user._id !== item._id;
-        }))
+        dispatch(removeNewChatReceiverById(item._id));
     }
 
     const solveSelectedUsers = (e, oldVal, newVal) => {
         if (e.which === 8 && oldVal.trim() === '' && newVal.trim() === '') {
             // pop
-            if (selectedUsers.length > 0) {
-                setSelectedUsers(selectedUsers.slice(0, -1));
-            }
-
+            dispatch(removeLastNewChatReceiver());
         }
     }
 
@@ -113,7 +115,7 @@ export default function ReceiverInput() {
         <Box className="receiver-wrapper">
             <Typography className="receiver-label" >To: </Typography>
             <Box className="receiver-container" display="inline-block" >
-                <SelectedUsers items={selectedUsers} onCloseClick={onRemoveSelectedUser}></SelectedUsers>
+                <SelectedUsers items={receivers} onCloseClick={onRemoveSelectedUser}></SelectedUsers>
                 <Box className="receiver-input-container">
                     {/* input */}
                     <TextField placeholder="Receiver" ref={inputRef} className="receiver-input" autoFocus={true} onKeyUp={onInputKeyup} onChange={onInputChange} onBlur={onInputBlur} value={inputVal} />

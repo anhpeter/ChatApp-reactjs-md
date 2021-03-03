@@ -2,11 +2,13 @@ import { Divider } from '@material-ui/core';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
+import ConversationApi from '../../defines/https/ConversationApi';
 import Socket from '../../defines/Socket';
 import MySocket from '../../defines/Socket/MySocket';
 import SocketEventName from '../../defines/Socket/SocketEventName';
-import { authUser } from '../../features/auth/authSlice';
-import { appendMessage, conversation, conversationError, conversationMessages, conversationStatus, fetchConversationById, fetchHomeConversation, reset } from '../../features/chat/ChatSlice';
+import { authUser, authUserId } from '../../features/auth/authSlice';
+import { appendMessage, conversation, conversationError, conversationMessages, conversationStatus, fetchConversationById, fetchConversationByMemberIds, fetchHomeConversation, reset } from '../../features/chat/ChatSlice';
+import { isNewChatEnable, newChatReceiver } from '../../features/NewChat/NewChatSlice';
 import { updateLastMessage } from '../../features/sidebarConversations/SidebarConversationsSlice';
 import Loading from '../Loading/Loading';
 import Messages from '../Messages/Messages';
@@ -19,7 +21,21 @@ export default function NormalChat() {
     const convo = useSelector(conversation);
     const dispatch = useDispatch();
     const history = useHistory();
+    const loggedUserId = useSelector(authUserId);
     const { conversationId } = useParams();;
+    const receiver = useSelector(newChatReceiver) || {};
+    const newChatEnabled = useSelector(isNewChatEnable);
+
+    // FETCH CONVERSATION BY FRIEND ID
+    useEffect(() => {
+        console.log(receiver);
+        if (newChatEnabled) {
+            if (receiver._id) dispatch(fetchConversationByMemberIds([`${loggedUserId}`, `${receiver._id}`]));
+            else {
+                dispatch(reset());
+            }
+        }
+    }, [receiver._id, newChatEnabled])
 
     useEffect(() => {
         if (status === 'succeeded') {
@@ -31,7 +47,7 @@ export default function NormalChat() {
         }
     }, [status, convo._id])
 
-    // FETCH CONVERSATION
+    // FETCH CONVERSATION BY ID
     useEffect(() => {
         if (conversationId) dispatch(fetchConversationById(conversationId))
     }, [conversationId]);
@@ -63,22 +79,13 @@ export default function NormalChat() {
 
     return (
         <React.Fragment>
-            <div style={{ position: 'relative', }}>
-                {status === 'loading'
-                    ? <Loading></Loading>
-                    :
-                    (
-                        <React.Fragment>
-                            <Messages messages={messages}></Messages>
-                            <div style={{ position: 'absolute', bottom: '100px', left: '5px', width: '100%' }}>
-                                <UserTyping></UserTyping>
-                            </div>
-                            <Divider />
-                            <SendMessageBar></SendMessageBar>
-                        </React.Fragment>
-                    )
-                }
-            </div>
+            {status === 'loading'
+                ? <Loading></Loading>
+                :
+                (
+                        <Messages messages={messages}></Messages>
+                )
+            }
         </React.Fragment>
     )
 }

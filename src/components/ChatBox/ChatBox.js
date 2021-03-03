@@ -1,7 +1,12 @@
+import { Box, Divider } from '@material-ui/core';
 import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
+import { conversationStatus } from '../../features/chat/ChatSlice';
 import NewChat from '../NewChat/NewChat';
 import NormalChat from '../NormalChat/NormalChat';
+import SendMessageBar from '../SendMessageBar/SendMessageBar';
+import UserTyping from '../UserTyping/UserTyping';
 
 
 export default function ChatBox({ children }) {
@@ -9,6 +14,7 @@ export default function ChatBox({ children }) {
     const params = useParams();
     const history = useHistory();
     const [display, setDisplay] = useState(null);
+    const convoStatus = useSelector(conversationStatus);
 
     useEffect(() => {
         const { type, conversationId } = params;
@@ -36,12 +42,21 @@ export default function ChatBox({ children }) {
 
     const mainHtml = (
         <React.Fragment >
-            {
-                display === 'chat'
-                    ?
-                    <NormalChat></NormalChat>
-                    : <NewChat></NewChat>
-            }
+            <div style={{ position: 'relative', }}>
+                {
+                    display === 'chat'
+                        ?
+                        <NormalChat></NormalChat>
+                        : <NewChat></NewChat>
+                }
+                <div style={{ position: 'absolute', bottom: '100px', left: '5px', width: '100%' }}>
+                    <UserTyping></UserTyping>
+                    <Divider />
+                </div>
+                <Box display={convoStatus === 'loading' ? 'none' : 'unset'}>
+                    <SendMessageBar></SendMessageBar>
+                </Box>
+            </div>
         </React.Fragment >
     )
 

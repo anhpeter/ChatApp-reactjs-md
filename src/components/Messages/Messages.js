@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import { authUser } from '../../features/auth/authSlice';
 import ChatNotification from '../ChatNotification/ChatNotification';
 import './Messages.css'
+import { isNewChatEnable } from '../../features/NewChat/NewChatSlice';
 
 const emptyHtml = (
     <React.Fragment>
@@ -23,6 +24,7 @@ const scroll = () => {
 export default function Messages({ messages }) {
     const classes = mainStyle();
     const user = useSelector(authUser);
+    const newChatEnabled = useSelector(isNewChatEnable);
 
     // messages
     const messagesHtml = messages.map((item, index) => {
@@ -45,7 +47,7 @@ export default function Messages({ messages }) {
     return (
         <React.Fragment>
             <List className={`${classes.messageArea} custom-scrollbar`} id="my-messages-container" >
-                {messagesHtml.length > 0 ? messagesHtml : emptyHtml}
+                {messagesHtml.length > 0 ? messagesHtml : (!newChatEnabled ? emptyHtml : null)}
             </List>
         </React.Fragment >
     )

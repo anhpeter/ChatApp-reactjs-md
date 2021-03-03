@@ -2,6 +2,10 @@
     display: flex;
 }
 
+.receiver-container>* {
+    margin-bottom: 5px !important;
+}
+
 .receiver-container {
     display: flex !important;
     flex-wrap: wrap;
