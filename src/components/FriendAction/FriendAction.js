@@ -9,6 +9,7 @@ import UserApi from '../../defines/https/UserApi';
 import { useSelector } from 'react-redux';
 import { authUser } from '../../features/auth/authSlice';
 import MySocket from '../../defines/Socket/MySocket';
+import ConversationLink from '../ConversationLink/ConversationLink';
 
 const ITEM_HEIGHT = 48;
 
@@ -64,7 +65,11 @@ export default function SentRequestAction({ item }) {
                     },
                 }}
             >
-                <MenuItem><Button onClick={onChat} variant="contained" size="small" fullWidth color="primary" className={classes.buttonStyle}>Chat</Button></MenuItem>
+                <MenuItem>
+                    <ConversationLink item={item} style={{width: '100%'}}>
+                        <Button onClick={onChat} variant="contained" size="small" fullWidth color="primary" className={classes.buttonStyle}>Chat</Button>
+                    </ConversationLink>
+                </MenuItem>
                 <MenuItem><Button onClick={onUnfriend} variant="contained" size="small" fullWidth className={classes.buttonStyle}>Unfriend</Button></MenuItem>
             </Menu>
         </div>

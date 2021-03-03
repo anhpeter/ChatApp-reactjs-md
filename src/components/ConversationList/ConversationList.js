@@ -11,6 +11,8 @@ import { fetchAndPrependConversationById, fetchConversations, selectAllSidebarCo
 import { authUser } from '../../features/auth/authSlice'
 import MySocket from '../../defines/Socket/MySocket'
 import SocketEventName from '../../defines/Socket/SocketEventName'
+import Socket from '../../defines/Socket'
+import { conversationId } from '../../features/chat/ChatSlice'
 
 
 export default function ConversationList() {
@@ -18,10 +20,28 @@ export default function ConversationList() {
     const dispatch = useDispatch();
     const conversations = useSelector(selectAllSidebarConversations);
     const loggedUser = useSelector(authUser);
+    const ids = useSelector(selectSidebarConversationIds);
+    const convoId = useSelector(conversationId);
 
     useEffect(() => {
         dispatch(fetchConversations({ id: loggedUser._id }));
     }, [])
+
+    useEffect(() => {
+        const myFunc = (data) => {
+            console.log('noti')
+            const { message, conversationId } = data;
+            if (ids.indexOf(conversationId) > -1) {
+                dispatch(updateLastMessage({ id: conversationId, message }));
+            } else {
+                dispatch(fetchAndPrependConversationById({ id: conversationId }));
+            }
+        }
+        MySocket.onNewMessageNotification(myFunc)
+        return () => {
+            Socket.removeListener(SocketEventName.newMessageNotification, myFunc);
+        }
+    }, [convoId, ids])
 
 
     const conversationsHtml = conversations.map((item, i) => {

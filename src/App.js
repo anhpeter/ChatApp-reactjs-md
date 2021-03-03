@@ -31,14 +31,15 @@ function useWindowSize() {
 
 
 export default function App() {
+        console.log('app render')
     useWindowSize();
     const [cookies] = useCookies([LOGGED_USER]);
     const user = useSelector(authUser) || {};
     const convoId = useSelector(conversationId);
     const dispatch = useDispatch();
-    const ids = useSelector(selectSidebarConversationIds);
 
     useEffect(() => {
+        console.log('app convo id')
         MySocket.onUpdateUser((data) => {
             dispatch(updateUser(data))
         })
@@ -62,15 +63,10 @@ export default function App() {
             MySocket.emitUpdateUserById(user._id);
         })
         MySocket.onNewMessageNotification((data) => {
-            console.log('noti')
+            console.log('abc')
             const { message, conversationId } = data;
             if (conversationId !== convoId) {
                 dispatch(setNotify({ message: Helper.format(Message.newMessage, message.from.username, message.text), type: 'success', open: true, timeout: 2000 }));
-            }
-            if (ids.indexOf(conversationId) > -1) {
-                dispatch(updateLastMessage({ id: conversationId, message }));
-            } else {
-                dispatch(fetchAndPrependConversationById({ id: conversationId }));
             }
         })
         return () => {
@@ -82,7 +78,7 @@ export default function App() {
             MySocket.off(SocketEventName.friendRejected)
             MySocket.off(SocketEventName.newMessageNotification)
         }
-    }, [user._id, convoId, ids])
+    }, [user._id, convoId])
 
     // SIGN IN WITH COOKIE
     useEffect(() => {

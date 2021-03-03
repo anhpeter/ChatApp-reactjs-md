@@ -22,6 +22,9 @@
     --dark: #343a40;
     --light-gray: #F0F2F5;
     --muted: #6c757d;
+    --shadow-2: rgb(0, 0, 0, 0.2);
+    --shadow-inset: rgb(255, 255, 255, 50%);
+    --shadow-1: rgb(0, 0, 0, 0.1);
 }
 
 .text-muted {

@@ -80,9 +80,12 @@ const selectors = {
     authError: (state) => {
         return state.auth.error;
     },
+    authUserId: (state) =>{
+        return state.auth.user._id;
+    }
 }
 
-export const { authError, status, isLogged, authUser } = selectors;
+export const { authError, status, isLogged, authUser,  authUserId} = selectors;
 
 
 export const {

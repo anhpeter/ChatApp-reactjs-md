@@ -70,5 +70,10 @@ const UserApi = {
         const data = await Axios.post(`${prefix}/getUsersByIds`, { ids });
         return data.data;
     },
+    findReceivers: async function (username, exceptIds) {
+        const data = await Axios.post(`${prefix}/getReceivers`, { username, exceptIds,
+        });
+        return data.data;
+    },
 }
 export default UserApi;

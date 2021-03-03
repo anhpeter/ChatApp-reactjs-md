@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useHistory, useParams } from 'react-router-dom';
+import NewChat from '../NewChat/NewChat';
 import NormalChat from '../NormalChat/NormalChat';
 
 
@@ -39,7 +40,7 @@ export default function ChatBox({ children }) {
                 display === 'chat'
                     ?
                     <NormalChat></NormalChat>
-                    : null
+                    : <NewChat></NewChat>
             }
         </React.Fragment >
     )
