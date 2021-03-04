@@ -1,0 +1,111 @@
+:root {
+    --blue: #007bff;
+    --indigo: #6610f2;
+    --purple: #6f42c1;
+    --pink: #e83e8c;
+    --red: #dc3545;
+    --orange: #fd7e14;
+    --yellow: #ffc107;
+    --green: #28a745;
+    --teal: #20c997;
+    --cyan: #17a2b8;
+    --white: #fff;
+    --gray: #6c757d;
+    --gray-dark: #343a40;
+    --primary: #007bff;
+    --secondary: #6c757d;
+    --success: #28a745;
+    --info: #17a2b8;
+    --warning: #ffc107;
+    --danger: #dc3545;
+    --light: #f8f9fa;
+    --dark: #343a40;
+    --light-gray: #F0F2F5;
+    --muted: #6c757d;
+    --shadow-2: rgb(0, 0, 0, 0.2);
+    --shadow-inset: rgb(255, 255, 255, 50%);
+    --shadow-1: rgb(0, 0, 0, 0.1);
+}
+
+.text-muted {
+    color: var(--muted);
+}
+
+.bg-light-gray {
+    background-color: var(--light-gray);
+}
+
+
+/* width */
+
+.custom-scrollbar::-webkit-scrollbar {
+    width: 3px;
+}
+
+
+/* Track */
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    /*background: #f1f1f1;*/
+}
+
+
+/* Handle */
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+
+/* Handle on hover */
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.typing-icon {
+    max-width: 50px;
+}
+
+.message-avatar {
+    max-width: 30px;
+}
+
+.message {
+    max-width: 564px;
+    padding: 7px 12px 8px 12px;
+    overflow: hidden;
+    word-break: break-word;
+}
+
+.right-message {
+    color: white;
+    background-color: rgb(68, 190, 199);
+    border-bottom-left-radius: 18px;
+    border-top-right-radius: 18px;
+    border-top-left-radius: 18px;
+    border-bottom-right-radius: 4px;
+}
+
+.left-message {
+    color: black;
+    background-color: #E4E6EB;
+    border-bottom-left-radius: 18px;
+    border-top-right-radius: 18px;
+    border-top-left-radius: 18px;
+    border-bottom-right-radius: 18px;
+}
+
+.message-avatar {
+    width: 20px;
+    height: 20px;
+}
+
+.ml-avatar {
+    margin-left: 36px;
+}
+
+.conversation-list {
+    overflow-y: auto;
+    height: 500px;
+}
