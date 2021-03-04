@@ -1,4 +1,4 @@
-import React, { useState,} from 'react';
+import React, { useState, } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -119,13 +119,7 @@ export default function SignUp() {
                                     <TextField type="text" {...props('username')} />
                                     <TextField type="password" {...props('password')} />
                                     <TextField type="password" {...props('passwordConfirmation', 'Password confirmation')} />
-                                    <RouterLink to="/signin">
-                                        <Typography color="primary" >
-                                            Have an account?
-                                        </Typography>
-                                    </RouterLink>
-                                    <Box mt={2}
-                                    >
+                                    <Box >
                                         <Button
                                             disabled={isSubmitting || !isValid || !dirty}
                                             type="submit"
@@ -134,6 +128,11 @@ export default function SignUp() {
                                             color="primary"
                                         > Sign Up </Button>
                                     </Box>
+                                    <RouterLink to="/signin">
+                                        <Typography color="primary" style={{ cursor: 'pointer' }}>
+                                            Have an account?
+                                        </Typography>
+                                    </RouterLink>
                                 </form>
                             )
                         }}

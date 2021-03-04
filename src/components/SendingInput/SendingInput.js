@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Grid, TextField, Fab } from '@material-ui/core'
+import { Grid, TextField, Fab, Button, IconButton } from '@material-ui/core'
 import { Send as SendIcon } from '@material-ui/icons'
 import { useDispatch, useSelector } from 'react-redux';
 import { setNotify } from '../../features/notify/NotifySlice';
@@ -31,26 +31,25 @@ export default function SendingInput() {
     // ON SENDING MESSAGE
     const onSendingMessageClick = (e) => {
         e.preventDefault();
-        if (convo._id) {
-            onSendingMessage();
-        } else {
-            if (newChatEnabled && receivers.length > 0) {
-                onCreateConversationsWithReceicersAndFristMessage();
+
+        if (inputMsg.trim() === '') dispatch(setNotify({ message: Message.PleaseTypeMessage, open: true, timeout: 2000 }))
+        else {
+            if (convo._id) {
+                onSendingMessage();
             } else {
-                alert('nothing');
+                if (newChatEnabled && receivers.length > 0) {
+                    onCreateConversationsWithReceicersAndFristMessage();
+                } else {
+                    dispatch(setNotify({ message: Message.PleaseChooseReceiver, open: true, timeout: 2000 }))
+                }
             }
         }
     }
 
     const onSendingMessage = () => {
-        if (inputMsg.trim() === '') {
-            // INVALID
-            dispatch(setNotify({ message: Message.PleaseTypeMessage, open: true, timeout: 2000 }));
-        } else {
-            //MySocket.emitSendMessage(user, inputMsg);
-            MySocket.emitSendMessage(user, inputMsg, convo._id);
-            setInputMsg('');
-        }
+        //MySocket.emitSendMessage(user, inputMsg);
+        MySocket.emitSendMessage(user, inputMsg, convo._id);
+        setInputMsg('');
         if (newChatEnabled) history.push(`/chat/t/${convo._id}`)
     }
 
@@ -107,7 +106,7 @@ export default function SendingInput() {
                         value={inputMsg} id="outlined-basic-email" fullWidth onChange={onInputChange} onKeyUp={onKeyUp} onBlur={onBlur} />
                 </Grid>
                 <Grid item xs={2} md={1} align="center">
-                    <Fab color="primary" aria-label="add" onClick={onSendingMessage}><SendIcon /></Fab>
+                    <IconButton color="primary" type="submit"> <SendIcon /> </IconButton>
                 </Grid>
             </Grid>
         </form >

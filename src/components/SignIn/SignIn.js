@@ -130,12 +130,7 @@ export default function SignIn() {
                             <form onSubmit={handleSubmit} noValidate autoComplete="off">
                                 <TextField autoFocus={true} type="text" {...props('username')} />
                                 <TextField type="password" {...props('password')} />
-                                <RouterLink to="/sign-up">
-                                    <Typography color="primary" >
-                                        Create an account
-                                        </Typography>
-                                </RouterLink>
-                                <Box mt={2}>
+                                <Box >
                                     <Button
                                         disabled={isSubmitting || !isValid || !dirty}
                                         type="submit"
@@ -145,6 +140,11 @@ export default function SignIn() {
                                     > Sign In
                                     </Button>
                                 </Box>
+                                <RouterLink to="/sign-up" >
+                                    <Typography color="primary" style={{ cursor: 'pointer' }} >
+                                        Create an account
+                                    </Typography>
+                                </RouterLink>
                             </form>
                         )
                     }}
