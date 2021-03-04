@@ -80,10 +80,7 @@ export default function NormalChat() {
         <React.Fragment>
             {status === 'loading'
                 ? <Loading></Loading>
-                :
-                (
-                        <Messages messages={messages}></Messages>
-                )
+                : <Messages messages={messages}></Messages>
             }
         </React.Fragment>
     )

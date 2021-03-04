@@ -41,7 +41,9 @@ export default function Header(props) {
                     : null
                 }
             </Box>
+            {/* 
             <RunAction></RunAction>
+             */}
             <DayNightSwitch></DayNightSwitch>
             {(logged)
                 ? (

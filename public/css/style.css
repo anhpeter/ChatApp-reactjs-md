@@ -104,3 +104,8 @@
 .ml-avatar {
     margin-left: 36px;
 }
+
+.conversation-list {
+    overflow-y: auto;
+    height: 500px;
+}

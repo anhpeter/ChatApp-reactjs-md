@@ -3,7 +3,8 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import MyAvatar from '../MyAvatar/MyAvatar';
-import { Avatar, Hidden, ListItemAvatar, makeStyles } from '@material-ui/core';
+import MyAvatarGroup from '../MyAvatarGroup/MyAvatarGroup';
+import { Avatar, Box, Hidden, ListItemAvatar, makeStyles } from '@material-ui/core';
 import { authUser } from '../../features/auth/authSlice';
 import { useSelector } from 'react-redux';
 import ConversationLink from '../ConversationLink/ConversationLink';
@@ -18,32 +19,50 @@ const useStyle = makeStyles({
     }
 })
 
+const GenerateAvatarGroup = ({ items }) => {
+    items = items.map((item) => {
+        return {
+            name: item.username,
+            src: item.picture,
+        }
+    })
+    return <MyAvatarGroup items={items}></MyAvatarGroup>
+}
+
 
 export default function ConversationItem({ item, online, icon }) {
     const classes = useStyle();
     const user = useSelector(authUser);
     const convoId = useSelector(conversationId);
-    const friend = item.members.find((item) => {
+    const { members } = item;
+    const friends = members.filter((item) => {
         return item._id !== user._id;
     })
-    let lastMessageText = null;
+    let name, lastMessageText = null;
+    if (members.length === 2) {
+        name = friends[0].username;
+    } else {
+        name = `${friends[0].username} and ${friends.length - 1} others`;
+    }
     if (item.lastMessage) {
-        let prefix = (item.lastMessage) ? (item.lastMessage.from._id === user._id ? 'you: ' : null) : null;
+        let prefix = (item.lastMessage) ? (item.lastMessage.from._id === user._id ? 'you: ' : (friends.length > 1 ? `${item.lastMessage.from.username}: ` : null)) : null;
         lastMessageText = prefix !== null ? `${prefix} ${item.lastMessage.text}` : item.lastMessage.text;
     }
     return (
         <RouterLink to={`/chat/t/${item._id}`}>
             <ListItem button selected={convoId === item._id}>
-                <ListItemAvatar>
+                <ListItemAvatar style={{ width: '90px' }}>
                     {
                         icon ? (<Avatar> {icon} </Avatar>) :
                             (
-                                <MyAvatar online={online} name={friend.username} single={true} picture={friend.picture}></MyAvatar>
+                                members.length === 2
+                                    ? <MyAvatar online={online} name={name} single={true} picture={friends[0].picture}></MyAvatar>
+                                    : <GenerateAvatarGroup items={friends}></GenerateAvatarGroup>
                             )
                     }
                 </ListItemAvatar>
-                <Hidden smDown>
-                    <ListItemText className={classes.truncateListItemStyle} primary={friend.username} secondary={lastMessageText}></ListItemText>
+                <Hidden xsDown>
+                    <ListItemText className={classes.truncateListItemStyle} primary={name} secondary={lastMessageText}></ListItemText>
                 </Hidden>
             </ListItem >
         </RouterLink>

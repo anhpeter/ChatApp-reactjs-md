@@ -61,6 +61,7 @@ export default function SendingInput() {
         if (status === 'succeeded') {
             MySocket.emitJoinUsersToConversation(payload.members, payload._id);
             MySocket.emitSendMessage(user, inputMsg, payload._id);
+            setInputMsg('');
             history.push(`/chat/t/${payload._id}`);
         }
     }

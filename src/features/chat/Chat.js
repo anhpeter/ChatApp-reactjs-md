@@ -6,7 +6,7 @@ import ConversationList from '../../components/ConversationList/ConversationList
 import ChatBox from '../../components/ChatBox/ChatBox'
 import OnlineUsers from '../../components/OnlineUser/OnlineUsers'
 import useStyles from '../../defines/styles/MainStyles'
-import { Box } from '@material-ui/core'
+import { Box, Hidden } from '@material-ui/core'
 
 export default function Chat() {
     const classes = useStyles();
@@ -36,8 +36,8 @@ export default function Chat() {
     return (
         <Box p={2}>
             <Grid container >
-                <Grid container item xs={12}  spacing={2}>
-                    <Grid item xs={2} md={3} className={`${classes.borderRight500} `}>
+                <Grid container item xs={12} spacing={2}>
+                    <Grid item xs={4} md={3} className={`${classes.borderRight500}`} >
                         <ConversationList></ConversationList>
                     </Grid>
                     <Grid item xs={8} md={7}>
@@ -45,7 +45,7 @@ export default function Chat() {
                             Loading...
                     </ChatBox>
                     </Grid>
-                    <Grid item xs={2} className={`${classes.borderLeft500} `}>
+                    <Grid item xs={false} md={2} className={`${classes.borderLeft500} `}>
                         <OnlineUsers />
                     </Grid>
                 </Grid>
