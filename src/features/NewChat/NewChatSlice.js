@@ -25,7 +25,6 @@ const NewChatSlice = createSlice({
             }
         },
         reset: (state, action) => {
-            console.log('initi', initialState)
             state.enabled = initialState.enabled;
             state.receivers = initialState.receivers;
         }

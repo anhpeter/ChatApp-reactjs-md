@@ -43,6 +43,10 @@ const ConversationApi = {
     getHomeConversation: async function () {
         const data = await Axios.get(`${prefix}/home`);
         return data.data;
+    },
+    createConversationWithMemberIds: async function (ids, messageParams = null) {
+        const data = await Axios.post(`${prefix}/createConversationWithMemberIds`, { ids, messageParams });
+        return data.data;
     }
 }
 export default ConversationApi;

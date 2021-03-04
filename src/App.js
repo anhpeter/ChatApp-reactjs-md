@@ -31,7 +31,6 @@ function useWindowSize() {
 
 
 export default function App() {
-    console.log('app render')
     useWindowSize();
     const [cookies] = useCookies([LOGGED_USER]);
     const user = useSelector(authUser) || {};
@@ -39,7 +38,6 @@ export default function App() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        console.log('app convo id')
         MySocket.onUpdateUser((data) => {
             dispatch(updateUser(data))
         })

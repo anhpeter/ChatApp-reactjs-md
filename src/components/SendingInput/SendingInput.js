@@ -9,6 +9,8 @@ import { conversation } from '../../features/chat/ChatSlice';
 import Message from '../../defines/Message';
 import { useHistory } from 'react-router-dom';
 import { isNewChatEnable, newChatReceivers } from '../../features/NewChat/NewChatSlice';
+import Helper from '../../defines/Helper';
+import ConversationApi from '../../defines/https/ConversationApi';
 
 let myTimeoutObj;
 export default function SendingInput() {
@@ -27,24 +29,39 @@ export default function SendingInput() {
     }
 
     // ON SENDING MESSAGE
-    const onSendingMessage = (e) => {
+    const onSendingMessageClick = (e) => {
         e.preventDefault();
         if (convo._id) {
-            if (inputMsg.trim() === '') {
-                // INVALID
-                dispatch(setNotify({ message: Message.PleaseTypeMessage, open: true, timeout: 2000 }));
-            } else {
-                //MySocket.emitSendMessage(user, inputMsg);
-                MySocket.emitSendMessage(user, inputMsg, convo._id);
-                setInputMsg('');
-            }
-            if (newChatEnabled) history.replace(`/chat/t/${convo._id}`)
+            onSendingMessage();
         } else {
             if (newChatEnabled && receivers.length > 0) {
-                console.log('sending new message to receiver', receivers);
+                onCreateConversationsWithReceicersAndFristMessage();
             } else {
                 alert('nothing');
             }
+        }
+    }
+
+    const onSendingMessage = () => {
+        if (inputMsg.trim() === '') {
+            // INVALID
+            dispatch(setNotify({ message: Message.PleaseTypeMessage, open: true, timeout: 2000 }));
+        } else {
+            //MySocket.emitSendMessage(user, inputMsg);
+            MySocket.emitSendMessage(user, inputMsg, convo._id);
+            setInputMsg('');
+        }
+        if (newChatEnabled) history.push(`/chat/t/${convo._id}`)
+    }
+
+    const onCreateConversationsWithReceicersAndFristMessage = async () => {
+        const receiverIds = Helper.getArrayOfFieldValue(receivers, '_id').concat(user._id);
+        const data = await ConversationApi.createConversationWithMemberIds(receiverIds);
+        const { status, payload } = data;
+        if (status === 'succeeded') {
+            MySocket.emitJoinUsersToConversation(payload.members, payload._id);
+            MySocket.emitSendMessage(user, inputMsg, payload._id);
+            history.push(`/chat/t/${payload._id}`);
         }
     }
 
@@ -78,7 +95,7 @@ export default function SendingInput() {
     }
 
     return (
-        <form onSubmit={(e) => { onSendingMessage(e) }}>
+        <form onSubmit={(e) => { onSendingMessageClick(e) }}>
             <Grid container style={{ padding: '20px' }}>
                 <Grid item xs={10} md={11}>
                     <TextField

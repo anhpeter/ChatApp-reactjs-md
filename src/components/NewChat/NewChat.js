@@ -15,7 +15,6 @@ export default function NewChat() {
     useEffect(() => {
         dispatch(setNewChatEnabled(true));
         return () => {
-            console.log('reset new chat')
             dispatch(resetNewChat());
         }
     }, [])

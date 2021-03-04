@@ -29,7 +29,6 @@ export default function ConversationList() {
 
     useEffect(() => {
         const myFunc = (data) => {
-            console.log('noti')
             const { message, conversationId } = data;
             if (ids.indexOf(conversationId) > -1) {
                 dispatch(updateLastMessage({ id: conversationId, message }));
