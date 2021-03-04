@@ -1,4 +1,5 @@
 :root {
+    --divider-color: rgba(0, 0, 0, 0.12);
     --blue: #007bff;
     --indigo: #6610f2;
     --purple: #6f42c1;
@@ -26,6 +27,40 @@
     --shadow-inset: rgb(255, 255, 255, 50%);
     --shadow-1: rgb(0, 0, 0, 0.1);
 }
+
+
+/* STRUCTURE */
+
+body {
+    overflow: hidden;
+    height: 100vh;
+    margin: 0;
+}
+
+.wrapper {
+    overflow: hidden;
+    position: relative;
+    height: 100vh;
+}
+
+.header {
+    height: 60px;
+}
+
+.main-content {
+    top: 60px;
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+}
+
+.main-content .left-sidebar {
+    height: 100%;
+    overflow-y: auto;
+}
+
+
+/* END STRUCTURE*/
 
 .text-muted {
     color: var(--muted);
@@ -108,4 +143,40 @@
 .conversation-list {
     overflow-y: auto;
     height: 500px;
+}
+
+
+/* Chat box */
+
+.chat-box-wrapper {
+    position: relative;
+    height: 100%;
+}
+
+.chat-box-messages-wrapper {
+    position: absolute !important;
+    width: 100%;
+    bottom: 60px;
+    top: 0px !important;
+    overflow-y: auto;
+}
+
+.sending-message-bar-wrapper {
+    border-top: 1px solid var(--divider-color);
+    height: 60px;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+.online-users-wrapper {
+    position: relative;
+    height: 100%;
+}
+
+.online-users-wrapper .online-users-list {
+    position: absolute;
+    top: 64px;
+    bottom: 0;
+    overflow-y: auto;
 }
