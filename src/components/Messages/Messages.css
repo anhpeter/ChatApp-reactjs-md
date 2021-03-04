@@ -2,6 +2,8 @@
     height: 70vh;
 }
 
+
+/*
 @media screen and (max-height: 576px) {
     #my-messages-container {
         height: 60vh;
@@ -19,3 +21,4 @@
         height: 45vh;
     }
 }
+*/

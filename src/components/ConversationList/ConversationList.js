@@ -50,26 +50,29 @@ export default function ConversationList() {
     })
 
     return (
-        <Grid container >
-            {/* SEARCH BAR */}
-            {/* 
-            <Grid item xs={12}>
-                <Box my={2}>
-                    <SearchBar></SearchBar>
-                </Box>
-            </Grid>
-             */}
-
-            <Grid item xs={12} style={{ height: '100%' }}>
-                {/* 
-                <Box mt={2} >
-                    <HomeConversationItem></HomeConversationItem>
-                </Box>
-                 */}
-                <List className="custom-scrollbar conversation-list">
-                    {conversationsHtml}
-                </List>
-            </Grid>
-        </Grid>
+        <List className="left-sidebar custom-scrollbar">
+            {conversationsHtml}
+        </List>
     )
 }
+
+        //{/* 
+         //*/}
+        //<Grid className="left-sidebar" container >
+            //{/* SEARCH BAR */}
+            //{/* 
+            //<Grid item xs={12}>
+                //<Box my={2}>
+                    //<SearchBar></SearchBar>
+                //</Box>
+            //</Grid>
+             //*/}
+
+            //<Grid item xs={12} >
+                //{/* 
+                //<Box mt={2} >
+                    //<HomeConversationItem></HomeConversationItem>
+                //</Box>
+                 //*/}
+            //</Grid>
+        //</Grid>

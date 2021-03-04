@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { authUser, loginThunk, updateUser } from './features/auth/authSlice'
 import { conversationId } from './features/chat/ChatSlice'
 import { LOGGED_USER } from './defines/CookieName';
-import { Paper } from '@material-ui/core';
+import { Box, Paper } from '@material-ui/core';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import Friends from './components/Friends/Friends';
 import AuthRoute from './components/AuthRoute/AuthRoute';
@@ -95,24 +95,20 @@ export default function App() {
     return (
         <ThemeProvider theme={theme}>
             <HashRouter base="/">
-                <Paper style={{
-                    minHeight: '100vh'
-                }}>
-                    <Grid container spacing={2}>
-                        <Grid item xs={12}>
-                            {/* HEADER */}
-                            <Header></Header>
-                            <Switch>
-                                {/* CONTENT */}
-                                <PrivateRoute path="/chat/:type(t|new)/:conversationId?" exact> <Chat></Chat> </PrivateRoute>
-                                <PrivateRoute path={`/:friendsTab(friends|friends_all|friends_request|friends_sent_request|people_may_know)`} ><Friends></Friends> </PrivateRoute>
-                                <AuthRoute path="/login" exact component={SignIn}></AuthRoute>
-                                <AuthRoute path="/sign-up" exact component={SignUp}></AuthRoute>
-                                <Redirect to="/chat/new"></Redirect>
-                            </Switch>
-                            <Notify></Notify>
-                        </Grid>
-                    </Grid>
+                <Paper >
+                    <Box className="wrapper">
+                        {/* HEADER */}
+                        <Header></Header>
+                        <Switch>
+                            {/* CONTENT */}
+                            <PrivateRoute path="/chat/:type(t|new)/:conversationId?" exact> <Chat></Chat> </PrivateRoute>
+                            <PrivateRoute path={`/:friendsTab(friends|friends_all|friends_request|friends_sent_request|people_may_know)`} ><Friends></Friends> </PrivateRoute>
+                            <AuthRoute path="/login" exact component={SignIn}></AuthRoute>
+                            <AuthRoute path="/sign-up" exact component={SignUp}></AuthRoute>
+                            <Redirect to="/chat/new"></Redirect>
+                        </Switch>
+                        <Notify></Notify>
+                    </Box>
                 </Paper>
             </HashRouter>
         </ThemeProvider >

@@ -9,7 +9,7 @@ import Socket from '../../defines/Socket';
 import MySocket from '../../defines/Socket/MySocket';
 import { useDispatch, useSelector } from 'react-redux';
 import { authUser } from '../../features/auth/authSlice';
-import { Hidden, Typography } from '@material-ui/core';
+import { Box, Hidden, Typography } from '@material-ui/core';
 import SocketEventName from '../../defines/Socket/SocketEventName';
 import AppTitle from '../AppTitle/AppTitle';
 import { conversationId, fetchConversationByUserIdsOrCreateIfNotExist, conversationMemberIds } from '../../features/chat/ChatSlice';
@@ -64,15 +64,17 @@ export default function OnlineUsers({ item }) {
     )
 
     return (
-        <React.Fragment>
-            <AppTitle title="Online"></AppTitle>
-            <List className={classes.root}>
+        <Box className="online-users-wrapper">
+            <Box p={2} className="title">
+                <AppTitle title="Online"></AppTitle>
+            </Box>
+            <List className={`${classes.root} online-users-list`}>
                 {
                     isShow
                         ? (onlineUsersHtml.length > 0 ? onlineUsersHtml : emptyHtml)
                         : null
                 }
             </List >
-        </React.Fragment>
+        </Box>
     );
 }

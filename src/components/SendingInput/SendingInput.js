@@ -96,7 +96,7 @@ export default function SendingInput() {
 
     return (
         <form onSubmit={(e) => { onSendingMessageClick(e) }}>
-            <Grid container style={{ padding: '20px' }}>
+            <Grid container >
                 <Grid item xs={10} md={11}>
                     <TextField
                         autoFocus={true}

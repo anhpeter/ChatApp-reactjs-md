@@ -17,8 +17,8 @@ const emptyHtml = (
 )
 
 const scroll = () => {
-    let container = document.getElementById('my-messages-container');
-    container.scrollTop = container.scrollHeight;
+    let containers = document.getElementsByClassName('chat-box-messages-wrapper');
+    containers[0].scrollTop = containers[0].scrollHeight;
 }
 
 export default function Messages({ messages }) {
@@ -45,10 +45,8 @@ export default function Messages({ messages }) {
     }, [messages])
 
     return (
-        <React.Fragment>
-            <List className={`${classes.messageArea} custom-scrollbar`} id="my-messages-container" >
-                {messagesHtml.length > 0 ? messagesHtml : (!newChatEnabled ? emptyHtml : null)}
-            </List>
-        </React.Fragment >
+        <List className="chat-box-messages-wrapper custom-scrollbar" style={{ top: (newChatEnabled) ? '57px' : '0' }} >
+            {messagesHtml.length > 0 ? messagesHtml : (!newChatEnabled ? emptyHtml : null)}
+        </List>
     )
 }

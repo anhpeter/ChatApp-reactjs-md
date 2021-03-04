@@ -67,21 +67,19 @@ export default function Header(props) {
     )
 
     return (
-        <div>
-            <AppBar position="static" color="primary" id={Slt.mainAppBar}>
-                <Toolbar
-                    style={{
-                        display: 'flex',
-                        justifyContent: 'space-between'
-                    }}>
-                    <Typography variant="h6">
-                        <Link to="/chat" color="inherit" style={{ color: 'white', textDecoration: 'none' }}>
-                            Messenger
+        <AppBar className="header" position="static" color="primary" id={Slt.mainAppBar}>
+            <Toolbar
+                style={{
+                    display: 'flex',
+                    justifyContent: 'space-between'
+                }}>
+                <Typography variant="h6">
+                    <Link to="/chat" color="inherit" style={{ color: 'white', textDecoration: 'none' }}>
+                        Messenger
                         </Link>
-                    </Typography>
-                    {(authStatus !== 'loading') ? toolsHtml : null}
-                </Toolbar>
-            </AppBar>
-        </div>
+                </Typography>
+                {(authStatus !== 'loading') ? toolsHtml : null}
+            </Toolbar>
+        </AppBar>
     )
 }

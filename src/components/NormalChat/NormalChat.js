@@ -1,4 +1,4 @@
-import { Divider } from '@material-ui/core';
+import { Box, Divider } from '@material-ui/core';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
@@ -77,11 +77,11 @@ export default function NormalChat() {
     }, [messages, convo._id])
 
     return (
-        <React.Fragment>
+        <Box >
             {status === 'loading'
                 ? <Loading></Loading>
                 : <Messages messages={messages}></Messages>
             }
-        </React.Fragment>
+        </Box>
     )
 }

@@ -41,23 +41,20 @@ export default function ChatBox({ children }) {
     }, [params])
 
     const mainHtml = (
-        <React.Fragment >
-            <div style={{ position: 'relative', }}>
-                {
-                    display === 'chat'
-                        ?
-                        <NormalChat></NormalChat>
-                        : <NewChat></NewChat>
-                }
-                <div style={{ position: 'absolute', bottom: '100px', left: '5px', width: '100%' }}>
-                    <UserTyping></UserTyping>
-                    <Divider />
-                </div>
-                <Box display={convoStatus === 'loading' ? 'none' : 'unset'}>
-                    <SendMessageBar></SendMessageBar>
-                </Box>
+        <Box className="chat-box-wrapper">
+            {
+                display === 'chat'
+                    ?
+                    <NormalChat></NormalChat>
+                    : <NewChat></NewChat>
+            }
+            <div style={{ position: 'absolute', bottom: '100px', left: '5px', width: '100%' }}>
+                <UserTyping></UserTyping>
             </div>
-        </React.Fragment >
+            <Box display={convoStatus === 'loading' ? 'none' : 'unset'}>
+                <SendMessageBar></SendMessageBar>
+            </Box>
+        </Box>
     )
 
     return (
