@@ -1,1 +1,1 @@
-export const API_ADDRESS = 'http://localhost:3000';
+export const API_ADDRESS = 'https://pa-chat-api.glitch.me';

@@ -45,9 +45,11 @@ export default function Chat() {
                             Loading...
                     </ChatBox>
                     </Grid>
-                    <Grid item xs={false} md={2} className={`${classes.borderLeft500} `}>
-                        <OnlineUsers />
-                    </Grid>
+                    <Hidden mdDown>
+                        <Grid item md={2} className={`${classes.borderLeft500} `}>
+                            <OnlineUsers />
+                        </Grid>
+                    </Hidden>
                 </Grid>
             </Grid>
         </Box>

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import Grid from '@material-ui/core/Grid'
 import Header from './components/Header/Header'
 import Chat from './features/chat/Chat'
-import { BrowserRouter as Router, Switch, Redirect } from 'react-router-dom'
+import { BrowserRouter as Router, Switch, Redirect, HashRouter } from 'react-router-dom'
 import SignIn from './components/SignIn/SignIn'
 import SignUp from './components/SignUp/SignUp'
 import Notify from './features/notify/Notify'
@@ -94,7 +94,7 @@ export default function App() {
     });
     return (
         <ThemeProvider theme={theme}>
-            <Router>
+            <HashRouter base="/">
                 <Paper style={{
                     minHeight: '100vh'
                 }}>
@@ -114,7 +114,7 @@ export default function App() {
                         </Grid>
                     </Grid>
                 </Paper>
-            </Router>
+            </HashRouter>
         </ThemeProvider >
     )
 }

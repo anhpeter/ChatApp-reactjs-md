@@ -1,4 +1,5 @@
 import { io } from "socket.io-client";
+import { API_ADDRESS } from "./Config";
 
 var connectionOptions = {
     "force new connection": true,
@@ -6,5 +7,5 @@ var connectionOptions = {
     "timeout": 10000,
     "transports": ["websocket"]
 };
-const Socket = io('http://localhost:3000/', connectionOptions);
+const Socket = io(API_ADDRESS, connectionOptions);
 export default Socket;
