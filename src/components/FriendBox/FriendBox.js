@@ -138,7 +138,6 @@ export default function FriendBox({ type }) {
         }
     }
 
-
     return (
         <Grid style={{
             paddingTop: '8px',

@@ -1,4 +1,4 @@
-import React, { useEffect} from 'react';
+import React, { useEffect } from 'react';
 import './Friends.css';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
@@ -60,6 +60,5 @@ export default function Friends() {
                 </Grid>
             </Box>
         </React.Fragment>
-
     );
 }
