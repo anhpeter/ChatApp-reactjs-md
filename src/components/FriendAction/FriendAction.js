@@ -6,15 +6,17 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { Button } from '@material-ui/core';
 import mainStyles from '../../defines/styles/MainStyles'
 import UserApi from '../../defines/https/UserApi';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { authUser } from '../../features/auth/authSlice';
 import MySocket from '../../defines/Socket/MySocket';
 import ConversationLink from '../ConversationLink/ConversationLink';
+import { onUnFriend } from '../../features/friend/FriendSlice';
 
 const ITEM_HEIGHT = 48;
 
 export default function SentRequestAction({ item }) {
 
+    const dispatch = useDispatch();
     const user = useSelector(authUser);
     const classes = mainStyles();
     const [anchorEl, setAnchorEl] = useState(null);
@@ -29,11 +31,11 @@ export default function SentRequestAction({ item }) {
     };
 
     // click
-    const onUnfriend = async () => {
+    const onUnfriendClick = async () => {
         const data = await UserApi.unfriend(user._id, item._id);
         if (data.status === 'succeeded') {
-            MySocket.emitUpdateUserById(user._id);
             MySocket.emitUnfriend(user, item._id);
+            dispatch(onUnFriend({ user: item }));
         }
         setAnchorEl(null);
     }
@@ -66,11 +68,11 @@ export default function SentRequestAction({ item }) {
                 }}
             >
                 <MenuItem>
-                    <ConversationLink item={item} style={{width: '100%'}}>
+                    <ConversationLink item={item} style={{ width: '100%' }}>
                         <Button onClick={onChat} variant="contained" size="small" fullWidth color="primary" className={classes.buttonStyle}>Chat</Button>
                     </ConversationLink>
                 </MenuItem>
-                <MenuItem><Button onClick={onUnfriend} variant="contained" size="small" fullWidth className={classes.buttonStyle}>Unfriend</Button></MenuItem>
+                <MenuItem><Button onClick={onUnfriendClick} variant="contained" size="small" fullWidth className={classes.buttonStyle}>Unfriend</Button></MenuItem>
             </Menu>
         </div>
     );

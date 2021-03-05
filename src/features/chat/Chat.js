@@ -34,7 +34,7 @@ export default function Chat() {
     // DISPLAY LATEST CONVERSATION
 
     return (
-        <Box className="main-content" p={2}>
+        <Box className="main-content" p={2} >
             <Grid style={{ height: '100%' }} container >
                 <Grid style={{ height: '100%', padding: 0 }} item xs={3} className={`${classes.borderRight500}`} >
                     <ConversationList></ConversationList>
@@ -44,7 +44,7 @@ export default function Chat() {
                         Loading...
                     </ChatBox>
                 </Grid>
-                <Hidden smDown>
+                <Hidden smDown stle>
                     <Grid style={{ height: '100%', padding: 0 }} item xs={false} md={2} className={`${classes.borderLeft500} `}>
                         <OnlineUsers />
                     </Grid>

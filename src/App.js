@@ -19,9 +19,9 @@ import AuthRoute from './components/AuthRoute/AuthRoute';
 import MySocket from './defines/Socket/MySocket';
 import SocketEventName from './defines/Socket/SocketEventName';
 import { setNotify } from './features/notify/NotifySlice';
+import { onFriendUnfriend, onFriendRejected, onFriendCanceled, onFriendAccepted, onFriendRequested } from './features/friend/FriendSlice';
 import Helper from './defines/Helper';
 import Message from './defines/Message';
-import { fetchAndPrependConversationById, selectSidebarConversationIds, updateLastMessage } from './features/sidebarConversations/SidebarConversationsSlice';
 
 function useWindowSize() {
     window.addEventListener('scroll', () => {
@@ -31,35 +31,38 @@ function useWindowSize() {
 
 
 export default function App() {
-    useWindowSize();
+    //useWindowSize();
     const [cookies] = useCookies([LOGGED_USER]);
     const user = useSelector(authUser) || {};
     const convoId = useSelector(conversationId);
     const dispatch = useDispatch();
 
     useEffect(() => {
+        const setupFriendEvents = () => {
+            MySocket.onFriendAccepted((data) => {
+                dispatch(setNotify({ message: Helper.format(Message.friendAccepted, data.user.username,), type: 'info', open: true }));
+                dispatch(onFriendAccepted({ user: data.user }))
+            })
+            MySocket.onFriendRequested((data) => {
+                dispatch(setNotify({ message: Helper.format(Message.friendRequested, data.user.username,), type: 'info', open: true }));
+                dispatch(onFriendRequested({ user: data.user }))
+            })
+            MySocket.onFriendUnFriend((data) => {
+                dispatch(onFriendUnfriend({ user: data.user }))
+            })
+            MySocket.onFriendRequestCanceled((data) => {
+                dispatch(onFriendCanceled({ user: data.user }))
+            })
+            MySocket.onFriendRejected((data) => {
+                dispatch(onFriendRejected({ user: data.user }))
+            })
+        }
+        setupFriendEvents();
         MySocket.onUpdateUser((data) => {
+            console.log('update user run')
             dispatch(updateUser(data))
         })
-        MySocket.onFriendAccepted((data) => {
-            // notify
-            MySocket.emitUpdateUserById(user._id);
-            dispatch(setNotify({ message: Helper.format(Message.friendAccepted, data.user.username,), type: 'info', open: true }));
-        })
-        MySocket.onFriendRequested((data) => {
-            // notify
-            MySocket.emitUpdateUserById(user._id);
-            dispatch(setNotify({ message: Helper.format(Message.friendRequested, data.user.username,), type: 'info', open: true }));
-        })
-        MySocket.onFriendUnFriend((data) => {
-            MySocket.emitUpdateUserById(user._id);
-        })
-        MySocket.onFriendRequestCanceled((data) => {
-            MySocket.emitUpdateUserById(user._id);
-        })
-        MySocket.onFriendRejected((data) => {
-            MySocket.emitUpdateUserById(user._id);
-        })
+
         MySocket.onNewMessageNotification((data) => {
             const { message, conversationId } = data;
             if (conversationId !== convoId && message.from._id !== user._id) {

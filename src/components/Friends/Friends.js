@@ -39,26 +39,24 @@ export default function Friends() {
     };
 
     return (
-        <React.Fragment>
-            <Box p={2} >
-                <Grid container spacing={2}>
-                    <Grid item xs={9} >
-                        <AppTitle title="Friends"></AppTitle>
-                        <Box mt={1}>
-                            <AppBar position="static" color="default">
-                                <Tabs value={value} onChange={handleChange} aria-label="simple tabs example" indicatorColor="primary" className="my-tabs" scrollButtons="auto" variant="scrollable">
-                                    <Tab label="All Friends" {...a11yProps(0)} />
-                                    <Tab label="Friend Requests" {...a11yProps(1)} />
-                                    <Tab label="Sent Requests" {...a11yProps(2)} />
-                                    <Tab label="People you may know" {...a11yProps(3)} />
-                                </Tabs>
-                            </AppBar>
-                            <FriendBox type={friendTabs[value]}></FriendBox>
-                        </Box>
-                    </Grid>
-                    <Grid item xs={3} ><OnlineUsers /> </Grid>
+        <Box p={2} style={{ height: '100%' }}>
+            <Grid style={{ height: '100%' }} container spacing={2}>
+                <Grid style={{ height: '100%' }} item xs={9} >
+                    <AppTitle title="Friends"></AppTitle>
+                    <Box mt={1} >
+                        <AppBar position="static" color="default">
+                            <Tabs value={value} onChange={handleChange} aria-label="simple tabs example" indicatorColor="primary" className="my-tabs" scrollButtons="auto" variant="scrollable">
+                                <Tab label="All Friends" {...a11yProps(0)} />
+                                <Tab label="Friend Requests" {...a11yProps(1)} />
+                                <Tab label="Sent Requests" {...a11yProps(2)} />
+                                <Tab label="People you may know" {...a11yProps(3)} />
+                            </Tabs>
+                        </AppBar>
+                        <FriendBox type={friendTabs[value]}></FriendBox>
+                    </Box>
                 </Grid>
-            </Box>
-        </React.Fragment>
+                <Grid style={{ height: '100%' }} item xs={3} ><OnlineUsers /> </Grid>
+            </Grid>
+        </Box>
     );
 }

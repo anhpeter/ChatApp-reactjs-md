@@ -10,110 +10,85 @@ import UserApi from '../../defines/https/UserApi';
 import { isLogged, authUser } from '../../features/auth/authSlice';
 import MyAvatar from '../MyAvatar/MyAvatar'
 import FriendList from '../FriendList/FriendList';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchFriendsByIds, selectAllStranger, fetchStrangersByUsername, friendStatus, selectAllFriend, selectAllRequest, selectAllSentRequest } from '../../features/friend/FriendSlice';
 
 const AllFriendList = () => {
-    const [items,
-        setItems] = useState([]);
-    const [isLoading, setLoading] = useState(true);
+    const type = 'friend';
+    const items = useSelector(selectAllFriend);
+
     const user = useSelector(authUser);
+    const status = useSelector((state) => friendStatus(state, type));
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        const fetchItems = async () => {
-            try {
-                const data = await UserApi.findUsersByIds(user.friend.friend);
-                if (data.status === 'succeeded')
-                    setItems(data.payload);
-                setLoading(false);
-            }
-            catch (e) { }
+        if (status === 'idle') {
+            dispatch(fetchFriendsByIds({ type, ids: user.friend[type] }));
         }
-        if (user.friend.friend.length > 0) {
-            fetchItems();
-        } else {
-            setItems([]);
-            setLoading(false);
-        }
-    }, [user.friend.friend])
+    }, [status, user.friend[type]])
 
     return (
-        <FriendList items={items} type="friend" isLoading={isLoading}></FriendList>
+        <FriendList items={items} type={type} isLoading={status === 'loading'}></FriendList>
     );
 }
 
 const SentRequestList = () => {
-    const [items,
-        setItems] = useState([]);
-    const [isLoading, setLoading] = useState(true);
+    const type = 'sent_request';
+    const items = useSelector(selectAllSentRequest);
+
     const user = useSelector(authUser);
+    const status = useSelector((state) => friendStatus(state, type));
+    const dispatch = useDispatch();
+
+    // FETCH
     useEffect(() => {
-        const fetchItems = async () => {
-            try {
-                const data = await UserApi.findUsersByIds(user.friend.sent_request);
-                if (data.status === 'succeeded')
-                    setItems(data.payload);
-                setLoading(false);
-            }
-            catch (e) { }
+        if (status === 'idle') {
+            dispatch(fetchFriendsByIds({ type, ids: user.friend[type] }));
         }
-        if (user.friend.sent_request.length > 0) {
-            fetchItems();
-        } else {
-            setLoading(false);
-            setItems([]);
-        }
-    }, [user.friend.sent_request]);
+    }, [status, user.friend[type]])
+
     return (
-        <FriendList items={items} type='sent_request' isLoading={isLoading}></FriendList>
+        <FriendList items={items} type={type} isLoading={status === 'loading'}></FriendList>
     )
 }
 
 const RequestList = () => {
-    const [items,
-        setItems] = useState([]);
-    const [isLoading, setLoading] = useState(true);
+    const type = 'request';
+    const items = useSelector(selectAllRequest);
+
     const user = useSelector(authUser);
+    const status = useSelector((state) => friendStatus(state, type));
+    const dispatch = useDispatch();
+
+    // FETCH
     useEffect(() => {
-        const fetchItems = async () => {
-            try {
-                const data = await UserApi.findUsersByIds(user.friend.request);
-                if (data.status === 'succeeded')
-                    setItems(data.payload);
-            }
-            catch (e) { }
+        if (status === 'idle') {
+            dispatch(fetchFriendsByIds({ type, ids: user.friend[type] }));
         }
-        if (user.friend.request.length > 0) {
-            fetchItems();
-        } else {
-            setItems([]);
-            setLoading(false);
-        }
-        setLoading(false);
-    }, [user.friend.request]);
+    }, [status, user.friend[type]])
+
     return (
-        <FriendList items={items} type='request' isLoading={isLoading}></FriendList>
+        <FriendList items={items} type={type} isLoading={status === 'loading'}></FriendList>
     )
 }
 
 const PeopleMayKnowList = ({ username }) => {
-    const [items,
-        setItems] = useState([]);
-    const [isLoading, setLoading] = useState(true);
+    const type = 'stranger';
+    const items = useSelector(selectAllStranger);
 
+    const user = useSelector(authUser);
+    const status = useSelector((state) => friendStatus(state, type));
+    const dispatch = useDispatch();
+
+    // FETCH
     useEffect(() => {
-        const fetchItems = async () => {
-            try {
-                const data = await UserApi.findStrangerByUsername(username);
-                if (data.status === 'succeeded')
-                    setItems(data.payload);
-                setLoading(false);
-            }
-            catch (e) { }
+        if (status === 'idle') {
+            dispatch(fetchStrangersByUsername({ type, username }));
         }
-        fetchItems();
-    }, [username]);
+    }, [status, user.username])
+
     return (
-        <FriendList items={items} isLoading={isLoading}></FriendList>
+        <FriendList items={items} type={type} isLoading={status === 'loading'}></FriendList>
     )
 }
 
