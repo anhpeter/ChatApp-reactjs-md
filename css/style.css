@@ -1,3 +1,7 @@
+* {
+    box-sizing: border-box;
+}
+
 :root {
     --divider-color: rgba(0, 0, 0, 0.12);
     --blue: #007bff;
@@ -38,7 +42,6 @@ body {
 }
 
 .wrapper {
-    overflow: hidden;
     position: relative;
     height: 100vh;
 }
@@ -57,6 +60,7 @@ body {
 .main-content .left-sidebar {
     height: 100%;
     overflow-y: auto;
+    overflow-x: hidden;
 }
 
 
@@ -157,8 +161,8 @@ body {
     position: absolute !important;
     width: 100%;
     bottom: 60px;
-    top: 0px !important;
     overflow-y: auto;
+    top: 0px;
 }
 
 .sending-message-bar-wrapper {
