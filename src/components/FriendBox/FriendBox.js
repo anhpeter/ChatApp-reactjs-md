@@ -116,8 +116,6 @@ export default function FriendBox({ type }) {
     return (
         <Grid style={{
             paddingTop: '8px',
-            maxHeight: '500px',
-            overflowY: 'auto',
-        }} className="custom-scrollbar" container spacing={2} >{itemsHtml}</Grid>
+        }} container spacing={2} >{itemsHtml}</Grid>
     )
 }

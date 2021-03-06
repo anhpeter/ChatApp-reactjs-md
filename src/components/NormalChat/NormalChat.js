@@ -26,7 +26,7 @@ export default function NormalChat() {
     const receiver = useSelector(newChatReceiver) || {};
     const newChatEnabled = useSelector(isNewChatEnable);
 
-    // FETCH CONVERSATION BY FRIEND ID
+    // FETCH CONVERSATION BY RECEIVER ID
     useEffect(() => {
         if (newChatEnabled) {
             if (receiver._id) dispatch(fetchConversationByMemberIds([`${loggedUserId}`, `${receiver._id}`]));

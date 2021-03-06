@@ -19,6 +19,14 @@ function a11yProps(index) {
 const friendTabs = ['friends_all', 'friends_request', 'friends_sent_request', 'people_may_know'];
 
 export default function Friends() {
+    useEffect(() => {
+        const [body] = document.getElementsByTagName('body');
+        body.style.overflowY = 'scroll';
+        return () => {
+            body.style.overflowY = 'hidden';
+        }
+    }, [])
+
     const classes = mainStyles();
     const [value,
         setValue] = React.useState(0);

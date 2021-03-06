@@ -53,30 +53,27 @@ const MySocket = {
     },
 
     // ON
+    onNewOnlineUser: function (callback) {
+        Socket.on(SocketEventName.newOnlineUser, callback);
+    },
+    onOnlineUserLeft: function (callback) {
+        Socket.on(SocketEventName.onlineUserLeft, callback);
+    },
+
     onUpdateUser: function (callback) {
-        Socket.on(SocketEventName.updateUser, (data) => {
-            if (Helper.isFn(callback)) callback(data);
-        })
+        Socket.on(SocketEventName.updateUser, callback);
     },
     onReceiveMessage: function (callback) {
-        Socket.on(SocketEventName.receiveMessage, (data) => {
-            if (Helper.isFn(callback)) callback(data);
-        })
+        Socket.on(SocketEventName.receiveMessage, callback);
     },
     onOnlineUsers: function (callback) {
-        Socket.on(SocketEventName.onlineUsers, (data) => {
-            if (Helper.isFn(callback)) callback(data);
-        })
+        Socket.on(SocketEventName.onlineUsers, callback);
     },
     onTyping: function (callback) {
-        Socket.on(SocketEventName.typing, (data) => {
-            if (Helper.isFn(callback)) callback(data);
-        })
+        Socket.on(SocketEventName.typing, callback);
     },
     onStopTyping: function (callback) {
-        Socket.on(SocketEventName.stopTyping, (data) => {
-            if (Helper.isFn(callback)) callback(data);
-        })
+        Socket.on(SocketEventName.stopTyping, callback)
     },
 
     // NOTIFICATION

@@ -17,6 +17,7 @@ import ConversationApi from '../../defines/https/ConversationApi';
 import { useHistory } from 'react-router-dom';
 import Helper from '../../defines/Helper';
 import ConversationLink from '../ConversationLink/ConversationLink';
+import { selectAllOnlineUser } from '../../features/OnlineUser/OnlineUserSlice';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -26,21 +27,20 @@ const useStyles = makeStyles((theme) => ({
 
 export default function OnlineUsers({ item }) {
     const classes = useStyles();
-    const [onlineUsers, setOnlineUsers] = useState([]);
     const [isShow, setShow] = useState(false);
     const user = useSelector(authUser) || {};
+    const onlineUsers = useSelector(selectAllOnlineUser);
+
+
     useEffect(() => {
-        setTimeout(() => {
-            setShow(true);
-        }, 500);
-        MySocket.emitGetOnlineUsers();
-        MySocket.onOnlineUsers((data) => {
-            setOnlineUsers(data)
-        })
-        return () => {
-            Socket.off(SocketEventName.onlineUsers);
-        }
-    }, [])
+        console.log(onlineUsers);
+    }, [onlineUsers])
+
+    //useEffect(() => {
+    //setTimeout(() => {
+    //setShow(true);
+    //}, 500);
+    //}, [])
 
     const onlineUsersHtml = onlineUsers.filter((item) => {
         return (item.username !== user.username)
@@ -69,11 +69,14 @@ export default function OnlineUsers({ item }) {
                 <AppTitle title="Online"></AppTitle>
             </Box>
             <List className={`${classes.root} online-users-list`}>
+                {/* 
                 {
                     isShow
                         ? (onlineUsersHtml.length > 0 ? onlineUsersHtml : emptyHtml)
                         : null
                 }
+                 */}
+                {onlineUsersHtml.length > 0 ? onlineUsersHtml : emptyHtml}
             </List >
         </Box>
     );

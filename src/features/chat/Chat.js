@@ -44,7 +44,7 @@ export default function Chat() {
                         Loading...
                     </ChatBox>
                 </Grid>
-                <Hidden smDown stle>
+                <Hidden smDown>
                     <Grid style={{ height: '100%', padding: 0 }} item xs={false} md={2} className={`${classes.borderLeft500} `}>
                         <OnlineUsers />
                     </Grid>

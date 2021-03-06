@@ -20,9 +20,9 @@ export default function NewChat() {
     }, [])
 
     return (
-        <Box position="relative">
+        <Box position="relative" height="100%">
             {/* INPUT */}
-            <Paper style={{ position: 'absolute', zIndex: '1000', width: '100%', boxShadow: 'none' }}>
+            <Paper style={{ position: 'absolute', zIndex: '1000', width: '100%', boxShadow: 'none', padding: '16px' }}>
                 <Receiver onFriendIdSelected={onFriendIdSelected}></Receiver>
             </Paper>
 

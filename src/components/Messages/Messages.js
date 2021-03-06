@@ -22,7 +22,6 @@ const scroll = () => {
 }
 
 export default function Messages({ messages }) {
-    const classes = mainStyle();
     const user = useSelector(authUser);
     const newChatEnabled = useSelector(isNewChatEnable);
 
@@ -45,7 +44,7 @@ export default function Messages({ messages }) {
     }, [messages])
 
     return (
-        <List className="chat-box-messages-wrapper custom-scrollbar" style={{ top: (newChatEnabled) ? '57px' : '0' }} >
+        <List className="chat-box-messages-wrapper custom-scrollbar" >
             {messagesHtml.length > 0 ? messagesHtml : (!newChatEnabled ? emptyHtml : null)}
         </List>
     )

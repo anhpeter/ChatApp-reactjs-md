@@ -84,6 +84,6 @@ const selectors = {
 
 export const { conversationStatus, conversationError, conversation, conversationMemberIds, conversationId, conversationMessages } = selectors;
 
-export const {reset, appendMessage } = ChatSlice.actions
+export const { reset, appendMessage } = ChatSlice.actions
 
 export default ChatSlice.reducer;

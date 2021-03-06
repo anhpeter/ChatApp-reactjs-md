@@ -24,15 +24,13 @@ export default function Notifications() {
             }}>
             </IconWithBadge>
               */}
-            <Hidden xsDown>
-                <RouterLink to="/chat/new">
-                    <Tooltip title="Chat">
-                        <IconButton color="inherit">
-                            <MessageIcon></MessageIcon>
-                        </IconButton>
-                    </Tooltip>
-                </RouterLink>
-            </Hidden>
+            <RouterLink to="/chat/new">
+                <Tooltip title="Chat">
+                    <IconButton color="inherit">
+                        <MessageIcon></MessageIcon>
+                    </IconButton>
+                </Tooltip>
+            </RouterLink>
             <RouterLink to="/friends">
                 <Tooltip title="Friends">
                     <IconButton color="inherit">

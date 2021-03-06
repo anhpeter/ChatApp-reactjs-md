@@ -107,7 +107,6 @@ const FriendSlice = createSlice({
             currentState.status = 'succeeded'
         },
         [fetchFriendsByIds.rejected]: (state, action) => {
-            console.log(action.error.message);
         }
     }
 });

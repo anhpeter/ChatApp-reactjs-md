@@ -99,6 +99,7 @@ export default function SendingInput() {
             <Grid container >
                 <Grid item xs={10} md={11}>
                     <TextField
+                    style={{padding: '0 8px'}}
                         autoFocus={true}
                         inputProps={{
                             autoComplete: 'off'

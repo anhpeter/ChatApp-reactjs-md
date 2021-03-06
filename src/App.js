@@ -9,7 +9,7 @@ import Notify from './features/notify/Notify'
 import PrivateRoute from './components/PrivateRoute/PrivateRoute'
 import { useCookies } from 'react-cookie'
 import { useDispatch, useSelector } from 'react-redux'
-import { authUser, loginThunk, updateUser } from './features/auth/authSlice'
+import { authUser, isLogged, loginThunk, updateUser } from './features/auth/authSlice'
 import { conversationId } from './features/chat/ChatSlice'
 import { LOGGED_USER } from './defines/CookieName';
 import { Box, Paper } from '@material-ui/core';
@@ -22,22 +22,34 @@ import { setNotify } from './features/notify/NotifySlice';
 import { onFriendUnfriend, onFriendRejected, onFriendCanceled, onFriendAccepted, onFriendRequested } from './features/friend/FriendSlice';
 import Helper from './defines/Helper';
 import Message from './defines/Message';
-
-function useWindowSize() {
-    window.addEventListener('scroll', () => {
-        window.scrollTo(0, 0);
-    })
-}
+import { addAllOnlineUser, addOneOnlineUser, removeOneOnlineUser } from './features/OnlineUser/OnlineUserSlice';
 
 
 export default function App() {
-    //useWindowSize();
     const [cookies] = useCookies([LOGGED_USER]);
     const user = useSelector(authUser) || {};
+    const logged = useSelector(isLogged);
     const convoId = useSelector(conversationId);
     const dispatch = useDispatch();
 
     useEffect(() => {
+        if (logged) {
+            MySocket.emitGetOnlineUsers();
+        }
+    }, [logged]);
+
+    useEffect(() => {
+        MySocket.onOnlineUsers((items) => {
+            dispatch(addAllOnlineUser(items));
+        });
+        MySocket.onNewOnlineUser((item) => {
+            dispatch(addOneOnlineUser(item));
+        })
+        MySocket.onOnlineUserLeft((item) => {
+            dispatch(removeOneOnlineUser(item));
+        })
+
+        // FRIENDS
         const setupFriendEvents = () => {
             MySocket.onFriendAccepted((data) => {
                 dispatch(setNotify({ message: Helper.format(Message.friendAccepted, data.user.username,), type: 'info', open: true }));
@@ -58,8 +70,23 @@ export default function App() {
             })
         }
         setupFriendEvents();
+        return () => {
+            MySocket.off(SocketEventName.onlineUserLeft)
+            MySocket.off(SocketEventName.newOnlineUser)
+            MySocket.off(SocketEventName.onlineUsers)
+
+            // FRIENDS
+            MySocket.off(SocketEventName.friendAccepted)
+            MySocket.off(SocketEventName.friendRequested)
+            MySocket.off(SocketEventName.friendUnfriend)
+            MySocket.off(SocketEventName.friendRequestCanceled)
+            MySocket.off(SocketEventName.friendRejected)
+        }
+    }, [])
+
+
+    useEffect(() => {
         MySocket.onUpdateUser((data) => {
-            console.log('update user run')
             dispatch(updateUser(data))
         })
 
@@ -71,11 +98,6 @@ export default function App() {
         })
         return () => {
             MySocket.off(SocketEventName.updateUser)
-            MySocket.off(SocketEventName.friendAccepted)
-            MySocket.off(SocketEventName.friendRequested)
-            MySocket.off(SocketEventName.friendUnfriend)
-            MySocket.off(SocketEventName.friendRequestCanceled)
-            MySocket.off(SocketEventName.friendRejected)
             MySocket.off(SocketEventName.newMessageNotification)
         }
     }, [user._id, convoId])
@@ -98,7 +120,7 @@ export default function App() {
     return (
         <ThemeProvider theme={theme}>
             <HashRouter base="/">
-                <Paper >
+                <Paper style={{ boxShadow: 'none' }}>
                     <Box className="wrapper">
                         {/* HEADER */}
                         <Header></Header>

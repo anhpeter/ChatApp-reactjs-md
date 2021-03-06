@@ -3,8 +3,9 @@ import MyAvatar from '../MyAvatar/MyAvatar';
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
-import { Box, Button, makeStyles } from '@material-ui/core'
+import { Box, Button, Hidden, IconButton, makeStyles } from '@material-ui/core'
 
+import MenuIcon from '@material-ui/icons/Menu';
 import PersonIcon from '@material-ui/icons/Person';
 import Slt from '../../defines/Slt'
 import { Link, useHistory, useLocation } from 'react-router-dom'
@@ -16,6 +17,7 @@ import DayNightSwitch from '../DayNightSwitch/DayNightSwitch'
 import Notifications from '../Notifications/Notifications';
 import RunAction from '../RunAction/RunAction';
 import { LOGGED_USER } from '../../defines/CookieName';
+import Sidebar from '../Sidebar/Sidebar';
 
 export default function Header(props) {
     const [cookies, setCookie, removeCookie] = useCookies(LOGGED_USER);
@@ -34,13 +36,15 @@ export default function Header(props) {
     }
 
     const toolsHtml = (
-        <Box display="flex" alignItems="center" justifyContent="center">
-            <Box mr={4}>
-                {logged
-                    ? <Notifications></Notifications>
-                    : null
-                }
-            </Box>
+        <Box display="flex" alignItems="center" justifyContent="flex-end" flexGrow={1}>
+            <Hidden smDown>
+                <Box mr={4}>
+                    {logged
+                        ? <Notifications></Notifications>
+                        : null
+                    }
+                </Box>
+            </Hidden>
             {/* 
             <RunAction></RunAction>
              */}
@@ -68,11 +72,10 @@ export default function Header(props) {
 
     return (
         <AppBar className="header" position="static" color="primary" id={Slt.mainAppBar}>
-            <Toolbar
-                style={{
-                    display: 'flex',
-                    justifyContent: 'space-between'
-                }}>
+            <Toolbar >
+                <Hidden mdUp>
+                    <Sidebar icon={<MenuIcon />}> </Sidebar>
+                </Hidden>
                 <Typography variant="h6">
                     <Link to="/chat" color="inherit" style={{ color: 'white', textDecoration: 'none' }}>
                         Messenger

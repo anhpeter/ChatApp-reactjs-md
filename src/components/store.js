@@ -4,6 +4,7 @@ import ChatSlice from '../features/chat/ChatSlice'
 import FriendSlice from '../features/friend/FriendSlice'
 import NewChatSlice from '../features/NewChat/NewChatSlice'
 import NotifySlice from '../features/notify/NotifySlice'
+import OnlineUserSlice from '../features/OnlineUser/OnlineUserSlice'
 import SidebarConversationsSlice from '../features/sidebarConversations/SidebarConversationsSlice'
 import themeSlice from '../GeneralSlices/themeSlice'
 
@@ -16,5 +17,6 @@ export default configureStore({
         newChat: NewChatSlice,
         friend: FriendSlice,
         theme: themeSlice,
+        onlineUser: OnlineUserSlice
     }
 })
